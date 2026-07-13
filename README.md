@@ -5,7 +5,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-1.2.0-brightgreen.svg" alt="Version">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"></a>
-  <img src="https://img.shields.io/badge/Codex-Plugin-blue.svg" alt="Codex Plugin">
   <img src="https://img.shields.io/badge/Claude_Code-Plugin-purple.svg" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/Patterns-6_Architectures-orange.svg" alt="6 Architecture Patterns">
   <img src="https://img.shields.io/badge/Mode-Agent_Teams-green.svg" alt="Agent Teams">
@@ -15,18 +14,18 @@
 <p align="center">
   <a href="#category--where-harness-sits"><img src="https://img.shields.io/badge/Layer-L3%20Meta--Factory-orange" alt="Layer"></a>
   <a href="#category--where-harness-sits"><img src="https://img.shields.io/badge/Sub--layer-Team--Architecture%20Factory-teal" alt="Sub-layer"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Runtime-Claude%20Code%20%7C%20Codex-lightgrey" alt="Runtime support"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Runtime-Claude%20Code-lightgrey" alt="Runtime support"></a>
 </p>
 
-# Harness — Claude Code / Codex 的團隊架構工廠
+# Harness — Claude Code 的團隊架構工廠
 
-**繁體中文 README**
+**繁體中文** | [English](README_EN.md) | [한국어](README_KO.md) | [日本語](README_JA.md)
 
-> **Harness 是一個可同時支援 Claude Code 與 Codex 的團隊架構工廠。** 只要輸入 **"build a harness for this project"** 或「幫我為這個專案配置 Harness」，外掛就會根據你的領域描述，自動設計代理人團隊與對應技能，並從六種預先定義的團隊架構模式中挑選最合適的配置。
+> **Harness 是 Claude Code 的團隊架構工廠。** 只要輸入 **"build a harness for this project"**、`「幫我為這個專案配置 Harness」`、`「하네스 구성해줘」` 或 `「ハーネスを構成して」`，外掛就會將你的領域描述轉換成代理人團隊與其使用的技能，並從六種預先定義的團隊架構模式中挑選最合適的配置。
 
 ## 概要
 
-Harness 把複雜任務拆解成由多個專職代理人協作完成的工作流程。Claude Code 版使用 `.claude/agents/` 與 `.claude/skills/`；Codex 版使用 `agents/`、`skills/`、`AGENTS.md` 與 Codex sub-agent team 工作流。
+Harness 運用 Claude Code 的 agent team 系統，將複雜任務拆解成由多個專職代理人協作完成的工作流程。輸入「build a harness for this project」後，它會根據你的領域自動產生代理人定義（`.claude/agents/`）與技能（`.claude/skills/`）。
 
 ## 類別定位 — Harness 位在哪一層
 
@@ -36,7 +35,7 @@ Harness 位於 agent coding runtime 生態系中的 **L3 Meta-Factory** 層，�
 |------|------|----------|
 | **L3 — Meta-Factory / Team-Architecture Factory**（本專案） | 將領域描述轉成代理人團隊與技能，並套用 6 種預定義團隊模式 | — |
 | L3 — Meta-Factory / Runtime-Configuration Factory | 產生可重現、可預測的執行環境設定 | [coleam00/Archon](https://github.com/coleam00/Archon) |
-| L3 — Meta-Factory / Runtime Support | 本 fork 內建 Claude Code 與 Codex 雙 runtime skill 目錄 | `.claude-plugin/` + `plugins/harness/.codex-plugin/` |
+| L3 — Meta-Factory / Codex Runtime Port | 相同概念的 Codex runtime 移植版 | [SaehwanPark/meta-harness](https://github.com/SaehwanPark/meta-harness) |
 | L2 — Cross-Harness Workflow | 在多個 harness 之間標準化 skills、rules、hooks | [affaan-m/ECC](https://github.com/affaan-m/everything-claude-code) |
 
 > Archon 負責產生可重現的 runtime 設定；Harness 則負責產生團隊架構，例如 Pipeline、Fan-out/Fan-in、Expert Pool、Producer-Reviewer、Supervisor、Hierarchical Delegation，以及各代理人會用到的技能。兩者同屬 L3，但處於不同子層。若你需要執行環境的一致性，選 Archon；若你需要代理人團隊設計，選 Harness；也可以兩者搭配使用。
@@ -91,66 +90,6 @@ Phase 6: 驗證與測試
 
 ## 安裝方式
 
-### Codex Plugin 安裝
-
-這個 fork 已包含 Codex plugin manifest 與 marketplace 設定：
-
-```
-.agents/plugins/marketplace.json
-plugins/harness/.codex-plugin/plugin.json
-plugins/harness/skills/harness/
-```
-
-Codex plugin 本體放在 `plugins/harness/`，並讀取 `plugins/harness/skills/harness/`。Claude Code plugin 則保留使用 repo root 的 `skills/harness/`，兩個 runtime 的指令不共用，避免互相污染。
-
-#### 從 GitHub fork 加入 Codex marketplace
-
-如果曾經加入過舊版 Harness marketplace，先移除舊來源：
-
-```powershell
-codex plugin marketplace remove harness-marketplace
-```
-
-再加入這個 fork：
-
-```powershell
-codex plugin marketplace add yaayaya/harness
-```
-
-加入後重新開啟 Codex Desktop，或開一個新的 Codex thread。打開 Plugins 介面，切到 `Harness Marketplace`，安裝或啟用 `Harness`。
-
-安裝完成後，新的 Codex thread 會載入 `harness` skill。可以用 `$harness` 或直接輸入 Harness 相關需求觸發它。
-
-若你是在本機測試 UI，但 marketplace 已加入卻仍未顯示，可檢查 `C:\Users\<你的使用者>\.codex\config.toml` 是否包含 marketplace 來源與 plugin 啟用設定：
-
-```toml
-[marketplaces.harness-marketplace]
-source = "https://github.com/yaayaya/harness.git"
-
-[plugins."harness@harness-marketplace"]
-enabled = true
-```
-
-#### 本地開發版測試
-
-如果還沒 push 到 GitHub，可以直接把目前 checkout 當成本地 marketplace：
-
-```powershell
-codex plugin marketplace add D:\_Git\harness
-```
-
-當你修改 `plugins/harness/.codex-plugin/plugin.json`、`.agents/plugins/marketplace.json` 或 `plugins/harness/skills/` 後，移除並重新加入 marketplace，然後重開 Codex Desktop 讓設定重新載入。
-
-#### Codex 觸發方式
-
-在 Codex 中可用這類 prompt 觸發 Harness：
-
-```text
-幫我為這個專案配置 Harness
-設計一組 agent team 和 skills
-檢查現有 Harness 是否同步
-```
-
 ### Claude Code Marketplace 安裝
 
 #### 加入 Marketplace
@@ -174,18 +113,8 @@ cp -r skills/harness ~/.claude/skills/harness
 
 ```
 harness/
-├── .agents/
-│   └── plugins/
-│       └── marketplace.json        # Codex marketplace 設定
 ├── .claude-plugin/
 │   └── plugin.json                 # Claude Code plugin manifest
-├── plugins/
-│   └── harness/
-│       ├── .codex-plugin/
-│       │   └── plugin.json         # Codex plugin manifest
-│       ├── assets/                 # Codex plugin icons and screenshots
-│       └── skills/
-│           └── harness/            # Codex 版 Harness skill
 ├── skills/
 │   └── harness/
 │       ├── SKILL.md                # Claude Code 版 Harness skill
@@ -368,12 +297,12 @@ Harness 並不是 Claude Code / agent framework 生態系中唯一的選項。�
 </details>
 
 <details>
-<summary><b>Q3. Claude Code 與 Codex 要怎麼共存？Gemini 呢？</b></summary>
+<summary><b>Q3. 只有 Claude Code 會不會太受限？Gemini 或 Codex 呢？</b></summary>
 
-**A.** 這個 fork 同時保留 Claude Code 與 Codex，但兩邊使用不同目錄：Claude Code 使用 root 的 `skills/harness/`，Codex 使用 `plugins/harness/skills/harness/`。這樣從 Claude Code marketplace 安裝時會拿到 Claude 版，從 Codex marketplace 安裝時會拿到 Codex 版。Gemini 目前尚未內建獨立 runtime manifest，可透過 `harness-init` 這類跨 runtime 腳手架再延伸。
+**A.** 目前官方 runtime 只有 Claude Code。相同概念的 Codex 移植版 [SaehwanPark/meta-harness](https://github.com/SaehwanPark/meta-harness) 已經公開，Codex 團隊可以從該專案開始。Harness 選擇「深入且原生支援 Claude Code」，而不是「支援多種 runtime 但各自較淺」；未來規劃與 meta-harness、harness-init、OpenRig 等姊妹專案進行跨 runtime 協作。
 
 **證據：**
-- Codex plugin manifest：`plugins/harness/.codex-plugin/plugin.json`
+- Codex 移植版：[github.com/SaehwanPark/meta-harness](https://github.com/SaehwanPark/meta-harness)
 - 跨 runtime 腳手架：[github.com/Gizele1/harness-init](https://github.com/Gizele1/harness-init)
 </details>
 
