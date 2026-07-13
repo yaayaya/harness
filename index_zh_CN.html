@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness — Claude Code 的代理人团队架构工厂</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#091119;
+  --surface:rgba(12,20,30,.78);
+  --surface-strong:#112235;
+  --border:rgba(112,178,219,.18);
+  --text:#eef4fb;
+  --text-dim:#a6b8ca;
+  --accent:#59b7ff;
+  --accent-2:#7ef0c6;
+  --accent-3:#ffd166;
+  --shadow:0 24px 60px rgba(0,0,0,.32);
+  --radius:22px;
+}
+body{
+  font-family:"Segoe UI","Noto Sans TC",sans-serif;
+  line-height:1.7;
+  color:var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(89,183,255,.18), transparent 35%),
+    radial-gradient(circle at top right, rgba(126,240,198,.12), transparent 30%),
+    linear-gradient(160deg, #05080d 0%, #0a1320 55%, #0c1726 100%);
+  min-height:100vh;
+}
+a{color:inherit;text-decoration:none}
+.container{max-width:1180px;margin:0 auto;padding:0 24px}
+.lang-toggle{
+  position:fixed;top:18px;right:18px;z-index:20;display:flex;gap:6px;
+  background:rgba(10,16,24,.86);backdrop-filter:blur(14px);
+  border:1px solid var(--border);border-radius:999px;padding:6px;
+}
+.lang-toggle a{
+  padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700;color:var(--text-dim);
+}
+.lang-toggle a.active,.lang-toggle a:hover{background:rgba(89,183,255,.14);color:var(--text)}
+.hero{padding:110px 0 72px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;
+  background:rgba(89,183,255,.12);border:1px solid rgba(89,183,255,.25);color:#d8eeff;
+  font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+}
+h1{font-size:clamp(2.6rem,6vw,5rem);line-height:1.06;letter-spacing:-.04em;margin:22px 0 18px}
+h1 span{color:var(--accent-2)}
+.lead{font-size:1.1rem;color:var(--text-dim);max-width:720px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;padding:14px 22px;border-radius:14px;
+  font-weight:700;border:1px solid transparent;transition:transform .2s ease,background .2s ease,border-color .2s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#2f8fff);color:#04111f;box-shadow:var(--shadow)}
+.btn-secondary{background:rgba(255,255,255,.03);border-color:var(--border);color:var(--text)}
+.panel{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;box-shadow:var(--shadow);backdrop-filter:blur(14px);
+}
+.hero-card h2{font-size:1.1rem;margin-bottom:8px}
+.hero-card p{color:var(--text-dim);font-size:.95rem}
+.hero-card ul{margin-top:16px;padding-left:18px;color:var(--text-dim)}
+.hero-card li{margin-bottom:8px}
+section{padding:28px 0 64px}
+.section-title{font-size:clamp(1.7rem,3vw,2.8rem);line-height:1.15;letter-spacing:-.03em;margin-bottom:12px}
+.section-desc{color:var(--text-dim);max-width:760px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;
+  box-shadow:var(--shadow);
+}
+.card h3{font-size:1.05rem;margin-bottom:10px}
+.card p{color:var(--text-dim);font-size:.94rem}
+.pill{
+  display:inline-block;padding:5px 10px;border-radius:999px;background:rgba(126,240,198,.12);
+  color:var(--accent-2);font-size:12px;font-weight:700;margin-bottom:12px;
+}
+.workflow{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:28px
+}
+.step{
+  background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px 20px;
+}
+.step strong{display:block;font-size:14px;color:var(--accent-3);margin-bottom:6px}
+.step p{color:var(--text-dim);font-size:.94rem}
+.code{
+  background:#081019;border:1px solid rgba(126,240,198,.12);border-radius:18px;padding:18px 20px;
+  font-family:"Cascadia Code","Consolas",monospace;font-size:.92rem;color:#dff7ff;overflow:auto;
+}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px}
+.footer{
+  padding:28px 0 42px;color:var(--text-dim);font-size:.92rem
+}
+.footer a{color:#d7ebff}
+@media (max-width:920px){
+  .hero-grid,.split,.workflow,.grid-3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="lang-toggle">
+  <a href="index.html#en">EN</a>
+  <a href="index.html#ko">KO</a>
+  <a href="index.html#ja">JA</a>
+  <a href="index_zh_TW.html" class="active">ZH-TW</a>
+</div>
+
+<header class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="badge">Claude Code Plugin</div>
+      <h1>打造真正能协作的<br><span>代理人团队</span></h1>
+      <p class="lead">Harness 是一个 meta-skill。你只要提供领域描述，它就会帮你设计代理人团队、定义专职 agent，并产生这些 agent 会用到的技能。</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="README_ZH_TW.md">阅读繁中 README</a>
+        <a class="btn btn-secondary" href="https://github.com/revfactory/harness" target="_blank" rel="noreferrer">GitHub 原始专案</a>
+      </div>
+    </div>
+    <aside class="panel hero-card">
+      <h2>这个繁中入口版本包含什么？</h2>
+      <p>目前采用低维护成本的「路线 A」：保留原始英文内容为主体，新增繁中入口文件，避免未来同步上游时产生大量冲突。</p>
+      <ul>
+        <li>新增 `README_ZH_TW.md`，作为主要繁中说明入口。</li>
+        <li>新增繁中首页与繁中隐私页。</li>
+        <li>保留原本 `skills/` 与 `references/` 的英文内容，后续可再逐步翻译。</li>
+      </ul>
+    </aside>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="container">
+      <h2 class="section-title">Harness 是做什么的？</h2>
+      <p class="section-desc">它会把「这个专案需要什么样的代理人协作方式」这件事系统化。输入一句领域需求，就能自动产出 `.claude/agents/` 与 `.claude/skills/` 的骨架与流程。</p>
+      <div class="grid-3">
+        <article class="card">
+          <div class="pill">设计</div>
+          <h3>代理人团队设计</h3>
+          <p>内建 6 种团队模式，像是 Pipeline、Fan-out/Fan-in、Producer-Reviewer、Supervisor 等。</p>
+        </article>
+        <article class="card">
+          <div class="pill">生成</div>
+          <h3>技能自动生成</h3>
+          <p>依据你的领域描述，帮每个 agent 产出对应的技能结构与参考文件配置。</p>
+        </article>
+        <article class="card">
+          <div class="pill">验证</div>
+          <h3>验证与迭代</h3>
+          <p>包含验证、dry-run，以及使用 skill 与未使用 skill 的比较思路，方便后续演进。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2 class="section-title">6 阶段工作流</h2>
+      <p class="section-desc">Harness 的主要输出流程分成六个阶段，适合拿来快速建立一套可持续维护的代理人团队结构。</p>
+      <div class="workflow">
+        <div class="step"><strong>第 1 阶段</strong><p>领域分析：先理解专案领域、工作类型与任务边界。</p></div>
+        <div class="step"><strong>第 2 阶段</strong><p>团队架构设计：决定该用 Agent Teams 还是 Subagents，以及采用哪种协作模式。</p></div>
+        <div class="step"><strong>第 3 阶段</strong><p>产生代理人定义：建立 `.claude/agents/` 内的角色定义。</p></div>
+        <div class="step"><strong>第 4 阶段</strong><p>产生技能：建立对应的 `.claude/skills/` 与参考资料。</p></div>
+        <div class="step"><strong>第 5 阶段</strong><p>整合与协调：安排资料传递、审查点与工作流程串接。</p></div>
+        <div class="step"><strong>第 6 阶段</strong><p>验证与测试：验证输出是否可用，并为下一轮演化留下基础。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container split">
+      <div class="panel">
+        <h2 class="section-title">安装方式</h2>
+        <p class="section-desc">如果你已经在使用 Claude Code，可以直接用 Marketplace 安装，或把 skill 目录复制成全域 skill。</p>
+        <div class="code">/plugin marketplace add revfactory/harness
+
+/plugin install harness@harness</div>
+      </div>
+      <div class="panel">
+        <h2 class="section-title">后续同步建议</h2>
+        <p class="section-desc">这份繁中化采取入口文件分离策略，后续若要追原作者更新，建议把上游更新先合到主分支，再视需要同步调整繁中 README。</p>
+        <div class="code">main 追上游
+translation branch 放繁中调整
+README_ZH_TW.md 尽量独立维护</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2 class="section-title">下一步可以怎么做？</h2>
+      <p class="section-desc">如果你觉得这份入口文件够用了，下一阶段就可以开始评估是否要翻译 `skills/harness/SKILL.md` 与 `references/`，那会是功能层面的深度翻译版本。</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="README_ZH_TW.md">前往繁中说明</a>
+        <a class="btn btn-secondary" href="privacy_zh_TW.html">查看繁中隐私页</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p>Harness 繁中入口页由本地化工作流新增，原始专案与授权资讯仍以 <a href="LICENSE">Apache 2.0</a> 与 <a href="https://github.com/revfactory/harness" target="_blank" rel="noreferrer">revfactory/harness</a> 为准。</p>
+  </div>
+</footer>
+</body>
+</html>
