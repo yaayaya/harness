@@ -1,23 +1,23 @@
 <!--
-感謝你送出 PR！請填寫下列區塊，讓 reviewer 可以更快完成審查。
+感谢你送出 PR！请填写下列区块，让 reviewer 可以更快完成审查。
 
-分支命名、commit 慣例與 SLA 請參閱 CONTRIBUTING.md。
+分支命名、commit 惯例与 SLA 请参阅 CONTRIBUTING.md。
 -->
 
 ## Summary
 
-<!-- 2–4 句話：這個 PR 變更了什麼？為什麼現在要做？ -->
+<!-- 2–4 句话：这个 PR 变更了什么？为什么现在要做？ -->
 
 ## Motivation
 
-<!-- 請連結促成這次變更的 issue、RFC 或研究筆記。若沒有，一句簡短理由也可以。 -->
+<!-- 请连结促成这次变更的 issue、RFC 或研究笔记。若没有，一句简短理由也可以。 -->
 
 - Closes #
 - Related to #
 
 ## Scope of change
 
-<!-- 勾選適用項目，其餘保持未勾選。 -->
+<!-- 勾选适用项目，其余保持未勾选。 -->
 
 - [ ] Skill / meta-skill logic
 - [ ] Agent template(s)
@@ -30,7 +30,7 @@
 
 ## Tests
 
-<!-- 你在本地執行了什麼？請貼上輸出或簡述。 -->
+<!-- 你在本地执行了什么？请贴上输出或简述。 -->
 
 - [ ] `npx markdownlint '**/*.md'` passes
 - [ ] Manual repro of the change works as expected
@@ -39,14 +39,14 @@
 
 ## CHANGELOG update
 
-<!-- 所有使用者可見的變更都必須寫進 CHANGELOG.md 的 Unreleased 區塊。 -->
+<!-- 所有使用者可见的变更都必须写进 CHANGELOG.md 的 Unreleased 区块。 -->
 
 - [ ] Yes — added to `CHANGELOG.md`
 - [ ] No — this change is not user-visible (docs-only / internal refactor)
 
 ## SemVer impact
 
-<!-- 請參閱 CONTRIBUTING.md § Commit Message Convention。請選一項。 -->
+<!-- 请参阅 CONTRIBUTING.md § Commit Message Convention。请选一项。 -->
 
 - [ ] **Patch** — bug fix, no API change (`fix:`)
 - [ ] **Minor** — additive, backward-compatible (`feat:`)
@@ -55,4 +55,4 @@
 
 ## Additional notes
 
-<!-- 截圖、遷移說明、後續工作，或希望 reviewer 特別留意的部分。 -->
+<!-- 截图、迁移说明、后续工作，或希望 reviewer 特别留意的部分。 -->

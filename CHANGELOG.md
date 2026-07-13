@@ -1,104 +1,90 @@
-# Changelog
+# 變更紀錄
 
-이 프로젝트는 [Semantic Versioning](https://semver.org/)을 따릅니다.
-
-## [Unreleased]
-
-### Added
-- 신규 에이전트/스킬 생성 전 중복 검토 단계 (Phase 3-0, Phase 4-0)
-- `references/agent-design-patterns.md` "에이전트 재사용 설계" 섹션
-- `references/skill-writing-guide.md` §9 "스킬 재사용 설계"
-
-### Changed
-- Phase 선택 매트릭스에 3-0/4-0 명시
-- Phase 2-3에 재사용 검토 단계 포인터 추가
-- 산출물 체크리스트에 재사용 검토 항목 2개 추가
-
----
+本專案遵循 [Semantic Versioning](https://semver.org/)。
 
 ## [1.2.1] - 2026-04-18
 
-### Fixed
+### 修正
 
-- **버전 정합성 동기화** — README.md / README_KO.md / README_JA.md 뱃지가 `v1.0.1`, `.claude-plugin/marketplace.json`이 `1.1.0`, `.claude-plugin/plugin.json`이 `1.2.0`으로 3중 불일치 → 모두 **v1.2.0**으로 통일 (plugin.json 기준)
-- **태그드 릴리스 0건 상태 해소 준비** — v1.0.0 / v1.0.1 / v1.1.0 / v1.2.0 소급 태그 계획 작성 (`_workspace/release/audit-2026-04-18.md` §4 참조)
+- **版本一致性同步** — `README.md` / `README_KO.md` / `README_JA.md` 的 badge 顯示 `v1.0.1`、`.claude-plugin/marketplace.json` 為 `1.1.0`、`.claude-plugin/plugin.json` 為 `1.2.0`，原本共有三處版本不一致；現已全部統一為 **v1.2.0**（以 `plugin.json` 為準）
+- **為解決「尚無 tagged release」狀態預作準備** — 制定 `v1.0.0` / `v1.0.1` / `v1.1.0` / `v1.2.0` 的補標籤計畫（請參考 `_workspace/release/audit-2026-04-18.md` 第 4 節）
 
-### Added
+### 新增
 
-- **포지셔닝 선언: "harness factory"** — README 상단에 카테고리 자기 규정 문구를 도입. "에이전트 + 스킬을 도메인별로 찍어내는 하네스 팩토리"로 카테고리 선점 (단일 에이전트/프롬프트 프레임워크 대비 차별화)
-- **CONTRIBUTING.md** — 기여 가이드 및 SLA 명시 (PR 1차 응답 72h, Issue triage 48h). 커뮤니티 온보딩 장벽 해소
-- **docs/ 디렉토리** — 장기 문서(아키텍처, 마이그레이션, 패턴 카탈로그) 이전 공간 신설. README 비대화 방지 및 검색성 향상
-- **Issue #3 응답 정책** — 커뮤니티 이슈에 대한 공식 응답 템플릿 및 트리아지 프로세스 추가
+- **定位宣告："harness factory"** — 在 README 頂部加入類別自我定義文字，強調這是一個「能依領域產出 agent 與 skill 的 harness factory」，以便與單一 agent / prompt framework 做出區隔
+- **`CONTRIBUTING.md`** — 新增貢獻指南與 SLA，明確標示 PR 首次回應 72 小時內、Issue triage 48 小時內，降低社群參與門檻
+- **`docs/` 目錄** — 新增長篇文件的放置空間，用於後續存放架構、遷移與模式目錄，避免 README 過度膨脹並提升可搜尋性
+- **Issue #3 回應政策** — 新增社群議題的正式回應範本與 triage 流程
 
-### Changed
+### 變更
 
-- `.claude-plugin/marketplace.json` version: `1.1.0` → `1.2.0`
-- README 뱃지 (EN/KO/JA 3종): `Version-1.0.1` → `Version-1.2.0`
-- **`.claude-plugin/plugin.json` description 재작성** — `"Agent Team & Skill Architect — Meta-skill that designs..."` → `"The team-architecture factory for Claude Code — a meta-skill that turns a domain description into an agent team and the skills they use, with six pre-defined team-architecture patterns..."` (EN+KO 병기, L3 Meta-Factory 포지셔닝 반영)
-- **`.claude-plugin/plugin.json` keywords 확장** — 5개 → 17개 (`harness-factory`, `team-architecture-factory`, `claude-code-plugin`, `agent-scaffolding`, `multi-agent`, 6패턴 키워드 6종 추가)
+- `.claude-plugin/marketplace.json` 版本：`1.1.0` → `1.2.0`
+- README badge（EN/KO/JA 三個版本）：`Version-1.0.1` → `Version-1.2.0`
+- **重寫 `.claude-plugin/plugin.json` 的 description** — 從 `"Agent Team & Skill Architect — Meta-skill that designs..."` 改為 `"The team-architecture factory for Claude Code — a meta-skill that turns a domain description into an agent team and the skills they use, with six pre-defined team-architecture patterns..."`（英韓並列，反映 L3 Meta-Factory 定位）
+- **擴充 `.claude-plugin/plugin.json` 的 keywords** — 從 5 個增加到 17 個，新增 `harness-factory`、`team-architecture-factory`、`claude-code-plugin`、`agent-scaffolding`、`multi-agent` 以及 6 種模式相關關鍵字
 
 ## [1.2.0] - 2026-04-08
 
-### Changed
+### 變更
 
-- **CLAUDE.md 등록 정책 간소화 (중복 제거)** — Phase 5-4 "컨텍스트 등록"을 "포인터 등록"으로 전환. 에이전트 목록·스킬 목록·디렉토리 구조·실행 규칙 상세를 CLAUDE.md에서 제거하고 **트리거 규칙 + 변경 이력**만 남김. 에이전트/스킬 목록은 `.claude/agents/`, `.claude/skills/` 및 오케스트레이터 스킬에서 단일 출처로 관리
-- **Phase 3/4 임시 동기화 단계 삭제** — CLAUDE.md 동기화 부담을 줄이기 위해 Phase 3/4의 임시 동기화 지시 제거. 최종 포인터 등록은 Phase 5-4에서 1회만 수행
-- **핵심 원칙 3번 재정의** — "CLAUDE.md에 하네스 컨텍스트를 등록한다" → "CLAUDE.md에 하네스 포인터를 등록한다"
-- **CLAUDE.md vs 오케스트레이터 역할 분담표 삭제** — 포인터 정책으로 단순화되어 표 자체가 불필요해짐
+- **簡化 `CLAUDE.md` 註冊政策（去除重複）** — 將 Phase 5-4 的「上下文註冊」改為「指標註冊」，從 `CLAUDE.md` 中移除 agent 清單、skill 清單、目錄結構與執行規則細節，只保留 **觸發規則與變更歷史**。agent / skill 清單改由 `.claude/agents/`、`.claude/skills/` 與 orchestrator skill 作為單一來源
+- **移除 Phase 3/4 的臨時同步步驟** — 為減少 `CLAUDE.md` 的同步負擔，刪除 Phase 3/4 中的臨時同步指示，最終的指標註冊僅在 Phase 5-4 進行一次
+- **重新定義第 3 條核心原則** — 從「在 `CLAUDE.md` 註冊 harness 上下文」改為「在 `CLAUDE.md` 註冊 harness 指標」
+- **刪除 `CLAUDE.md` 與 orchestrator 的角色分工表** — 由於指標政策已簡化，該表不再必要
 
-### Added
+### 新增
 
-- **Phase 2-1: 하이브리드 실행 모드** — 에이전트 팀 / 서브 에이전트에 더해 Phase별로 모드를 섞는 하이브리드 패턴 추가. 자주 쓰이는 조합(병렬 수집→합의 통합, 팀 생성→검증, Phase 간 팀 재구성) 명시
-- **Phase 2-1 실행 모드 비교표** — 팀/서브/하이브리드 3종 특성 및 의사결정 순서 3단계 제공
-- **Phase 5-0 하이브리드 오케스트레이터 패턴** — 하이브리드 구성 시 각 Phase 상단에 실행 모드를 명시하는 규칙
-- **Phase 5-1 반환값 기반 데이터 전달** — 서브 에이전트 모드 전용 데이터 전달 전략 추가 (기존 메시지/태스크/파일 + 반환값)
-- **Phase 5-1 권장 조합 (서브/하이브리드)** — 팀 모드 외 서브 모드와 하이브리드에서의 데이터 전달 권장 조합 명시
+- **Phase 2-1：混合執行模式** — 除了 Agent Teams / Subagents 外，新增可按階段混用模式的 hybrid pattern，並明示常見組合（平行蒐集 → 共識整合、先建團隊 → 再驗證、各 Phase 重組團隊）
+- **Phase 2-1 執行模式比較表** — 提供 Team / Subagent / Hybrid 三者特性與三步驟決策順序
+- **Phase 5-0 混合式 orchestrator pattern** — 規定在 hybrid 配置下，需於各 Phase 開頭標示執行模式
+- **Phase 5-1 基於回傳值的資料傳遞** — 為 Subagent 模式新增回傳值導向的資料傳遞策略（在原有訊息 / task / 檔案傳遞之外）
+- **Phase 5-1 建議組合（Subagent / Hybrid）** — 明列非 Team 模式下的資料傳遞建議組合
 
 ## [1.1.0] - 2026-04-05
 
-### Added
+### 新增
 
-- **Phase 0: 현황 감사** — 트리거 시 기존 하네스 상태를 먼저 확인하고 신규 구축/기존 확장/운영·유지보수 3분기로 라우팅
-- **기존 확장 Phase 선택 매트릭스** — 에이전트 추가/스킬 추가/아키텍처 변경별 필요 Phase를 명시한 결정표
-- **Phase 3/4 CLAUDE.md 임시 동기화** — 에이전트·스킬 생성 직후 CLAUDE.md에 즉시 반영 (세션 중단 내성)
-- **Phase 5-4: CLAUDE.md 하네스 컨텍스트 등록** — 에이전트 팀 구조·스킬 목록·실행 규칙·디렉토리 구조·변경 이력을 기록. CLAUDE.md vs 오케스트레이터 역할 분담표 포함
-- **Phase 5-5: 후속 작업 지원** — 오케스트레이터 description에 후속 키워드 필수 포함, Phase 0 컨텍스트 확인 단계로 초기/부분재실행/새실행 자동 판별
-- **Phase 5 오케스트레이터 수정 경로** — 기존 확장 시 오케스트레이터를 새로 만들지 않고 수정하는 가이드
-- **Phase 7: 하네스 진화 메커니즘** — 실행 후 피드백 수집 → 피드백 유형별 수정 대상 매핑 → 변경 이력 기록 → 자동 진화 트리거
-- **Phase 7-5: 운영/유지보수 워크플로우** — 현황 감사→점진적 수정→CLAUDE.md 동기화→변경 검증 4단계
-- **description에 운영/유지보수 트리거** — '하네스 점검', '하네스 감사', '하네스 현황', '에이전트/스킬 동기화' 키워드
-- **산출물 체크리스트 강화** — CLAUDE.md 동기화 완료, 변경 이력 기록, Phase 0 컨텍스트 확인 항목 추가
-- 오케스트레이터 템플릿에 Phase 0 (컨텍스트 확인) 추가 — 에이전트 팀/서브 에이전트 모드 모두 적용
-- 오케스트레이터 description 템플릿에 후속 작업 키워드 패턴 포함
+- **Phase 0：現況稽核** — 觸發時先檢查現有 harness 狀態，再分流到新建、既有擴充或營運維護三種情境
+- **既有擴充的 Phase 選擇矩陣** — 依 agent 新增、skill 新增、架構變更，提供所需 Phase 的決策表
+- **Phase 3/4 `CLAUDE.md` 臨時同步** — 在 agent / skill 生成後立即寫回 `CLAUDE.md`，提升中斷恢復能力
+- **Phase 5-4：於 `CLAUDE.md` 註冊 harness 上下文** — 記錄 agent team 結構、skill 清單、執行規則、目錄結構與變更歷史，並包含 `CLAUDE.md` 與 orchestrator 的角色分工表
+- **Phase 5-5：支援後續工作** — 要求 orchestrator description 必須包含後續工作關鍵字，並透過 Phase 0 判別初次執行、局部重跑與新一輪執行
+- **Phase 5 orchestrator 修改路徑** — 在既有擴充情境下，提供修改既有 orchestrator 而非重建的指南
+- **Phase 7：Harness 演化機制** — 透過執行後回饋蒐集 → 根據回饋類型對應修改對象 → 記錄變更歷史 → 自動觸發演化
+- **Phase 7-5：營運 / 維護工作流** — 提供現況稽核 → 漸進式修正 → `CLAUDE.md` 同步 → 變更驗證的四步流程
+- **description 中新增營運 / 維護觸發詞** — 例如「harness 點檢」、「harness 稽核」、「harness 現況」、「agent/skill 同步」
+- **加強產出檢查清單** — 新增 `CLAUDE.md` 同步完成、變更歷史記錄與 Phase 0 上下文確認項目
+- 在 orchestrator 範本中加入 Phase 0（上下文確認）— 適用於 Agent Teams 與 Subagent 兩種模式
+- 在 orchestrator description 範本中加入後續工作關鍵字規則
 
-### Changed
+### 變更
 
-- 핵심 원칙 2개 → 4개로 확장 (CLAUDE.md 등록, 진화 시스템 추가)
-- **"진화 로그" → "변경 이력" 통일** — 이름과 스키마(4컬럼: 날짜/변경내용/대상/사유)를 전 섹션에서 일원화
-- **Phase 1 Step 3** — Phase 0 감사 결과를 기반으로 충돌 분석하도록 변경 (중복 제거)
-- **5-4 CLAUDE.md 템플릿 코드 블록** — 중첩 렌더링 깨짐 수정 (3백틱→4백틱)
-- **역할 분담표 확장** — 스킬 목록, 디렉토리 구조, 변경 이력 행 추가
-- **오케스트레이터 템플릿** — Phase 0 컨텍스트 확인 단계, 후속 작업 키워드 가이드 추가
+- 核心原則從 2 條擴充為 4 條（加入 `CLAUDE.md` 註冊與演化系統）
+- **統一將「evolution log」改稱「變更歷史」** — 名稱與格式（4 欄：日期 / 變更內容 / 對象 / 原因）在所有章節一致
+- **Phase 1 Step 3** — 改為依據 Phase 0 的稽核結果進行衝突分析，以避免重複工作
+- **5-4 `CLAUDE.md` 範本程式區塊** — 修正巢狀渲染錯誤（3 個反引號 → 4 個反引號）
+- **擴充角色分工表** — 新增 skill 清單、目錄結構與變更歷史列
+- **orchestrator 範本** — 新增 Phase 0 上下文確認與後續工作關鍵字指南
 
 ## [1.0.1] - 2026-03-28
 
-### Changed
+### 變更
 
-- SKILL.md ↔ references 간 중복 내용 제거 (330줄 → 285줄)
-  - Phase 2-1: 실행 모드 비교표/불릿 → 핵심 원칙 + agent-design-patterns.md 포인터
-  - Phase 2-3: 에이전트 분리 기준 불릿 → 4축 요약 + agent-design-patterns.md 포인터
-  - Phase 3: 에이전트 정의 템플릿 코드블록 → 필수 섹션 나열 + references 포인터
-  - Phase 5-2: 에러 핸들링 5행 테이블 → 핵심 원칙 + orchestrator-template.md 포인터
+- 移除 `SKILL.md` 與 `references/` 之間的重複內容（330 行 → 285 行）
+  - Phase 2-1：將執行模式比較表 / 條列改為核心原則 + `agent-design-patterns.md` 指標
+  - Phase 2-3：將 agent 拆分標準條列改為 4 軸摘要 + `agent-design-patterns.md` 指標
+  - Phase 3：將 agent 定義範本程式碼區塊改為必要章節清單 + `references/` 指標
+  - Phase 5-2：將錯誤處理 5 列表格改為核心原則 + `orchestrator-template.md` 指標
 
 ## [1.0.0] - 2026-03-27
 
-### Added
+### 新增
 
-- 6 Phase 워크플로우 기반 하네스 구성 메타 스킬
-- 6가지 에이전트 아키텍처 패턴 (파이프라인, 팬아웃/팬인, 전문가 풀, 생성-검증, 감독자, 계층적 위임)
-- 에이전트 팀 / 서브 에이전트 실행 모드 지원
-- Progressive Disclosure 기반 스킬 생성 가이드
-- 오케스트레이터 템플릿 (에이전트 팀 모드 + 서브 에이전트 모드)
-- QA 에이전트 통합 가이드 (실제 프로젝트 7개 버그 사례 기반)
-- 스킬 테스트/평가 방법론 (With-skill vs Without-skill 비교)
-- 실전 팀 구성 예시 5종 (리서치, 소설, 웹툰, 코드리뷰, 마이그레이션)
+- 基於 6 個 Phase 工作流的 harness 建構 meta-skill
+- 6 種 agent 架構模式（Pipeline、Fan-out/Fan-in、Expert Pool、Producer-Reviewer、Supervisor、Hierarchical Delegation）
+- 支援 Agent Teams / Subagents 執行模式
+- 基於 Progressive Disclosure 的 skill 生成指南
+- orchestrator 範本（Agent Teams 模式 + Subagent 模式）
+- QA agent 整合指南（根據 7 個真實專案 bug 案例）
+- skill 測試 / 評估方法（With-skill 與 Without-skill 比較）
+- 5 組實戰團隊配置範例（研究、小說、Webtoon、程式碼審查、遷移）

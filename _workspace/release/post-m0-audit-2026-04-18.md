@@ -1,215 +1,218 @@
 # Post-M0 Audit — 2026-04-18
 
-**담당:** repo-auditor 에이전트
-**대상 저장소:** `/Users/robin/IdeaProjects/harness`
-**상위 작업:** release-engineer / content-creator / launch-strategist / community-scout 4개 에이전트의 M0 Quick Wins 병렬 적용 결과 통합 검증
-**검증 방식:** 읽기만 (Edit/Write 금지). `git diff`·`git status`·파일별 Read로 정합성·충돌·섹션 유실 판정.
+**負責人:** repo-auditor agent  
+**目標儲存庫:** `/Users/robin/IdeaProjects/harness`  
+**上層任務:** 整合驗證 release-engineer / content-creator / launch-strategist / community-scout 4 個 agent 並行套用 M0 Quick Wins 的結果  
+**驗證方式:** 唯讀（禁止 Edit/Write）。以 `git diff`、`git status`、逐檔 Read 判定一致性、衝突與區段遺失情況。
 
 ---
 
-## 1. 검증 결과 (PASS/FAIL 매트릭스)
+## 1. 驗證結果（PASS/FAIL 矩陣）
 
-### A. 버전 정합성 (release-engineer)
+### A. 版本一致性（release-engineer）
 
-| 영역 | 검증 항목 | 결과 | 비고 |
+| 區域 | 驗證項目 | 結果 | 備註 |
 |------|-----------|------|------|
-| A-1 | `README.md:6` 뱃지 `Version-1.2.0` | **PASS** | `brightgreen` 유지, 원본 `1.0.1` → 변경 확인 |
-| A-2 | `README_KO.md:6` 뱃지 `Version-1.2.0` | **PASS** | 동일 문자열 일관 |
-| A-3 | `README_JA.md:6` 뱃지 `Version-1.2.0` | **PASS** | 동일 문자열 일관 |
-| A-4 | `.claude-plugin/marketplace.json:14` `"version": "1.2.0"` | **PASS** | 원본 `1.1.0` → `1.2.0` |
-| A-5 | `.claude-plugin/plugin.json:4` `"version": "1.2.0"` 유지 | **PASS (수치)** / **FAIL (정책)** | version 필드는 `1.2.0` 그대로이나 `description`·`keywords`가 변경됨 — §4 충돌 감사 참조 |
-| A-6 | `CHANGELOG.md` [1.2.1] 엔트리 | **PASS** | `[1.2.1] - 2026-04-18` 섹션이 최상단에 존재, Fixed/Added/Changed 3블록 |
-| A-7 | `_workspace/release/audit-2026-04-18.md` 존재 | **PASS** | 228줄, 5섹션 + 2부록 완비 |
+| A-1 | `README.md:6` badge `Version-1.2.0` | **PASS** | 維持 `brightgreen`，已確認從原本 `1.0.1` 改動 |
+| A-2 | `README_KO.md:6` badge `Version-1.2.0` | **PASS** | 字串一致 |
+| A-3 | `README_JA.md:6` badge `Version-1.2.0` | **PASS** | 字串一致 |
+| A-4 | `.claude-plugin/marketplace.json:14` `"version": "1.2.0"` | **PASS** | 原本 `1.1.0` → `1.2.0` |
+| A-5 | `.claude-plugin/plugin.json:4` 維持 `"version": "1.2.0"` | **PASS（數值）** / **FAIL（政策）** | version 欄位雖仍是 `1.2.0`，但 `description` 與 `keywords` 已被修改 — 參見 §4 衝突審查 |
+| A-6 | `CHANGELOG.md` 的 [1.2.1] 條目 | **PASS** | 最上方存在 `[1.2.1] - 2026-04-18` 區段，含 Fixed/Added/Changed 3 個區塊 |
+| A-7 | `_workspace/release/audit-2026-04-18.md` 存在 | **PASS** | 228 行，完整包含 5 個區段 + 2 個附錄 |
 
-### B. README "harness factory" 포지셔닝 (content-creator)
+### B. README 的 "harness factory" 定位（content-creator）
 
-| 영역 | 검증 항목 | EN | KO | JA | 비고 |
+| 區域 | 驗證項目 | EN | KO | JA | 備註 |
 |------|-----------|----|----|----|------|
-| B-1 | H1 `Harness — The Team-Architecture Factory for Claude Code` (언어별 번역) | **PASS** | **PASS** | **PASS** | EN(L20), KO(L20 "팀 아키텍처 팩토리"), JA(L20 "チームアーキテクチャファクトリー") |
-| B-2 | H1 아래 callout 문단 (3언어 트리거 병기) | **PASS** | **PASS** | **PASS** | EN(L24), KO(L24), JA(L24) — 모두 영/한/일 3종 트리거 구문 병기 |
-| B-3 | 뱃지 3종(Layer / Sub-layer / i18n) | **PASS** | **PASS** | **PASS** | EN(L14–18), KO(L14–18), JA(L14–18) — 3개 모두 해당 언어 앵커로 링크 |
-| B-4 | "Category — Where Harness Sits" 4행 표 | **PASS** | **PASS** | **PASS** | EN(L30–39 + L41 풋노트), KO(L30–41), JA(L30–41) — 4행 표 + Archon vs. Harness 요약문 |
-| B-5 | "Harness Evolution Mechanism" 섹션 | **PASS** | **PASS** | **PASS** | EN(L61–74), KO(L50–63), JA(L50–63) — 델타 포착 ASCII 도식 포함 |
-| B-6 | "+60%" 방어 카드 공식 문구 (n=15, author-measured, third-party replications pending) | **PASS** | **PASS** | **PASS** | EN(L273), KO(L255), JA(L262) — 3개 언어 모두 동일 문구 보유. FAQ Q1(EN:L286 / KO:L268 / JA:L275)에서도 재확인 |
-| B-7 | "Coexistence" 5행 표 | **PASS** | **PASS** | **PASS** | EN(L247–253), KO(L229–235), JA(L236–242) — 5행(Archon·meta-harness·ECC·wshobson·LangGraph) |
-| B-8 | "FAQ" 섹션 (Q1~Q3 details) | **PASS** | **PASS** | **PASS** | 3개 모두 `<details>` 3개(+60% / harness factory / Claude Code only) |
+| B-1 | H1 `Harness — The Team-Architecture Factory for Claude Code`（各語言翻譯） | **PASS** | **PASS** | **PASS** | EN(L20)、KO(L20「團隊架構工廠」）、JA(L20「團隊架構工廠」) |
+| B-2 | H1 下方 callout 段落（3 語觸發語並列） | **PASS** | **PASS** | **PASS** | EN(L24)、KO(L24)、JA(L24) — 全部都並列英/韓/日 3 種 trigger 語句 |
+| B-3 | 3 種 badge（Layer / Sub-layer / i18n） | **PASS** | **PASS** | **PASS** | EN(L14–18)、KO(L14–18)、JA(L14–18) — 3 個 badge 都連到各自語言的 anchor |
+| B-4 | "Category — Where Harness Sits" 4 列表格 | **PASS** | **PASS** | **PASS** | EN(L30–39 + L41 footnote)、KO(L30–41)、JA(L30–41) — 4 列表格 + Archon vs. Harness 摘要句 |
+| B-5 | "Harness Evolution Mechanism" 區段 | **PASS** | **PASS** | **PASS** | EN(L61–74)、KO(L50–63)、JA(L50–63) — 含 delta capture ASCII 圖 |
+| B-6 | "+60%" 防禦卡正式文案（n=15, author-measured, third-party replications pending） | **PASS** | **PASS** | **PASS** | EN(L273)、KO(L255)、JA(L262) — 三語都保有相同文案。FAQ Q1（EN:L286 / KO:L268 / JA:L275）也再次確認 |
+| B-7 | "Coexistence" 5 列表格 | **PASS** | **PASS** | **PASS** | EN(L247–253)、KO(L229–235)、JA(L236–242) — 5 列（Archon、meta-harness、ECC、wshobson、LangGraph） |
+| B-8 | "FAQ" 區段（Q1~Q3 details） | **PASS** | **PASS** | **PASS** | 三份都有 `<details>` 3 組（+60% / harness factory / Claude Code only） |
 
-### C. docs/ 디렉토리 (launch-strategist)
+### C. `docs/` 目錄（launch-strategist）
 
-| 영역 | 검증 항목 | 결과 | 비고 |
+| 區域 | 驗證項目 | 結果 | 備註 |
 |------|-----------|------|------|
-| C-1 | `docs/experimental-dependency.md` (~150줄) | **PASS** | 154줄. Current State / Dependency Graph / 3 Scenarios (A·B·C T+24/48/72h) / Monitoring SLA 표 / Enterprise FAQ Q1–Q3 모두 포함 |
-| C-2 | `docs/quickstart.md` (~120줄, 5단계·실패 FAQ 5건) | **PASS** | 118줄. Step 1–5 + 각 단계에 Failure FAQ #1–#5 배치. 5분 시간 예산 상단 고지 |
-| C-3 | `docs/show-hn-launch-kit.md` (~220줄, 2026-05-06 07:05 PT) | **PASS** | 224줄. 스케줄 표에 `2026-05-06 Wed 07:05 PT` 명시. Title A/B/C · 380단어 Body · T-72h~T+72h 타임라인 · Post-launch 분기 · 5%-oversold 대응 · Crossposting Rules 모두 존재 |
+| C-1 | `docs/experimental-dependency.md`（約 150 行） | **PASS** | 共 154 行。包含 Current State / Dependency Graph / 3 Scenarios（A·B·C T+24/48/72h）/ Monitoring SLA 表 / Enterprise FAQ Q1–Q3 |
+| C-2 | `docs/quickstart.md`（約 120 行，5 步驟·5 個 Failure FAQ） | **PASS** | 共 118 行。包含 Step 1–5 + 每一步對應的 Failure FAQ #1–#5。頂部標明 5 分鐘時間預算 |
+| C-3 | `docs/show-hn-launch-kit.md`（約 220 行，2026-05-06 07:05 PT） | **PASS** | 共 224 行。排程表明列 `2026-05-06 Wed 07:05 PT`。包含 Title A/B/C、380 字 Body、T-72h~T+72h timeline、Post-launch 分支、5%-oversold 回應、Crossposting Rules |
 
-### D. 거버넌스 (community-scout)
+### D. 治理（community-scout）
 
-| 영역 | 검증 항목 | 결과 | 비고 |
+| 區域 | 驗證項目 | 結果 | 備註 |
 |------|-----------|------|------|
-| D-1 | `CONTRIBUTING.md` SLA 5항목 숫자 공표 | **PASS** | PR 1차 응답 72h / Issue triage 48h / Bug P0–P1 14d / Security 7d / Release 2w — 5항목 모두 표에 수치 공개 |
-| D-2 | `.github/ISSUE_TEMPLATE/bug_report.yml` | **PASS** | claude-code-version · experimental-flag dropdown · 재현·기대·실제·OS dropdown 필수 필드 구성 |
-| D-3 | `.github/ISSUE_TEMPLATE/feature_request.yml` | **PASS** | problem / proposal / alternatives / related-pattern dropdown(6패턴+N) 구조 |
-| D-4 | `.github/ISSUE_TEMPLATE/question.yml` | **PASS** | question / tried / docs 3필드 |
-| D-5 | `.github/ISSUE_TEMPLATE/config.yml` | **PASS** | `blank_issues_enabled: false` + Discussions 링크 + 보안 mailto |
-| D-6 | `.github/PULL_REQUEST_TEMPLATE.md` | **PASS** | Summary/Motivation/Scope 체크박스 8종/Tests/CHANGELOG/SemVer 4지선 |
-| D-7 | `_workspace/community/issue-3-reply.md` (영문) | **PASS** | Gemini PoC 로드맵 P-01, SaehwanPark/meta-harness 언급, Gizele1/harness-init·OpenRig 대안 포함 |
-| D-8 | `_workspace/community/issue-2-reply.md` (영문) | **PASS** | hesreallyhim 직접 인용("really good stuff ... Nice job."), 뱃지 추가 + "Harness Factories" 카테고리 제안 |
+| D-1 | `CONTRIBUTING.md` 公開 5 項 SLA 數值 | **PASS** | PR 初次回應 72h / Issue triage 48h / Bug P0–P1 14d / Security 7d / Release 2w — 5 項數值皆已公開於表格 |
+| D-2 | `.github/ISSUE_TEMPLATE/bug_report.yml` | **PASS** | 具備 claude-code-version、experimental-flag dropdown、重現步驟、預期結果、實際結果、OS dropdown 等必填欄位 |
+| D-3 | `.github/ISSUE_TEMPLATE/feature_request.yml` | **PASS** | 具備 problem / proposal / alternatives / related-pattern dropdown（6 種 pattern + N）結構 |
+| D-4 | `.github/ISSUE_TEMPLATE/question.yml` | **PASS** | 具備 question / tried / docs 3 個欄位 |
+| D-5 | `.github/ISSUE_TEMPLATE/config.yml` | **PASS** | `blank_issues_enabled: false` + Discussions 連結 + security mailto |
+| D-6 | `.github/PULL_REQUEST_TEMPLATE.md` | **PASS** | Summary/Motivation/Scope 8 種 checkbox/Tests/CHANGELOG/SemVer 4 選 1 |
+| D-7 | `_workspace/community/issue-3-reply.md`（英文） | **PASS** | 提及 Gemini PoC roadmap P-01、SaehwanPark/meta-harness、Gizele1/harness-init、OpenRig 作為替代方案 |
+| D-8 | `_workspace/community/issue-2-reply.md`（英文） | **PASS** | 直接引用 hesreallyhim（"really good stuff ... Nice job."），並提到新增 badge + "Harness Factories" 分類提案 |
 
 ---
 
-## 2. 발견된 문제
+## 2. 發現的問題
 
-| # | 심각도 | 위치 | 문제 | 권장 조치 |
+| # | 嚴重度 | 位置 | 問題 | 建議處置 |
 |---|--------|------|------|----------|
-| **1** | **Critical** | `.claude-plugin/plugin.json:3, 12–28` | **`plugin.json`은 "건드리지 말았어야 함"으로 지시되었으나 `description` 전면 재작성 + `keywords` 7개 추가되었다.** release-engineer 감사 문서(`audit-2026-04-18.md:89–91`)는 "plugin.json은 건드리지 않음"이라 선언했으나 실제 `git diff`는 해당 파일이 변경되었음을 보여준다. 이는 **content-creator가 포지셔닝 통일을 위해 무단 편집**한 충돌 흔적으로 판단됨. | 2가지 길 중 택1: (a) **수용**: CHANGELOG 1.2.1 Changed 블록에 "plugin.json description·keywords를 포지셔닝 선언과 정렬"을 **명시적으로 추가**하고 release-engineer audit §3.3의 "건드리지 않음" 서술을 "description·keywords는 content-creator 조정으로 변경, version은 유지"로 정정. (b) **복구**: `git restore .claude-plugin/plugin.json`으로 원상 복귀 후 별도 PR로 분리. — 현재 상태로 커밋하면 "감사 문서와 실제 상태가 모순"되는 위생 문제가 남는다. |
-| **2** | Minor | `README.md:42` vs `README_KO.md`/`README_JA.md` | EN README에는 `## Star History` 섹션이 보존(L43–51)되어 있으나 KO/JA에는 해당 섹션이 **없음**. 원본 HEAD에서도 KO/JA에는 없었으므로 **삭제는 아님** — 다만 "3개 언어 파일의 대칭성"이라는 관점에서는 불일치. | 이번 릴리스에서는 **허용**(원본 유지). 차기 PR에서 KO/JA에도 Star History 섹션을 동일 위치(Category 섹션 직후)에 보강하는 `docs/i18n-parity` 이슈를 열 것을 권장. |
-| **3** | Minor | `README.md:15–17` / `README_KO.md:15–17` / `README_JA.md:15–17` | `Layer` 뱃지의 앵커가 각 언어별로 다름 (EN: `#category--where-harness-sits`, KO: `#카테고리--harness는-어디에-서-있나요`, JA: `#カテゴリー--harness-はどこに位置するか`). 각 언어별 GitHub 자동 생성 anchor와 일치해야 하나, GitHub의 한글·일문 anchor 규칙은 `공백→하이픈 + 소문자화 + 일부 특수문자 제거`. **KO의 `카테고리--harness는-어디에-서-있나요`는 `—(em dash)`가 `--`로 렌더될 가능성이 낮음** (통상 `—`는 제거되거나 단일 `-`로 치환). 검증 필요. | 커밋 전 GitHub Preview나 로컬 grip으로 렌더 검증 권장. 깨질 경우 앵커를 `#카테고리-harness는-어디에-서-있나요` (em dash 삭제) 혹은 `<a name="">` 명시적 앵커로 교체. JA도 동일 주의. |
-| **4** | Info | `_workspace/release/audit-2026-04-18.md:156` | §4.4에 `git push origin v1.0.0 v1.0.1 v1.1.0 v1.2.0` 실행 대기 항목이 있으나, 이번 M0 실적에는 태그 생성·push가 포함되지 않음 — 이는 **의도된 승인 대기 상태**로 문제 아님. 단, 다음 Phase 진입 전 태그 4건 처리 여부 결정 필요. | 태그 4건 + GitHub Release 초안은 M1 시작 전에 별도 실행. 본 M0 감사 범위 밖. |
-| **5** | Info | `docs/experimental-dependency.md:65` | Scenario A의 "Nightly CI가 P-13에서 탐지" 링크가 `[P-13](#)` — placeholder 링크. 실제 로드맵·이슈 번호 미지정. | 로드맵 P-13 이슈를 실제로 오픈한 뒤 `#숫자`로 치환. launch-strategist 후속 작업. |
+| **1** | **Critical** | `.claude-plugin/plugin.json:3, 12–28` | **原先已明確指示 `plugin.json`「不該被修改」，但實際上 `description` 被全面重寫，且新增了 7 個 `keywords`。** release-engineer 的稽核文件（`audit-2026-04-18.md:89–91`）宣稱「plugin.json 未修改」，但實際 `git diff` 顯示該檔已被變更。判斷這是 **content-creator 為了統一定位而未經授權編輯** 所留下的衝突痕跡。 | 二選一：(a) **接受**：在 `CHANGELOG` 1.2.1 的 Changed 區塊中**明確新增**「plugin.json description·keywords 已與定位宣言對齊」，並把 release-engineer audit §3.3 的「未修改」敘述修正為「description·keywords 由 content-creator 調整，version 維持不變」。 (b) **還原**：以 `git restore .claude-plugin/plugin.json` 回復原狀，另開 PR 處理。— 若直接在目前狀態提交，會留下「稽核文件與實際狀態矛盾」的衛生問題。 |
+| **2** | Minor | `README.md:42` vs `README_KO.md` / `README_JA.md` | EN README 保留了 `## Star History` 區段（L43–51），但 KO/JA **沒有**該區段。這在原始 HEAD 中也是如此，因此**不是被刪除**；但若以「三語檔案對稱性」來看，仍存在不一致。 | 這次 release 可**接受**（維持原狀）。建議下一個 PR 開立 `docs/i18n-parity` issue，在 KO/JA 也於相同位置（Category 區段後）補上 Star History。 |
+| **3** | Minor | `README.md:15–17` / `README_KO.md:15–17` / `README_JA.md:15–17` | `Layer` badge 在各語言使用不同 anchor（EN: `#category--where-harness-sits`、KO: `#category-harness-location-ko`、JA: `#category-harness-location-ja`）。理論上應符合 GitHub 自動產生 anchor 規則，但 GitHub 對非英文 anchor 的規則可能因特殊符號而變動，仍需再驗證。 | 建議提交前用 GitHub Preview 或本地 grip 驗證渲染。若失效，可改用更保守的 ASCII anchor，或直接加入 `<a name=\"\">` 顯式 anchor。JA 也需同樣注意。 |
+| **4** | Info | `_workspace/release/audit-2026-04-18.md:156` | §4.4 中列有 `git push origin v1.0.0 v1.0.1 v1.1.0 v1.2.0` 的待執行項，但本次 M0 內容並未包含 tag 建立 / push — 這是**有意保留等待批准**的狀態，不算問題。不過進入下一階段前仍需決定是否處理這 4 個 tag。 | 4 個 tag + GitHub Release 草稿可在 M1 開始前另行處理，不屬於本次 M0 稽核範圍。 |
+| **5** | Info | `docs/experimental-dependency.md:65` | Scenario A 的「Nightly CI 在 P-13 偵測到」連結寫成 `[P-13](#)`，目前只是 placeholder。實際 roadmap / issue 編號尚未指定。 | 等真正開出 roadmap P-13 issue 後，再改成對應的 `#數字`。屬於 launch-strategist 後續工作。 |
 
 ---
 
-## 3. 5초 규칙 평가
+## 3. 5 秒規則評估
 
-### 3.1 상단 5초 스캔 시나리오
+### 3.1 頂部 5 秒掃描情境
 
-방문자가 `README.md` 상단에서 처음 만나는 시각 정보 순서:
+訪客在 `README.md` 頂部最先接觸到的視覺資訊順序如下：
 
-1. **배너 이미지** (L1–3) — `harness_banner.png`
-2. **기본 뱃지 6종** (L5–12) — Version `1.2.0` / License Apache 2.0 / Claude Code Plugin / 6 Architectures / Agent Teams / GitHub Stars
-3. **포지셔닝 뱃지 3종** (L14–18) — `Layer: L3 Meta-Factory` / `Sub-layer: Team-Architecture Factory` / `README: EN | KO | JA`
-4. **H1** (L20) — `Harness — The Team-Architecture Factory for Claude Code`
-5. **언어 토글** (L22) — `English | 한국어 | 日本語`
-6. **Callout 블록** (L24) — 3언어 트리거 병기한 한 문장 요약
+1. **Banner image**（L1–3）— `harness_banner.png`
+2. **基本 badge 6 種**（L5–12）— Version `1.2.0` / License Apache 2.0 / Claude Code Plugin / 6 Architectures / Agent Teams / GitHub Stars
+3. **定位 badge 3 種**（L14–18）— `Layer: L3 Meta-Factory` / `Sub-layer: Team-Architecture Factory` / `README: EN | KO | JA`
+4. **H1**（L20）— `Harness — The Team-Architecture Factory for Claude Code`
+5. **語言切換**（L22）— `English | 繁體中文 | 日本語`
+6. **Callout 區塊**（L24）— 以 3 種語言並列 trigger 語句的一句摘要
 
-### 3.2 5초 규칙 판정
+### 3.2 5 秒規則判定
 
-| 기준 | 평가 |
+| 標準 | 評估 |
 |------|------|
-| "팀 아키텍처 팩토리"임을 이해 가능한가? | **PASS** — H1 + Sub-layer 뱃지 + Callout 3중 노출. L3 Meta-Factory까지 5초 이내 도달 가능 |
-| 트리거 문장을 시각화하는가? | **PASS** — Callout이 `"build a harness for this project"` / `"하네스 구성해줘"` / `"ハーネスを構成して"` 3종을 병기 |
-| 신뢰 신호(버전·스타·라이선스)가 동시 노출? | **PASS** — 6종 기본 뱃지 첫 줄 |
-| 3개 언어 독자가 동일 체험을 받는가? | **PASS** — EN/KO/JA 모두 동일한 3단 구조(이미지→뱃지→H1→Callout), 문자열만 번역 |
-| 시선 낭비 요소(광고성 뱃지, 중복 링크)? | **PASS** — 뱃지 9종(기본 6 + 포지셔닝 3)으로 Trending 레포 평균(5–7) 상한. 과다 아님 |
+| 能否在短時間內理解它是「team-architecture factory」？ | **PASS** — H1 + Sub-layer badge + Callout 三重曝光。可在 5 秒內理解到 L3 Meta-Factory |
+| 是否把 trigger 句子視覺化呈現？ | **PASS** — Callout 並列 `"build a harness for this project"` / `"請幫我建立 harness"` / `"請構建這個 harness"` |
+| 是否同時露出信任訊號（版本、star、授權）？ | **PASS** — 第一排即為 6 種基本 badge |
+| 三語使用者是否獲得相同體驗？ | **PASS** — EN/KO/JA 都採用相同的三段式結構（圖片→badge→H1→Callout），僅字串翻譯不同 |
+| 是否有浪費視線的元素（廣告型 badge、重複連結）？ | **PASS** — 共 9 個 badge（基本 6 + 定位 3），位於 Trending repo 常見範圍上限（5–7）附近，但仍不算過多 |
 
-### 3.3 섹션 순서 논리 평가
+### 3.3 區段順序邏輯評估
 
-EN 기준 섹션 순서:
+以 EN 為準的區段順序：
 
 ```
 (1) Overview → (2) Category — Where Harness Sits → (3) Star History → (4) Key Features
 → (5) Harness Evolution Mechanism → (6) Workflow → (7) Installation → (8) Plugin Structure
-→ (9) Usage (모드·패턴) → (10) Output → (11) Use Cases 8종 → (12) Coexistence
-→ (13) Built with Harness (100 + A/B 연구) → (14) Requirements → (15) FAQ Q1–Q3 → (16) License
+→ (9) Usage（模式·模式類型）→ (10) Output → (11) Use Cases 8種 → (12) Coexistence
+→ (13) Built with Harness (100 + A/B 研究) → (14) Requirements → (15) FAQ Q1–Q3 → (16) License
 ```
 
-- **PASS** — "내가 무엇인지(1–2) → 내가 어떻게 진화하는지(5) → 어떻게 설치하나(7) → 어떻게 쓰나(9–11) → 이웃과 어떻게 공존하나(12) → 증거(13) → 반박·FAQ(15)" 순서가 자연스러움.
-- 다만 KO/JA에서는 (3) Star History가 부재하여 (2) → (4)로 직행. 시선 흐름에는 오히려 더 부드러우므로 문제 없음.
+- **PASS** — 從「我是什麼（1–2）→ 我如何演化（5）→ 怎麼安裝（7）→ 怎麼使用（9–11）→ 如何與其他方案共存（12）→ 證據（13）→ FAQ / 反駁（15）」的順序很自然。
+- 不過在 KO/JA 中缺少 (3) Star History，因此會直接從 (2) 跳到 (4)。就視線流動而言反而更順，故不構成問題。
 
 ---
 
-## 4. 에이전트 충돌 감사
+## 4. Agent 衝突稽核
 
-### 4.1 파일별 편집자 귀속 테이블
+### 4.1 各檔案編輯歸屬表
 
-| 파일 | release-engineer | content-creator | launch-strategist | community-scout |
+| 檔案 | release-engineer | content-creator | launch-strategist | community-scout |
 |------|------------------|-----------------|-------------------|-----------------|
-| `README.md` | 뱃지 L6(Version) | H1·Callout·뱃지 3종·Category·Evolution·Coexistence·FAQ | — | — |
-| `README_KO.md` | 뱃지 L6 | H1·Callout·뱃지·Category·Evolution·Coexistence·FAQ | — | — |
-| `README_JA.md` | 뱃지 L6 | H1·Callout·뱃지·Category·Evolution·Coexistence·FAQ | — | — |
+| `README.md` | badge L6（Version） | H1、Callout、badge 3 種、Category、Evolution、Coexistence、FAQ | — | — |
+| `README_KO.md` | badge L6 | H1、Callout、badge、Category、Evolution、Coexistence、FAQ | — | — |
+| `README_JA.md` | badge L6 | H1、Callout、badge、Category、Evolution、Coexistence、FAQ | — | — |
 | `.claude-plugin/marketplace.json` | L14 version | — | — | — |
-| `.claude-plugin/plugin.json` | **(건드리지 않기로 선언)** | **description·keywords 편집 (충돌)** | — | — |
-| `CHANGELOG.md` | [1.2.1] 블록 추가 | — | — | — |
-| `CONTRIBUTING.md` | — | — | — | 신규 |
-| `.github/ISSUE_TEMPLATE/*` | — | — | — | 신규 (4종) |
-| `.github/PULL_REQUEST_TEMPLATE.md` | — | — | — | 신규 |
-| `docs/experimental-dependency.md` | — | — | 신규 | — |
-| `docs/quickstart.md` | — | — | 신규 | — |
-| `docs/show-hn-launch-kit.md` | — | — | 신규 | — |
-| `_workspace/release/audit-2026-04-18.md` | 신규 | — | — | — |
-| `_workspace/community/issue-{2,3}-reply.md` | — | — | — | 신규 (2종) |
+| `.claude-plugin/plugin.json` | **（宣告為不修改）** | **編輯了 description、keywords（衝突）** | — | — |
+| `CHANGELOG.md` | 新增 [1.2.1] 區塊 | — | — | — |
+| `CONTRIBUTING.md` | — | — | — | 新增 |
+| `.github/ISSUE_TEMPLATE/*` | — | — | — | 新增（4 種） |
+| `.github/PULL_REQUEST_TEMPLATE.md` | — | — | — | 新增 |
+| `docs/experimental-dependency.md` | — | — | 新增 | — |
+| `docs/quickstart.md` | — | — | 新增 | — |
+| `docs/show-hn-launch-kit.md` | — | — | 新增 | — |
+| `_workspace/release/audit-2026-04-18.md` | 新增 | — | — | — |
+| `_workspace/community/issue-{2,3}-reply.md` | — | — | — | 新增（2 種） |
 
-### 4.2 같은 줄 동시 편집 여부
+### 4.2 是否存在同一行的同時編輯
 
-- **README 3종 뱃지 줄 (L6)** — release-engineer(Version 뱃지만 L6 문자열 교체) vs content-creator(H1 이하 섹션 재작성). **겹치지 않음**. content-creator도 L14–18에 **신규 뱃지 블록 추가**만 하고 L6을 건드리지 않았으므로 충돌 없음. **PASS**
-- **README H1 (L20)** — release-engineer는 미편집. content-creator 단독 편집. **PASS**
-- **`.claude-plugin/plugin.json`** — release-engineer는 L4(version)만 건드리지 않는 정책이었고 실제로 L4는 무변경. 그러나 L3(description) + L12–28(keywords)은 **편집되어 있음**. 이 편집이 content-creator에 의한 것이라면 release-engineer의 audit 문서 §3.3과 **선언-실제 불일치**. 단순 병합 충돌이 아닌 **정책 위반 성격의 협업 충돌**. → **2-1번 Critical 문제 참조**
-- `_workspace/release/audit-2026-04-18.md` — release-engineer 단독. **PASS**
+- **README 3 份的 badge 行（L6）** — release-engineer（僅替換 Version badge 的 L6 字串）vs content-creator（改寫 H1 以下區段）。**無重疊**。content-creator 也只是新增 L14–18 的 **badge 區塊**，並未改動 L6，因此無衝突。**PASS**
+- **README H1（L20）** — release-engineer 未編輯，由 content-creator 單獨修改。**PASS**
+- **`.claude-plugin/plugin.json`** — release-engineer 的政策是連 L4(version) 都不動，實際上 L4 確實未變；但 L3(description) 與 L12–28(keywords) **已被編輯**。若這些編輯出自 content-creator，則與 release-engineer audit 文件 §3.3 形成**宣告與實際不一致**。這不是單純 merge 衝突，而是**違反政策性質的協作衝突**。→ 參見 **2-1 Critical 問題**
+- `_workspace/release/audit-2026-04-18.md` — 僅由 release-engineer 編寫。**PASS**
 
-### 4.3 유실된 원본 섹션
+### 4.3 遺失的原始區段
 
-| 섹션 | 원본(HEAD) 존재 | 현 EN | 현 KO | 현 JA | 판정 |
+| 區段 | 原始（HEAD）是否存在 | 現 EN | 現 KO | 現 JA | 判定 |
 |------|-----------------|-------|-------|-------|------|
-| Star History | EN만 보유 | 보존(L43) | 원래 없음 | 원래 없음 | **PASS** (유실 0) |
-| Installation | EN/KO/JA 보유 | 보존(L92) | 보존(L81) | 보존(L81) | **PASS** |
-| Plugin Structure | EN/KO/JA 보유 | 보존(L113) | 보존(L102) | 보존(L102) | **PASS** |
-| Usage 모드·패턴 | EN/KO/JA 보유 | 보존(L132–162) | 보존(L121–151) | 보존(L121–151) | **PASS** |
-| Use Cases 8종 | EN/KO/JA 보유 | 보존(L183–241) | 보존(L172–223) | 보존(L172–230) | **PASS** |
-| Built with Harness (100 + A/B 연구) | EN/KO/JA 보유 | 보존(L255–275) | 보존(L237–257) | 보존(L244–264) | **PASS** |
-| Requirements / License | EN/KO/JA 보유 | 보존 | 보존 | 보존 | **PASS** |
+| Star History | 僅 EN 有 | 保留（L43） | 原本就沒有 | 原本就沒有 | **PASS**（遺失 0 件） |
+| Installation | EN/KO/JA 皆有 | 保留（L92） | 保留（L81） | 保留（L81） | **PASS** |
+| Plugin Structure | EN/KO/JA 皆有 | 保留（L113） | 保留（L102） | 保留（L102） | **PASS** |
+| Usage mode / pattern | EN/KO/JA 皆有 | 保留（L132–162） | 保留（L121–151） | 保留（L121–151） | **PASS** |
+| Use Cases 8 種 | EN/KO/JA 皆有 | 保留（L183–241） | 保留（L172–223） | 保留（L172–230） | **PASS** |
+| Built with Harness（100 + A/B 研究） | EN/KO/JA 皆有 | 保留（L255–275） | 保留（L237–257） | 保留（L244–264） | **PASS** |
+| Requirements / License | EN/KO/JA 皆有 | 保留 | 保留 | 保留 | **PASS** |
 
-**종합:** 원본 섹션 유실 0건. 병합은 "기존 텍스트 사이에 새 섹션을 삽입"하는 방식으로 이루어져 충돌 없이 병렬 성공.
-
----
-
-## 5. 결론
-
-### 5.1 종합 PASS/FAIL
-
-- **영역 A (버전 정합성):** 7개 중 6 PASS / 1 **정책 FAIL** (plugin.json description·keywords 무단 편집)
-- **영역 B (포지셔닝):** 8 × 3언어 = 24항목 전부 PASS
-- **영역 C (docs/):** 3 PASS
-- **영역 D (거버넌스):** 8 PASS
-- **5초 규칙:** PASS
-- **에이전트 충돌:** 1 Critical (plugin.json 정책 위반) + 2 Minor (i18n anchor 렌더 검증 / KO·JA Star History 부재)
-
-**총 Critical 문제: 1건**
-**총 Minor 문제: 2건**
-**Info(권장) 항목: 2건**
-
-### 5.2 커밋 가능 여부
-
-**조건부 커밋 가능.** 커밋 전 다음 1건 결정 필요:
-
-#### 필수 선행 조치 — `plugin.json` 충돌 해소 (택1)
-
-- **옵션 A (권장): 수용** — `_workspace/release/audit-2026-04-18.md` §3 표와 §3.3 문장을 수정하여 "description·keywords 변경 포함"을 명시. `CHANGELOG.md` [1.2.1] Changed 섹션에 아래 한 줄 추가:
-  > - `.claude-plugin/plugin.json` description 및 keywords를 "harness factory" 포지셔닝 선언과 정렬 (version 1.2.0 유지)
-- **옵션 B: 복구** — `git restore .claude-plugin/plugin.json`으로 원복한 뒤, 별도 후속 PR에서 content-creator가 정식 요청.
-
-→ **repo-auditor는 옵션 A를 권장.** 근거: (a) 변경 내용 자체는 포지셔닝 일관성에 부합하고 무해함, (b) `.claude-plugin/plugin.json:4` version이 `1.2.0`으로 유지되어 Claude Code 런타임 기능에는 영향 없음, (c) 되돌리면 README/marketplace.json의 새 description과 plugin.json의 옛 description 사이에 **새로운 정합성 간극**이 발생.
-
-#### 커밋 메시지 권장 문구 (옵션 A 채택 시)
-
-```
-feat: M0 Quick Wins — 포지셔닝 선언, 버전 정합성, 거버넌스 공개
-
-- README 3종(EN/KO/JA) 상단을 "Team-Architecture Factory" 포지셔닝으로 재작성
-  (Category · Evolution · Coexistence · FAQ 섹션 신설, Layer/Sub-layer/i18n 뱃지 3종 추가)
-- 버전 1.2.0 정합성 동기화: README 뱃지 3종(1.0.1→1.2.0), marketplace.json(1.1.0→1.2.0)
-- plugin.json description·keywords를 포지셔닝 선언과 정렬 (version 1.2.0 유지)
-- CHANGELOG [1.2.1] 엔트리 추가
-- CONTRIBUTING.md 신설: 5항목 SLA 수치 공개 (PR 72h / 이슈 48h / P0 14d / 보안 7d / 릴리스 2주)
-- .github/ISSUE_TEMPLATE 4종(bug/feature/question/config) + PR 템플릿 신설
-- docs/ 신설: experimental-dependency (3 시나리오 SLA), quickstart (5분 5단계), show-hn-launch-kit (2026-05-06 07:05 PT)
-- _workspace/community: Issue #2 (awesome-claude-code 큐레이터) / Issue #3 (Gemini 질의) 답변 초안
-- _workspace/release/audit-2026-04-18.md + post-m0-audit-2026-04-18.md: 감사 기록
-```
-
-### 5.3 선행 수정이 필요하지 않은 권장사항 (Info)
-
-- **태그 4건(v1.0.0/v1.0.1/v1.1.0/v1.2.0) 소급 생성 + GitHub Release 초안** — `_workspace/release/audit-2026-04-18.md` §4, §5에 명령 텍스트 대기. M1 진입 전 별도 실행.
-- **KO/JA README에 Star History 섹션 보강** — 차기 PR(`docs/i18n-parity`)로 분리.
-- **GitHub anchor 렌더 검증** — Layer/Sub-layer 뱃지가 KO/JA에서 정상 클릭되는지 `gh pr create --draft` 이후 Preview 탭에서 육안 확인.
+**總結：** 原始區段遺失 0 件。合併方式採「在既有文字中插入新區段」，因此可在無衝突下平行完成。
 
 ---
 
-## 부록. 감사 근거 파일 목록
+## 5. 結論
 
-- `/Users/robin/IdeaProjects/harness/README.md` (317줄)
-- `/Users/robin/IdeaProjects/harness/README_KO.md` (299줄)
-- `/Users/robin/IdeaProjects/harness/README_JA.md` (306줄)
-- `/Users/robin/IdeaProjects/harness/.claude-plugin/plugin.json` (수정됨, §2.1 Critical)
+### 5.1 綜合 PASS/FAIL
+
+- **區域 A（版本一致性）:** 7 項中 6 PASS / 1 **政策 FAIL**（plugin.json description、keywords 被未授權編輯）
+- **區域 B（定位）:** 8 × 3 語 = 24 項全部 PASS
+- **區域 C（docs/）:** 3 PASS
+- **區域 D（治理）:** 8 PASS
+- **5 秒規則:** PASS
+- **Agent 衝突:** 1 件 Critical（plugin.json 政策違反）+ 2 件 Minor（i18n anchor 渲染驗證 / KO、JA 缺少 Star History）
+
+**Critical 問題總數：1 件**  
+**Minor 問題總數：2 件**  
+**Info（建議）項目：2 件**
+
+### 5.2 是否可提交
+
+**可在附帶條件下提交。** 提交前需要先決定以下 1 件事：
+
+#### 必要先行處置 — 解決 `plugin.json` 衝突（二選一）
+
+- **Option A（建議）: 接受** — 修改 `_workspace/release/audit-2026-04-18.md` 的 §3 表格與 §3.3 文字，明確寫出「包含 description、keywords 變更」。並在 `CHANGELOG.md` 的 [1.2.1] Changed 區段補上一行：
+  > - `.claude-plugin/plugin.json` description 及 keywords 已與 "harness factory" 定位宣言對齊（version 1.2.0 維持不變）
+- **Option B: 還原** — 以 `git restore .claude-plugin/plugin.json` 還原，並在後續另開正式 PR 由 content-creator 提案。
+
+→ **repo-auditor 建議採用 Option A。** 理由如下：  
+(a) 變更內容本身與定位一致，且無害；  
+(b) `.claude-plugin/plugin.json:4` 的 version 維持 `1.2.0`，不影響 Claude Code runtime；  
+(c) 若直接還原，反而會造成 README / marketplace.json 的新 description 與 plugin.json 舊 description 間出現**新的不一致**。
+
+#### 建議的 commit message（若採用 Option A）
+
+```
+feat: M0 Quick Wins — 公開定位宣言、版本一致性與治理
+
+- 將 3 份 README（EN/KO/JA）頂部改寫為「Team-Architecture Factory」定位
+  （新增 Category、Evolution、Coexistence、FAQ 區段，補上 Layer/Sub-layer/i18n 3 個 badge）
+- 同步版本 1.2.0：README 3 個 badge（1.0.1→1.2.0）、marketplace.json（1.1.0→1.2.0）
+- 讓 plugin.json description 與 keywords 對齊定位宣言（version 1.2.0 維持不變）
+- 新增 CHANGELOG [1.2.1] 條目
+- 新增 CONTRIBUTING.md：公開 5 項 SLA 數值（PR 72h / Issue 48h / P0 14d / 安全 7d / 發布 2 週）
+- 新增 4 種 `.github/ISSUE_TEMPLATE`（bug/feature/question/config）與 PR template
+- 新增 `docs/`：experimental-dependency（3 種情境 SLA）、quickstart（5 分鐘 5 步驟）、show-hn-launch-kit（2026-05-06 07:05 PT）
+- `_workspace/community`：Issue #2（awesome-claude-code curator）/ Issue #3（Gemini 問題）回覆草稿
+- `_workspace/release/audit-2026-04-18.md` + `post-m0-audit-2026-04-18.md`：稽核記錄
+```
+
+### 5.3 不需先修改、但值得記錄的建議事項（Info）
+
+- **補建 4 個 tag（v1.0.0/v1.0.1/v1.1.0/v1.2.0）並建立 GitHub Release 草稿** — `_workspace/release/audit-2026-04-18.md` §4、§5 已列出指令文字但尚未執行。可於 M1 開始前另行處理。
+- **在 KO/JA README 補上 Star History 區段** — 建議拆成下一個 PR（`docs/i18n-parity`）。
+- **驗證 GitHub anchor 渲染** — 建議在 `gh pr create --draft` 後，於 Preview 分頁目視檢查 Layer/Sub-layer badge 在 KO/JA 是否可正常點擊。
+
+---
+
+## 附錄：稽核依據檔案清單
+
+- `/Users/robin/IdeaProjects/harness/README.md`（317 行）
+- `/Users/robin/IdeaProjects/harness/README_KO.md`（299 行）
+- `/Users/robin/IdeaProjects/harness/README_JA.md`（306 行）
+- `/Users/robin/IdeaProjects/harness/.claude-plugin/plugin.json`（已修改，見 §2.1 Critical）
 - `/Users/robin/IdeaProjects/harness/.claude-plugin/marketplace.json`
 - `/Users/robin/IdeaProjects/harness/CHANGELOG.md`
 - `/Users/robin/IdeaProjects/harness/CONTRIBUTING.md`
@@ -221,4 +224,4 @@ feat: M0 Quick Wins — 포지셔닝 선언, 버전 정합성, 거버넌스 공�
 - `/Users/robin/IdeaProjects/harness/_workspace/release/audit-2026-04-18.md`
 - `/Users/robin/IdeaProjects/harness/_workspace/community/issue-{2,3}-reply.md`
 
-감사 커맨드 로그: `git status`, `git diff --stat`, `git diff .claude-plugin/plugin.json`, `git show HEAD:README.md`, 각 파일 Read 도구 호출.
+稽核命令記錄：`git status`、`git diff --stat`、`git diff .claude-plugin/plugin.json`、`git show HEAD:README.md`、以及對各檔案執行 Read 工具。

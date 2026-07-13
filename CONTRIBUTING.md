@@ -1,156 +1,156 @@
-# Contributing to Harness
+# 貢獻 Harness
 
-Thanks for considering a contribution to **Harness** — a Claude Code meta-skill factory that designs agent teams and generates skills.
+感謝你考慮為 **Harness** 貢獻內容。Harness 是一個為 Claude Code 設計、能建立 agent team 並生成 skill 的 meta-skill factory。
 
-This document covers: response SLAs, how to contribute, development setup, PR conventions, commit message rules, code of conduct, and maintainer list.
-
----
-
-## Response SLA (commitments)
-
-These are the maintainer response targets for this repository. They are **conservative** so that a small maintainer team can realistically keep them while scaling.
-
-| Surface | Target | Notes |
-|---------|--------|-------|
-| PR — 1st response | **< 72h** | Business days. A "1st response" means at minimum a label + one comment acknowledging the PR. |
-| Issue triage & labeling | **< 48h** | Every new issue gets `needs-triage` removed and a type label (`bug` / `enhancement` / `question` / `discussion`) within 48h. |
-| Bug resolve (P0 / P1) | **< 14d** | P0 = data loss / security / broken install. P1 = common path broken. P2/P3 tracked on roadmap without a hard SLA. |
-| Security report | **< 7d** | Initial acknowledgement within 7 days. Patch target 30 days. Please see **Security** section below for the private channel. |
-| Release cadence | **every 2 weeks** | Biweekly tag unless there is nothing shippable. P0 fixes may cut an off-schedule patch release. |
-
-If we miss an SLA, please feel free to ping the issue/PR — that is not rude, it is the agreed feedback loop.
+本文涵蓋：回應 SLA、如何參與、開發環境設定、PR 慣例、commit 訊息規則、行為準則與維護者名單。
 
 ---
 
-## How to Contribute
+## 回應 SLA（服務承諾）
 
-Different kinds of contributions go through different entry points. Pick the one that fits.
+以下是此 repository 維護者的回應目標。這些數字採保守估計，讓小型維護團隊在專案成長時也能維持。
 
-### Bug report
+| 項目 | 目標 | 說明 |
+|------|------|------|
+| PR 首次回應 | **< 72h** | 以工作日計算。所謂「首次回應」至少包含加上 label 與一則確認已收到 PR 的留言。 |
+| Issue triage 與標記 | **< 48h** | 每個新 issue 會在 48 小時內移除 `needs-triage`，並補上類型標籤（`bug` / `enhancement` / `question` / `discussion`）。 |
+| Bug 修復（P0 / P1） | **< 14d** | P0 = 資料遺失 / 安全問題 / 安裝失敗；P1 = 常見使用路徑故障。P2 / P3 會納入 roadmap，但不承諾硬性 SLA。 |
+| 安全通報 | **< 7d** | 7 天內給出初步確認。修補目標為 30 天內。私下通報方式請見下方 **Security** 章節。 |
+| 發版頻率 | **每兩週一次** | 原則上每兩週打一個 tag；若沒有可發布內容則略過。P0 問題可能會插入非排程的 patch release。 |
 
-- Open an issue using the **Bug report** form (`.github/ISSUE_TEMPLATE/bug_report.yml`).
-- Required: Claude Code version, `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` flag state, reproduction steps, expected vs actual, OS.
-- Small reproductions (< 30 lines) are ideal. If your repro needs a full project, link a public fork.
+若我們未達成 SLA，歡迎你在 issue / PR 裡提醒，這不是失禮，而是約定好的回饋機制。
 
-### Feature request
+---
 
-- Open an issue using the **Feature request** form.
-- We expect a short "what problem does this solve" paragraph. If you have a proposal, put it in the PR-ready shape (which of the 6 team-architecture patterns does it extend / replace?).
+## 如何貢獻
 
-### Question
+不同類型的貢獻適合走不同入口，請選擇最符合你情況的方式。
 
-- Open an issue using the **Question** form, **or** start a thread in [GitHub Discussions](https://github.com/revfactory/harness/discussions) if the matter is open-ended.
+### Bug 回報
 
-### Discussion (RFC-sized ideas)
+- 請使用 **Bug report** 表單建立 issue（`.github/ISSUE_TEMPLATE/bug_report.yml`）。
+- 必填資訊：Claude Code 版本、`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` flag 狀態、重現步驟、預期結果與實際結果、作業系統。
+- 若能提供小型重現案例（少於 30 行）最好。若需要完整專案，請附上公開 fork 連結。
 
-- Prefer GitHub Discussions. Only promote to an issue once there is rough consensus on direction.
+### 功能請求
+
+- 請使用 **Feature request** 表單建立 issue。
+- 至少需要一段簡短說明：「這要解決什麼問題？」如果你已有提案，建議整理成接近可 PR 的形式，例如：它是延伸還是取代 6 種 team-architecture pattern 的哪一種？
+
+### 問題
+
+- 請使用 **Question** 表單建立 issue，**或** 若議題較開放，可改在 [GitHub Discussions](https://github.com/revfactory/harness/discussions) 開討論串。
+
+### 討論（接近 RFC 規模的想法）
+
+- 優先使用 GitHub Discussions。等方向大致有共識後，再轉成 issue。
 
 ### Pull Request
 
-- See **Pull Request Guidelines** below.
-- Small PRs merge faster. Anything > 400 lines of diff should probably have been a Discussion first.
+- 請參考下方 **Pull Request Guidelines**。
+- 小型 PR 會更快合併。差異行數超過 400 行的 PR，通常應該先有一篇 Discussion。
 
 ### Security
 
-- Do **not** open a public issue for anything that could be abused.
-- Email: `robin.hwang@kakaocorp.com` with subject prefix `[harness-security]`.
-- We aim to acknowledge within 7 days (see SLA table).
+- 對於可能被濫用的問題，**不要** 開公開 issue。
+- 請寄信到：`robin.hwang@kakaocorp.com`，主旨加上 `[harness-security]`。
+- 我們目標是在 7 天內回覆（詳見上方 SLA 表）。
 
 ---
 
-## Development Setup
+## 開發環境設定
 
-### Prerequisites
+### 先決條件
 
-- Claude Code `v2.x` (Agent Teams API required)
-- Node.js `>= 18` (for local tooling used in CI)
+- Claude Code `v2.x`（需要 Agent Teams API）
+- Node.js `>= 18`（供 CI 使用的本地工具）
 - Git
 
-### Environment flag
+### 環境旗標
 
-Harness currently requires Claude Code's experimental Agent Teams feature. Set the flag in your shell profile or per-session:
+Harness 目前需要 Claude Code 的實驗性 Agent Teams 功能。請在 shell profile 或個別 session 中設定：
 
 ```bash
 export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 ```
 
-We track this dependency in `docs/experimental-dependency.md` (if Anthropic promotes the flag to stable, we update the README within 72h per the SLA above).
+此相依性記錄於 `docs/experimental-dependency.md`。若 Anthropic 將該 flag 升級為正式功能，我們會依上述 SLA 在 72 小時內更新 README。
 
-### Local plugin link
+### 本地外掛連結
 
-To test your changes in a local Claude Code session without publishing to the marketplace:
+若你想在不發布到 marketplace 的情況下，於本地 Claude Code session 測試變更，可使用：
 
 ```bash
-# From your checkout
+# 在你的 checkout 目錄執行
 claude plugin link ./harness
 
-# Verify
+# 驗證
 claude plugin list | grep harness
 ```
 
-Unlink with `claude plugin unlink harness` when you're done.
+完成後可用 `claude plugin unlink harness` 解除連結。
 
-### Running the meta-skill
+### 執行 meta-skill
 
 ```bash
 claude "build a harness for a fintech risk-assessment team"
 ```
 
-Scaffolded agents and skills land under `.claude/agents/` and `.claude/skills/` in the target project.
+生成出的 agent 與 skill 會位於目標專案的 `.claude/agents/` 與 `.claude/skills/`。
 
-### Tests & lints
+### 測試與 lint
 
-- Markdown lint: `npx markdownlint '**/*.md'`
-- YAML lint (issue templates & workflows): `npx yaml-lint .github/`
-- Skill metadata validation: `python scripts/validate_skills.py` (if present)
+- Markdown lint：`npx markdownlint '**/*.md'`
+- YAML lint（issue template 與 workflow）：`npx yaml-lint .github/`
+- Skill metadata 驗證：`python scripts/validate_skills.py`（若存在）
 
-CI runs these on every PR. Local execution is encouraged but not required — we won't block on CI-caught issues that are trivial to fix on merge.
-
----
-
-## Pull Request Guidelines
-
-### Branch naming
-
-Use the `type/short-description` shape:
-
-| Prefix | Use for | Example |
-|--------|---------|---------|
-| `feat/` | New user-visible capability | `feat/expert-pool-variance-mode` |
-| `fix/` | Bug fix | `fix/agent-teams-flag-detection` |
-| `docs/` | Docs-only changes | `docs/quickstart-gemini-section` |
-| `refactor/` | Internal structure, no behavior change | `refactor/skill-loader-split` |
-| `chore/` | Build, deps, housekeeping | `chore/upgrade-markdownlint` |
-| `test/` | Tests only | `test/fan-out-fan-in-e2e` |
-
-### Commit message language
-
-- **Korean and English are both accepted.** Write in whichever you are more precise in.
-- If the change will appear in the CHANGELOG or release notes, please also provide an English title in the PR description so downstream readers can follow.
-
-### PR template
-
-Every PR body is pre-filled from `.github/PULL_REQUEST_TEMPLATE.md`. Please fill in:
-
-- **Summary** (what & why, 2–4 sentences)
-- **Motivation** (link issue, reference research, or 1-line rationale)
-- **Scope of change** (checklist of touched surfaces)
-- **Tests** (what you ran / added)
-- **CHANGELOG** (did you update `CHANGELOG.md`? Y/N/NA)
-- **SemVer impact** (patch / minor / major — see next section)
-
-### Review expectation
-
-- One approving review from a maintainer is required.
-- We try to respond on PRs within 72h (see SLA). If you're blocked, ping.
+CI 會在每個 PR 上執行這些檢查。鼓勵本地先跑，但不是硬性要求；若 CI 抓到的是可在 merge 前輕鬆修正的小問題，我們不會因此卡住合併流程。
 
 ---
 
-## Commit Message Convention
+## Pull Request 指南
 
-We follow a light variant of **Conventional Commits** that maps directly to SemVer.
+### 分支命名
 
-```
+請使用 `type/short-description` 的格式：
+
+| 前綴 | 用途 | 範例 |
+|------|------|------|
+| `feat/` | 新增使用者可見功能 | `feat/expert-pool-variance-mode` |
+| `fix/` | 修 bug | `fix/agent-teams-flag-detection` |
+| `docs/` | 僅文件修改 | `docs/quickstart-gemini-section` |
+| `refactor/` | 內部結構調整，無行為變更 | `refactor/skill-loader-split` |
+| `chore/` | 建置、依賴、雜務 | `chore/upgrade-markdownlint` |
+| `test/` | 僅測試 | `test/fan-out-fan-in-e2e` |
+
+### Commit 訊息語言
+
+- **韓文與英文都可以接受。** 使用你能表達得最精準的語言。
+- 若這次變更會出現在 CHANGELOG 或 release note 中，請在 PR 說明中另外提供英文標題，方便下游讀者理解。
+
+### PR 範本
+
+每個 PR 會自動套用 `.github/PULL_REQUEST_TEMPLATE.md`。請完整填寫：
+
+- **Summary**（做了什麼、為什麼做，2–4 句）
+- **Motivation**（連結 issue、引用研究，或給一段簡短理由）
+- **Scope of change**（本次涉及哪些範圍的勾選清單）
+- **Tests**（你執行或新增了哪些測試）
+- **CHANGELOG**（是否更新 `CHANGELOG.md`？Y / N / NA）
+- **SemVer impact**（patch / minor / major，請見下節）
+
+### Review 期望
+
+- 至少需要一位 maintainer 核准。
+- 我們會盡量在 72 小時內對 PR 做出回應（詳見 SLA）。若你被卡住了，可以提醒。
+
+---
+
+## Commit 訊息慣例
+
+我們採用一個較輕量的 **Conventional Commits** 變體，並直接對應到 SemVer。
+
+```text
 <type>(<scope>)!: <short summary>
 
 <body — optional>
@@ -158,54 +158,54 @@ We follow a light variant of **Conventional Commits** that maps directly to SemV
 <footer — optional>
 ```
 
-### Types & SemVer mapping
+### 類型與 SemVer 對應
 
-| Commit type | SemVer impact | Example |
-|-------------|---------------|---------|
-| `feat!:` or `BREAKING CHANGE:` in footer | **major** (e.g. 1.x → 2.0) | `feat!: rename primary pattern "Supervisor" → "Orchestrator"` |
-| `feat:` | **minor** (e.g. 1.2 → 1.3) | `feat: add Producer-Reviewer variance metric` |
-| `fix:` | **patch** (e.g. 1.2.3 → 1.2.4) | `fix: correct flag detection on zsh` |
-| `docs:` / `chore:` / `refactor:` / `test:` | no release bump | `docs: clarify Gemini roadmap` |
+| Commit 類型 | SemVer 影響 | 範例 |
+|-------------|-------------|------|
+| `feat!:` 或 footer 出現 `BREAKING CHANGE:` | **major**（例如 1.x → 2.0） | `feat!: rename primary pattern "Supervisor" → "Orchestrator"` |
+| `feat:` | **minor**（例如 1.2 → 1.3） | `feat: add Producer-Reviewer variance metric` |
+| `fix:` | **patch**（例如 1.2.3 → 1.2.4） | `fix: correct flag detection on zsh` |
+| `docs:` / `chore:` / `refactor:` / `test:` | 不提升版本 | `docs: clarify Gemini roadmap` |
 
-- Korean summaries are fine: `feat: 전문가 풀 패턴에 분산 지표 추가`.
-- The `!` suffix (or `BREAKING CHANGE:` footer) is the **only** canonical major-version trigger. Please do not set it lightly.
+- 其他語言摘要也可以，例如：`feat: 為 Expert Pool 模式加入變異度指標`
+- `!` 後綴（或 `BREAKING CHANGE:` footer）是 **唯一** 的 major version 觸發條件，請勿輕率使用。
 
-### Release tagging
+### Release 標記
 
-- Releases are cut every 2 weeks (see SLA).
-- Tagging happens from `main` after CI passes and CHANGELOG is updated.
-- Tags follow `vMAJOR.MINOR.PATCH` (e.g. `v1.3.0`).
-
----
-
-## Code of Conduct
-
-This project adheres to the **Contributor Covenant v1.4** — in short:
-
-- Be welcoming and inclusive. Assume good intent.
-- No harassment, no personal attacks, no discriminatory language.
-- Critique ideas, not people. Back claims with references where possible.
-- Maintainers may moderate, edit, or remove comments/commits/issues/PRs that violate these principles, and may ban offenders.
-
-Full text: <https://www.contributor-covenant.org/version/1/4/code-of-conduct/>
-
-Report Code of Conduct violations privately to `robin.hwang@kakaocorp.com` with subject prefix `[harness-coc]`.
+- 依照 SLA，每兩週發一次 release。
+- 在 CI 通過且 `CHANGELOG.md` 已更新後，從 `main` 打 tag。
+- Tag 格式為 `vMAJOR.MINOR.PATCH`（例如 `v1.3.0`）。
 
 ---
 
-## Maintainers
+## 行為準則
 
-| Role | Handle | Area |
-|------|--------|------|
-| Lead maintainer | [@revfactory](https://github.com/revfactory) | Project direction, releases, final review |
-| Contributor | [@hnts03](https://github.com/hnts03) | Skill templates, Korean documentation |
-| Contributor | [@JunghwanNA](https://github.com/JunghwanNA) | Agent patterns, integration tests |
-| Contributor | [@shaun0927](https://github.com/shaun0927) | Tooling, CI, infra |
+本專案遵循 **Contributor Covenant v1.4**。簡單來說：
 
-New contributors become listed here after sustained contribution (not a single PR). Drop a note in a Discussion if you'd like to discuss a maintainer path.
+- 歡迎且包容，並預設他人是善意的。
+- 不得騷擾、做人身攻擊、使用歧視性語言。
+- 批評的是想法，不是人；盡可能用參考資料支持你的主張。
+- 維護者有權調整、編輯或移除違反這些原則的留言 / commit / issue / PR，必要時也可以封鎖違規者。
+
+完整內容：<https://www.contributor-covenant.org/version/1/4/code-of-conduct/>
+
+若要私下回報違反行為準則的情況，請寄信到 `robin.hwang@kakaocorp.com`，主旨加上 `[harness-coc]`。
 
 ---
 
-## License
+## 維護者
 
-By contributing, you agree that your contributions will be licensed under the same license as this repository (see [`LICENSE`](./LICENSE)).
+| 角色 | 帳號 | 負責領域 |
+|------|------|----------|
+| Lead maintainer | [@revfactory](https://github.com/revfactory) | 專案方向、發版、最終審查 |
+| Contributor | [@hnts03](https://github.com/hnts03) | Skill 範本、韓文文件 |
+| Contributor | [@JunghwanNA](https://github.com/JunghwanNA) | Agent 模式、整合測試 |
+| Contributor | [@shaun0927](https://github.com/shaun0927) | Tooling、CI、基礎設施 |
+
+若你是持續貢獻者，之後會列在這裡，而不只是一次 PR 就加入。若你想討論 maintainer 路線，也歡迎在 Discussion 裡提出。
+
+---
+
+## 授權
+
+只要你提交貢獻，就表示你同意以與本 repository 相同的授權方式授權你的內容（請見 [`LICENSE`](./LICENSE)）。

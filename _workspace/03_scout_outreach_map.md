@@ -1,70 +1,70 @@
-# Harness 아웃리치 타겟 맵
+# Harness 外展目標地圖
 
-> **프로젝트**: Harness — Claude Code Plugin (Agent Team & Skill Architect)
-> **GitHub**: https://github.com/revfactory/harness
-> **목표**: GitHub Trending 진입 및 커뮤니티 확산
-> **작성일**: 2026-03-29
+> **專案**：Harness — Claude Code Plugin (Agent Team & Skill Architect)
+> **GitHub**：https://github.com/revfactory/harness
+> **目標**：打進 GitHub Trending 並擴散到社群
+> **撰寫日期**：2026-03-29
 
 ---
 
 ## 1. Awesome Lists
 
-### Tier 1 (필수) — 런치 당일 ±1일
+### Tier 1（必做）— 上線當天 ±1 天
 
-| 이름 | Stars | URL | 제출 방식 |
+| 名稱 | Stars | URL | 提交方式 |
 |------|-------|-----|-----------|
-| **awesome-claude-code** (hesreallyhim) | ~21.6k | https://github.com/hesreallyhim/awesome-claude-code | PR 불가, 추천 제출 (CONTRIBUTING.md 참조). Claude만 PR 가능. 이슈로 추천 제출 |
-| **awesome-claude-code** (jqueryscript) | ~5k+ | https://github.com/jqueryscript/awesome-claude-code | PR 제출 (tools/plugins 섹션) |
-| **awesome-claude-skills** (travisvn) | ~3k+ | https://github.com/travisvn/awesome-claude-skills | PR 제출 (CONTRIBUTING.md 준수, social proof 필요) |
-| **awesome-claude-skills** (ComposioHQ) | ~2k+ | https://github.com/ComposioHQ/awesome-claude-skills | PR 제출 |
+| **awesome-claude-code** (hesreallyhim) | ~21.6k | https://github.com/hesreallyhim/awesome-claude-code | 無法直接送 PR，需提交推薦（參考 CONTRIBUTING.md）。只有 Claude 可送 PR。請以 issue 方式提交推薦 |
+| **awesome-claude-code** (jqueryscript) | ~5k+ | https://github.com/jqueryscript/awesome-claude-code | 提交 PR（tools/plugins 區段） |
+| **awesome-claude-skills** (travisvn) | ~3k+ | https://github.com/travisvn/awesome-claude-skills | 提交 PR（遵循 CONTRIBUTING.md，需具備 social proof） |
+| **awesome-claude-skills** (ComposioHQ) | ~2k+ | https://github.com/ComposioHQ/awesome-claude-skills | 提交 PR |
 
-### Tier 2 (권장) — 런치 주간
+### Tier 2（建議）— 上線週
 
-| 이름 | Stars | URL | 제출 방식 |
+| 名稱 | Stars | URL | 提交方式 |
 |------|-------|-----|-----------|
-| **awesome-llm-agents** (kaushikb11) | ~10k+ | https://github.com/kaushikb11/awesome-llm-agents | PR 제출 (frameworks 섹션) |
-| **awesome-agents** (kyrolabs) | ~8k+ | https://github.com/kyrolabs/awesome-agents | PR 제출 |
-| **awesome-ai-agents** (slavakurilyak) | ~5k+ | https://github.com/slavakurilyak/awesome-ai-agents | PR 제출 (300+ 리소스 목록) |
-| **awesome-ai-agents-2026** (caramaschiHG) | ~3k+ | https://github.com/caramaschiHG/awesome-ai-agents-2026 | PR 제출 (월간 업데이트) |
-| **Awesome-Prompt-Engineering** (promptslab) | ~58k+ | https://github.com/promptslab/Awesome-Prompt-Engineering | PR 제출 (tools 섹션) |
+| **awesome-llm-agents** (kaushikb11) | ~10k+ | https://github.com/kaushikb11/awesome-llm-agents | 提交 PR（frameworks 區段） |
+| **awesome-agents** (kyrolabs) | ~8k+ | https://github.com/kyrolabs/awesome-agents | 提交 PR |
+| **awesome-ai-agents** (slavakurilyak) | ~5k+ | https://github.com/slavakurilyak/awesome-ai-agents | 提交 PR（300+ resources 清單） |
+| **awesome-ai-agents-2026** (caramaschiHG) | ~3k+ | https://github.com/caramaschiHG/awesome-ai-agents-2026 | 提交 PR（每月更新） |
+| **Awesome-Prompt-Engineering** (promptslab) | ~58k+ | https://github.com/promptslab/Awesome-Prompt-Engineering | 提交 PR（tools 區段） |
 
-### Tier 3 (보너스) — 런치 후 1-2주
+### Tier 3（加分）— 上線後 1-2 週
 
-| 이름 | Stars | URL | 제출 방식 |
+| 名稱 | Stars | URL | 提交方式 |
 |------|-------|-----|-----------|
-| **awesome_ai_agents** (jim-schwoebel) | ~2k+ | https://github.com/jim-schwoebel/awesome_ai_agents | PR 제출 (1,500+ 리소스) |
-| **awesome-claude** (webfuse-com) | ~1k+ | https://github.com/webfuse-com/awesome-claude | PR 제출 |
-| **awesome-claude-skills** (BehiSecc) | ~1k+ | https://github.com/BehiSecc/awesome-claude-skills | PR 제출 |
-| **awesome-opensource-ai** (alvinunreal) | ~2k+ | https://github.com/alvinunreal/awesome-opensource-ai | PR 제출 |
+| **awesome_ai_agents** (jim-schwoebel) | ~2k+ | https://github.com/jim-schwoebel/awesome_ai_agents | 提交 PR（1,500+ resources） |
+| **awesome-claude** (webfuse-com) | ~1k+ | https://github.com/webfuse-com/awesome-claude | 提交 PR |
+| **awesome-claude-skills** (BehiSecc) | ~1k+ | https://github.com/BehiSecc/awesome-claude-skills | 提交 PR |
+| **awesome-opensource-ai** (alvinunreal) | ~2k+ | https://github.com/alvinunreal/awesome-opensource-ai | 提交 PR |
 
 ---
 
 ## 2. Newsletters
 
-### Tier 1 (필수)
+### Tier 1（必做）
 
-| 이름 | 빈도 | 구독자 | 제출 방법 |
+| 名稱 | 頻率 | 訂閱者 | 提交方式 |
 |------|------|--------|-----------|
-| **TLDR AI** | 일간 | ~1.5M+ | tldr.tech에 직접 연락 또는 GitHub trending 자동 픽업. 광고: advertise.tldr.tech |
-| **TLDR Open Source** | 주간 | ~500k+ | 동일 플랫폼 (tldr.tech/newsletters) |
-| **Console.dev** | 주간 | ~50k+ | console.dev/selection-criteria 기준 충족 시 자동 발굴. 개발자 대상, 셀프서비스, beta/early access 도구 우선 |
-| **Ben's Bites** | 일간 | ~500k+ | news.bensbites.com에서 커뮤니티 투표 기반 제출. 상위 투표 시 뉴스레터 포함 |
+| **TLDR AI** | 每日 | ~1.5M+ | 直接聯繫 tldr.tech，或等待 GitHub trending 自動收錄。廣告投放：advertise.tldr.tech |
+| **TLDR Open Source** | 每週 | ~500k+ | 同平台（tldr.tech/newsletters） |
+| **Console.dev** | 每週 | ~50k+ | 若符合 console.dev/selection-criteria 標準則可能自動被發掘。面向開發者、self-service、beta/early access 工具優先 |
+| **Ben's Bites** | 每日 | ~500k+ | 於 news.bensbites.com 依社群投票提交。若票數夠高則會進入 newsletter |
 
-### Tier 2 (권장)
+### Tier 2（建議）
 
-| 이름 | 빈도 | 구독자 | 제출 방법 |
+| 名稱 | 頻率 | 訂閱者 | 提交方式 |
 |------|------|--------|-----------|
-| **The Rundown AI** | 일간 | ~2M+ | therundown.ai로 직접 이메일 제출 또는 트렌딩 자동 픽업 |
-| **Changelog Weekly** | 주간 | ~100k+ | changelog.com 커뮤니티 제출 또는 @Changelog 트위터 DM |
-| **AI Tool Report** | 주간 | ~200k+ | theaireport.ai에서 도구 제출 |
+| **The Rundown AI** | 每日 | ~2M+ | 透過 therundown.ai 直接寄信投稿，或等待 trending 自動收錄 |
+| **Changelog Weekly** | 每週 | ~100k+ | 透過 changelog.com 社群投稿，或私訊 @Changelog Twitter |
+| **AI Tool Report** | 每週 | ~200k+ | 在 theaireport.ai 提交工具 |
 
-### Tier 3 (보너스)
+### Tier 3（加分）
 
-| 이름 | 빈도 | 구독자 | 제출 방법 |
+| 名稱 | 頻率 | 訂閱者 | 提交方式 |
 |------|------|--------|-----------|
-| **Superhuman AI** | 주간 | ~800k+ | superhuman.ai 편집팀 접촉 |
-| **The Neuron** | 일간 | ~400k+ | 편집팀 이메일 |
-| **Alpha Signal** | 주간 | ~100k+ | GitHub 트렌딩 자동 트래킹 |
+| **Superhuman AI** | 每週 | ~800k+ | 聯繫 superhuman.ai 編輯團隊 |
+| **The Neuron** | 每日 | ~400k+ | 寄信給編輯團隊 |
+| **Alpha Signal** | 每週 | ~100k+ | 會自動追蹤 GitHub trending |
 
 ---
 
@@ -72,115 +72,115 @@
 
 ### Reddit
 
-| 서브레딧 | 회원수 | 자기홍보 규칙 | 티어 |
+| Subreddit | 會員數 | 自我宣傳規則 | Tier |
 |----------|--------|---------------|------|
-| **r/ClaudeAI** | ~612k | 가치 제공 중심 포스트 허용, 노골적 광고 금지. 도구 소개 시 사용 사례 중심으로 | Tier 1 |
-| **r/LocalLLaMA** | ~995k | 10% 규칙 (활동의 90%는 비홍보). 기술 심층 포스트 선호 | Tier 2 |
-| **r/artificial** | ~1.2M | 튜토리얼/피드백 OK, 소셜 링크 광고 금지 | Tier 2 |
-| **r/programming** | ~3.7M | 엄격한 자기홍보 규칙, 기술적 가치 필수 | Tier 2 |
-| **r/MachineLearning** | ~3M+ | 학술/연구 중심, 프로젝트 쇼케이스 가능 | Tier 3 |
-| **r/SideProject** | ~200k+ | 자기홍보 허용 | Tier 1 |
-| **r/opensource** | ~100k+ | 오픈소스 프로젝트 공유 권장 | Tier 1 |
+| **r/ClaudeAI** | ~612k | 允許以提供價值為主的貼文，禁止過度直白的廣告。介紹工具時要以使用案例為中心 | Tier 1 |
+| **r/LocalLLaMA** | ~995k | 10% 規則（90% 活動需非宣傳）。偏好技術深度貼文 | Tier 2 |
+| **r/artificial** | ~1.2M | 可接受 tutorial/feedback，禁止社群連結廣告 | Tier 2 |
+| **r/programming** | ~3.7M | 自我宣傳規則嚴格，必須具備技術價值 | Tier 2 |
+| **r/MachineLearning** | ~3M+ | 偏學術/研究導向，可做專案展示 | Tier 3 |
+| **r/SideProject** | ~200k+ | 允許自我宣傳 | Tier 1 |
+| **r/opensource** | ~100k+ | 鼓勵分享開源專案 | Tier 1 |
 
-**최적 포스팅 시간**: 화-목 오전 9-11시 EST (미국 기준)
+**最佳發文時間**：週二至週四，美東時間上午 9-11 點
 
 ### Discord
 
-| 서버 | 규모 | 특성 | 티어 |
+| 伺服器 | 規模 | 特性 | Tier |
 |------|------|------|------|
-| **Anthropic/Claude 공식** | ~100k+ | #showcase 또는 #community-projects 채널 활용 | Tier 1 |
-| **AI/ML 커뮤니티** | 다양 | 프로젝트 공유 채널 확인 후 게시 | Tier 2 |
+| **Anthropic/Claude 官方** | ~100k+ | 可使用 #showcase 或 #community-projects 頻道 | Tier 1 |
+| **AI/ML 社群** | 不一 | 確認有專案分享頻道後再發布 | Tier 2 |
 
 ### Hacker News
 
-| 플랫폼 | 방식 | 티어 |
+| 平台 | 方式 | Tier |
 |---------|------|------|
-| **Show HN** | "Show HN: Harness — meta-skill for designing Claude Code agent teams" 형식 포스트 | Tier 1 |
-| **Ask HN: What are you working on?** | 월간 스레드 참여 | Tier 2 |
+| **Show HN** | 以 "Show HN: Harness — meta-skill for designing Claude Code agent teams" 格式發文 | Tier 1 |
+| **Ask HN: What are you working on?** | 參與每月討論串 | Tier 2 |
 
 ---
 
 ## 4. Influencers / KOL
 
-### Twitter/X — Claude Code & AI Agent 인플루언서
+### Twitter/X — Claude Code 與 AI Agent 影響者
 
-| 이름 | 핸들 | 팔로워 | 관련성 | 티어 |
+| 名稱 | Handle | Followers | 關聯性 | Tier |
 |------|-------|--------|--------|------|
-| **Miles Deutscher** | @milesdeutscher | ~500k+ | Claude Code 바이럴 콘텐츠 큐레이터 | Tier 1 |
-| **Boris Cherny** | @bcherny | ~20k+ | Claude Code 기술 인플루언서 | Tier 1 |
-| **Anthropic 공식** | @AnthropicAI | ~500k+ | 공식 리트윗 대상 | Tier 1 |
-| **Claude 공식** | @claudeai | ~200k+ | 커뮤니티 하이라이트 | Tier 1 |
-| **Nick Saraev** | (YouTube) | ~100k+ | Claude Code 마스터클래스, 에이전트 팀 전문 | Tier 1 |
-| **Sabrina Ramonov** | (YouTube) | ~500k+ | AI 자동화 교육, Forbes 30 Under 30 | Tier 2 |
-| **freeCodeCamp** | @fabordeofficial | ~2M+ | Claude Code 강좌 게시 | Tier 2 |
-| **Andrew Brown** | (freeCodeCamp) | ~1M+ | Claude Code 초급-고급 강좌 제작자 | Tier 2 |
+| **Miles Deutscher** | @milesdeutscher | ~500k+ | 策展 Claude Code 病毒式傳播內容 | Tier 1 |
+| **Boris Cherny** | @bcherny | ~20k+ | Claude Code 技術型影響者 | Tier 1 |
+| **Anthropic 官方** | @AnthropicAI | ~500k+ | 官方轉推目標 | Tier 1 |
+| **Claude 官方** | @claudeai | ~200k+ | 社群精選亮點 | Tier 1 |
+| **Nick Saraev** | (YouTube) | ~100k+ | Claude Code masterclass、agent team 專家 | Tier 1 |
+| **Sabrina Ramonov** | (YouTube) | ~500k+ | AI automation 教學，Forbes 30 Under 30 | Tier 2 |
+| **freeCodeCamp** | @fabordeofficial | ~2M+ | 發布 Claude Code 教學 | Tier 2 |
+| **Andrew Brown** | (freeCodeCamp) | ~1M+ | 製作 Claude Code 初階到高階教學 | Tier 2 |
 
-### YouTube — Claude Code 채널
+### YouTube — Claude Code 頻道
 
-| 채널 | 구독자 | 콘텐츠 유형 | 접근 방법 |
+| 頻道 | 訂閱者 | 內容類型 | 接觸方式 |
 |------|--------|-------------|-----------|
-| **Nick Saraev** | ~100k+ | Claude Code 마스터클래스, 에이전트 팀 | DM/이메일 (가장 관련성 높음) |
-| **freeCodeCamp** | ~10M+ | 무료 강좌 | 커뮤니티 제보 |
-| **Sabrina Ramonov** | ~500k+ | AI 자동화 | DM/이메일 |
-| **Developer Educators 채널들** | 다양 | 튜토리얼 | developereducators.com에서 확인 |
+| **Nick Saraev** | ~100k+ | Claude Code masterclass、agent team | DM/Email（相關性最高） |
+| **freeCodeCamp** | ~10M+ | 免費課程 | 社群投稿 |
+| **Sabrina Ramonov** | ~500k+ | AI automation | DM/Email |
+| **Developer Educators 頻道群** | 不一 | Tutorial | 可於 developereducators.com 查找 |
 
 ---
 
 ## 5. Aggregators
 
-| 플랫폼 | 제출/노출 방법 | 티어 |
+| 平台 | 提交 / 曝光方式 | Tier |
 |--------|---------------|------|
-| **GitHub Trending** | 런치 당일 스타 집중 → 자동 노출 | Tier 1 (핵심 목표) |
+| **GitHub Trending** | 上線當天集中獲得 stars → 自動曝光 | Tier 1（核心目標） |
 | **Hacker News (Show HN)** | news.ycombinator.com/submit | Tier 1 |
-| **Product Hunt** | producthunt.com에서 "AI Coding Agents" 카테고리로 런치. 헌터 섭외 권장 | Tier 1 |
-| **Trendshift** | trendshift.io — GitHub Trending 자동 트래킹. 트렌딩 진입 시 자동 노출, 뱃지 임베드 가능 | Tier 1 |
-| **Star History** | star-history.com — "Promote your project" 기능으로 제출. 스타 그래프 README에 임베드 | Tier 2 |
-| **GitNews** | producthunt.com/products/gitnews-web — GitHub/HN/Reddit 트렌딩 자동 수집 | Tier 2 |
-| **bestofshowhn.com** | Show HN 게시 시 자동 수집 | Tier 2 |
-| **Dev.to** | dev.to에 기술 블로그 포스트 게시 | Tier 2 |
-| **awesomeclaude.ai** | Claude 리소스 디렉토리, 자동/수동 등록 | Tier 2 |
+| **Product Hunt** | 在 producthunt.com 以 "AI Coding Agents" 類別上線。建議先找 hunter | Tier 1 |
+| **Trendshift** | trendshift.io — 自動追蹤 GitHub Trending。進入 trending 後會自動曝光，也能嵌入 badge | Tier 1 |
+| **Star History** | star-history.com — 可透過 "Promote your project" 功能提交。star 圖表可嵌入 README | Tier 2 |
+| **GitNews** | producthunt.com/products/gitnews-web — 自動蒐集 GitHub/HN/Reddit trending | Tier 2 |
+| **bestofshowhn.com** | 發出 Show HN 後會自動收錄 | Tier 2 |
+| **Dev.to** | 在 dev.to 發表技術部落格文章 | Tier 2 |
+| **awesomeclaude.ai** | Claude 資源目錄，可自動或手動登錄 | Tier 2 |
 
 ---
 
-## 티어별 종합 요약
+## 各 Tier 綜合摘要
 
-### Tier 1 — 필수 (런치 당일 ±1일, 최고 임팩트)
+### Tier 1 — 必做（上線當天 ±1 天，最高影響）
 
-1. **Show HN 포스트** 게시
-2. **Product Hunt 런치** (헌터 사전 섭외)
-3. **r/ClaudeAI** 포스트 (사용 사례 중심)
-4. **r/SideProject**, **r/opensource** 포스트
-5. **awesome-claude-code** (hesreallyhim) 추천 이슈 제출
-6. **awesome-claude-code** (jqueryscript) PR 제출
-7. **awesome-claude-skills** (travisvn, ComposioHQ) PR 제출
-8. **Anthropic Discord** #showcase 게시
-9. **Twitter/X** 런치 트윗 + 인플루언서 DM (Nick Saraev, Boris Cherny)
-10. **Ben's Bites** 커뮤니티 투표 제출
+1. 發布 **Show HN 貼文**
+2. **Product Hunt 上線**（預先找好 hunter）
+3. 發布 **r/ClaudeAI** 貼文（以使用案例為中心）
+4. 發布 **r/SideProject**、**r/opensource** 貼文
+5. 向 **awesome-claude-code**（hesreallyhim）提交推薦 issue
+6. 向 **awesome-claude-code**（jqueryscript）提交 PR
+7. 向 **awesome-claude-skills**（travisvn、ComposioHQ）提交 PR
+8. 在 **Anthropic Discord** 的 #showcase 發文
+9. 發送 **Twitter/X** 上線貼文 + 私訊影響者（Nick Saraev、Boris Cherny）
+10. 提交到 **Ben's Bites** 社群投票
 
-### Tier 2 — 권장 (런치 주간, 중간 임팩트)
+### Tier 2 — 建議（上線週，中等影響）
 
-1. **awesome-llm-agents**, **awesome-agents** PR 제출
-2. **r/LocalLLaMA**, **r/artificial**, **r/programming** 포스트
-3. **Dev.to** 기술 블로그 포스트
-4. **TLDR AI** / **The Rundown AI** 편집팀 접촉
-5. **Console.dev** 선정 기준 충족 확인 후 제출
-6. **Changelog Weekly** 제출
-7. **Star History** 프로젝트 등록
-8. **YouTube 크리에이터** (Sabrina Ramonov, freeCodeCamp) 접촉
+1. 向 **awesome-llm-agents**、**awesome-agents** 提交 PR
+2. 發布 **r/LocalLLaMA**、**r/artificial**、**r/programming** 貼文
+3. 在 **Dev.to** 發表技術部落格文章
+4. 聯繫 **TLDR AI** / **The Rundown AI** 編輯團隊
+5. 確認符合 **Console.dev** 選稿標準後再提交
+6. 投稿 **Changelog Weekly**
+7. 在 **Star History** 註冊專案
+8. 聯繫 **YouTube 創作者**（Sabrina Ramonov、freeCodeCamp）
 
-### Tier 3 — 보너스 (런치 후 1-2주, 장기 발견성)
+### Tier 3 — 加分（上線後 1-2 週，長尾可發現性）
 
-1. **나머지 awesome list** PR 제출 (jim-schwoebel, webfuse-com, BehiSecc 등)
-2. **Awesome-Prompt-Engineering** PR 제출
-3. **r/MachineLearning** 프로젝트 쇼케이스
-4. **Superhuman AI**, **The Neuron** 뉴스레터 접촉
-5. **awesomeclaude.ai** 등록
+1. 向其餘 **awesome list** 提交 PR（jim-schwoebel、webfuse-com、BehiSecc 等）
+2. 向 **Awesome-Prompt-Engineering** 提交 PR
+3. 在 **r/MachineLearning** 做專案展示
+4. 聯繫 **Superhuman AI**、**The Neuron** newsletters
+5. 登錄 **awesomeclaude.ai**
 
 ---
 
-## 접근 템플릿
+## 接觸模板
 
-### A. Awesome List PR 템플릿
+### A. Awesome List PR 模板
 
 ```markdown
 ### PR Title: Add Harness — Agent Team & Skill Architect Plugin
@@ -202,7 +202,7 @@ defines specialized agents, and generates the skills they use.
 **Category suggestion:** Plugins / Agent Frameworks / Orchestration Tools
 ```
 
-### B. Newsletter 피치 템플릿
+### B. Newsletter pitch 模板
 
 ```
 Subject: Harness — A meta-skill that designs AI agent teams for Claude Code
@@ -228,7 +228,7 @@ Best,
 Robin
 ```
 
-### C. Influencer DM 템플릿
+### C. Influencer DM 模板
 
 ```
 Hey [Name],
@@ -245,7 +245,7 @@ https://github.com/revfactory/harness
 Happy to do a walkthrough if you're interested!
 ```
 
-### D. Reddit 포스트 템플릿
+### D. Reddit 貼文模板
 
 ```markdown
 Title: I built a Claude Code plugin that designs agent teams automatically
@@ -270,7 +270,7 @@ Would love feedback from the community. What architecture patterns
 do you use for your agent teams?
 ```
 
-### E. Show HN 포스트 템플릿
+### E. Show HN 貼文模板
 
 ```
 Title: Show HN: Harness – Meta-skill that designs Claude Code agent teams
@@ -291,12 +291,12 @@ https://github.com/revfactory/harness
 
 ---
 
-## 핵심 체크리스트
+## 核心檢查清單
 
-- [ ] 런치 전: Product Hunt 헌터 섭외, 인플루언서 사전 DM
-- [ ] 런치 당일: Show HN + Product Hunt + Reddit (r/ClaudeAI, r/SideProject, r/opensource) + Twitter 런치 트윗
-- [ ] 런치 당일: awesome-claude-code/skills PR 모두 제출
-- [ ] 런치 +1일: Ben's Bites 커뮤니티 제출, Anthropic Discord 공유
-- [ ] 런치 +2-3일: TLDR/Rundown/Console.dev 접촉
-- [ ] 런치 +1주: Tier 2 awesome list PR, Dev.to 블로그, YouTube 크리에이터 접촉
-- [ ] 런치 +2주: Tier 3 awesome list, 나머지 뉴스레터, 장기 발견성 채널
+- [ ] 上線前：找好 Product Hunt hunter，先私訊影響者
+- [ ] 上線當天：Show HN + Product Hunt + Reddit（r/ClaudeAI、r/SideProject、r/opensource）+ Twitter 上線貼文
+- [ ] 上線當天：提交所有 awesome-claude-code/skills PR
+- [ ] 上線 +1 天：提交 Ben's Bites 社群投票、分享到 Anthropic Discord
+- [ ] 上線 +2-3 天：聯繫 TLDR/Rundown/Console.dev
+- [ ] 上線 +1 週：Tier 2 awesome list PR、Dev.to 部落格、聯繫 YouTube 創作者
+- [ ] 上線 +2 週：Tier 3 awesome list、其餘 newsletters、長尾可發現性渠道

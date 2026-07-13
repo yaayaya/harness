@@ -1,292 +1,292 @@
-# 오케스트레이터 스킬 템플릿
+# Orchestrator 技能範本
 
-오케스트레이터는 팀 전체를 조율하는 상위 스킬이다. 실행 모드별로 3가지 템플릿을 제공한다:
+Orchestrator 是協調整個團隊的上層 skill。依照執行模式，提供 3 種範本：
 
-- **템플릿 A: 에이전트 팀 모드 (기본)** — 2명 이상 협업 시 최우선 선택
-- **템플릿 B: 서브 에이전트 모드 (대안)** — 팀 통신이 불필요한 경우
-- **템플릿 C: 하이브리드 모드** — Phase마다 모드를 섞어 구성
+- **範本 A：Agent Team 模式（預設）** - 2 人以上協作時的最優先選擇
+- **範本 B：Subagent 模式（替代方案）** - 不需要團隊通訊時使用
+- **範本 C：Hybrid 模式** - 可在各 Phase 間混合不同模式
 
 ---
 
-## 템플릿 A: 에이전트 팀 모드 (기본 · 최우선 선택)
+## 範本 A：Agent Team 模式（預設，最優先選擇）
 
-2명 이상의 에이전트가 협업할 때 **가장 먼저 검토하는 기본 모드**. `TeamCreate`로 팀을 구성하고, 공유 작업 목록과 `SendMessage`로 조율한다.
+當 2 位以上 agent 協作時，**最先評估的預設模式**。使用 `TeamCreate` 建立團隊，並透過共享工作清單與 `SendMessage` 進行協調。
 
 ```markdown
 ---
 name: {domain}-orchestrator
-description: "{도메인} 에이전트 팀을 조율하는 오케스트레이터. {초기 실행 키워드}. 후속 작업: {도메인} 결과 수정, 부분 재실행, 업데이트, 보완, 다시 실행, 이전 결과 개선 요청 시에도 반드시 이 스킬을 사용."
+description: "{領域} Agent Team 的協調 orchestrator。{初次執行關鍵字}。後續工作：當請求修改 {領域} 結果、局部重跑、更新、補強、重新執行，或改善先前結果時，也一定要使用這個 skill。"
 ---
 
 # {Domain} Orchestrator
 
-{도메인}의 에이전트 팀을 조율하여 {최종 산출물}을 생성하는 통합 스킬.
+協調 {領域} 的 Agent Team，產出 {最終產出物} 的整合 skill。
 
-## 실행 모드: 에이전트 팀
+## 執行模式：Agent Team
 
-## 에이전트 구성
+## Agent 組成
 
-| 팀원 | 에이전트 타입 | 역할 | 스킬 | 출력 |
+| 團隊成員 | Agent 類型 | 角色 | Skill | 輸出 |
 |------|-------------|------|------|------|
-| {teammate-1} | {커스텀 또는 빌트인} | {역할} | {skill} | {output-file} |
-| {teammate-2} | {커스텀 또는 빌트인} | {역할} | {skill} | {output-file} |
+| {teammate-1} | {自訂或內建} | {角色} | {skill} | {output-file} |
+| {teammate-2} | {自訂或內建} | {角色} | {skill} | {output-file} |
 | ... | | | | |
 
-## 워크플로우
+## 工作流程
 
-### Phase 0: 컨텍스트 확인 (후속 작업 지원)
+### Phase 0: 確認 context（支援後續工作）
 
-기존 산출물 존재 여부를 확인하여 실행 모드를 결정한다:
+確認是否已有既有產出物，並據此決定執行模式：
 
-1. `_workspace/` 디렉토리 존재 여부 확인
-2. 실행 모드 결정:
-   - **`_workspace/` 미존재** → 초기 실행. Phase 1로 진행
-   - **`_workspace/` 존재 + 사용자가 부분 수정 요청** → 부분 재실행. 해당 에이전트만 재호출하고, 기존 산출물 중 수정 대상만 덮어쓴다
-   - **`_workspace/` 존재 + 새 입력 제공** → 새 실행. 기존 `_workspace/`를 `_workspace_{YYYYMMDD_HHMMSS}/`로 이동한 뒤 Phase 1 진행
-3. 부분 재실행 시: 이전 산출물 경로를 에이전트 프롬프트에 포함하여, 에이전트가 기존 결과를 읽고 피드백을 반영하도록 지시
+1. 確認 `_workspace/` 目錄是否存在
+2. 決定執行模式：
+   - **`_workspace/` 不存在** → 初次執行。進入 Phase 1
+   - **`_workspace/` 存在 + 使用者要求局部修改** → 局部重跑。只重新呼叫對應的 agent，並且只覆寫既有產出中需要修改的部分
+   - **`_workspace/` 存在 + 提供了新的輸入** → 全新執行。先將既有 `_workspace/` 移到 `_workspace_{YYYYMMDD_HHMMSS}/`，再進入 Phase 1
+3. 局部重跑時：在 agent prompt 中附上先前產出物的路徑，指示 agent 讀取既有結果並反映回饋
 
-### Phase 1: 준비
-1. 사용자 입력 분석 — {무엇을 파악하는지}
-2. 작업 디렉토리에 `_workspace/` 생성
-   - **초기 실행**: 새 `_workspace/` 생성
-   - **새 실행**: 기존 `_workspace/`를 `_workspace_{YYYYMMDD_HHMMSS}/`로 이동한 직후 새 `_workspace/` 재생성
-3. 입력 데이터를 `_workspace/00_input/`에 저장
+### Phase 1: 準備
+1. 分析使用者輸入 — {要釐清的內容}
+2. 在工作目錄中建立 `_workspace/`
+   - **初次執行**：建立新的 `_workspace/`
+   - **全新執行**：將既有 `_workspace/` 移到 `_workspace_{YYYYMMDD_HHMMSS}/` 後，重新建立新的 `_workspace/`
+3. 將輸入資料存入 `_workspace/00_input/`
 
-### Phase 2: 팀 구성
+### Phase 2: 建立團隊
 
-1. 팀 생성:
+1. 建立團隊：
    ```
    TeamCreate(
      team_name: "{domain}-team",
      members: [
-       { name: "{teammate-1}", agent_type: "{type}", model: "opus", prompt: "{역할 설명 및 작업 지시}" },
-       { name: "{teammate-2}", agent_type: "{type}", model: "opus", prompt: "{역할 설명 및 작업 지시}" },
+       { name: "{teammate-1}", agent_type: "{type}", model: "opus", prompt: "{角色說明與工作指示}" },
+       { name: "{teammate-2}", agent_type: "{type}", model: "opus", prompt: "{角色說明與工作指示}" },
        ...
      ]
    )
    ```
 
-2. 작업 등록:
+2. 註冊任務：
    ```
    TaskCreate(tasks: [
-     { title: "{작업1}", description: "{상세}", assignee: "{teammate-1}" },
-     { title: "{작업2}", description: "{상세}", assignee: "{teammate-2}" },
-     { title: "{작업3}", description: "{상세}", depends_on: ["{작업1}"] },
+     { title: "{任務1}", description: "{細節}", assignee: "{teammate-1}" },
+     { title: "{任務2}", description: "{細節}", assignee: "{teammate-2}" },
+     { title: "{任務3}", description: "{細節}", depends_on: ["{任務1}"] },
      ...
    ])
    ```
 
-   > 팀원당 5~6개 작업이 적정. 의존성이 있는 작업은 `depends_on`으로 명시.
+   > 每位團隊成員分配 5 到 6 個任務最合適。有依賴關係的任務請用 `depends_on` 明確標示。
 
-### Phase 3: {주요 작업 — 예: 조사/생성/분석}
+### Phase 3: {主要工作，例如：研究 / 生成 / 分析}
 
-**실행 방식:** 팀원들이 자체 조율
+**執行方式：** 團隊成員自行協調
 
-팀원들은 공유 작업 목록에서 작업을 요청(claim)하고 독립적으로 수행한다.
-리더는 진행 상황을 모니터링하며 필요 시 개입한다.
+團隊成員從共享任務清單中認領工作（claim），並各自獨立執行。
+Leader 監控進度，必要時再介入。
 
-**팀원 간 통신 규칙:**
-- {teammate-1}은 {teammate-2}에게 {어떤 정보}를 SendMessage로 전달
-- {teammate-2}는 작업 완료 시 결과를 파일로 저장하고 리더에게 알림
-- 팀원이 다른 팀원의 결과가 필요하면 SendMessage로 요청
+**團隊成員間的通訊規則：**
+- {teammate-1} 透過 SendMessage 將 {某些資訊} 傳給 {teammate-2}
+- {teammate-2} 完成任務後，將結果存成檔案並通知 Leader
+- 若團隊成員需要其他成員的結果，就用 SendMessage 發出請求
 
-**산출물 저장:**
+**產出物儲存：**
 
-| 팀원 | 출력 경로 |
+| 團隊成員 | 輸出路徑 |
 |------|----------|
 | {teammate-1} | `_workspace/{phase}_{teammate-1}_{artifact}.md` |
 | {teammate-2} | `_workspace/{phase}_{teammate-2}_{artifact}.md` |
 
-**리더 모니터링:**
-- 팀원이 유휴 상태가 되면 자동 알림 수신
-- 특정 팀원이 막혔을 때 SendMessage로 지시 또는 작업 재할당
-- 전체 진행률은 TaskGet으로 확인
+**Leader 監控：**
+- 團隊成員進入閒置狀態時，自動接收通知
+- 特定成員卡住時，用 SendMessage 下達指示或重新分派任務
+- 用 TaskGet 確認整體進度
 
-### Phase 4: {후속 작업 — 예: 검증/통합}
-1. 모든 팀원의 작업 완료 대기 (TaskGet으로 상태 확인)
-2. 각 팀원의 산출물을 Read로 수집
-3. {통합/검증 로직}
-4. 최종 산출물 생성: `{output-path}/{filename}`
+### Phase 4: {後續工作，例如：驗證 / 整合}
+1. 等待所有團隊成員完成任務（用 TaskGet 確認狀態）
+2. 用 Read 收集各成員的產出物
+3. {整合 / 驗證邏輯}
+4. 生成最終產出物：`{output-path}/{filename}`
 
-### Phase 5: 정리
-1. 팀원들에게 종료 요청 (SendMessage)
-2. 팀 정리 (TeamDelete)
-3. `_workspace/` 디렉토리 보존 (중간 산출물은 삭제하지 않음 — 사후 검증·감사 추적용)
-4. 사용자에게 결과 요약 보고
+### Phase 5: 收尾
+1. 向團隊成員發送結束請求（SendMessage）
+2. 清理團隊（TeamDelete）
+3. 保留 `_workspace/` 目錄（不要刪除中間產出物，供後續驗證與稽核追蹤）
+4. 向使用者回報結果摘要
 
-> **팀 재구성이 필요한 경우:** Phase별로 다른 전문가 조합이 필요하면, 현재 팀을 TeamDelete로 정리한 뒤 새 TeamCreate로 다음 Phase의 팀을 구성한다. 이전 팀의 산출물은 `_workspace/`에 보존되므로 새 팀이 Read로 접근 가능.
+> **若需要重組團隊：** 如果不同 Phase 需要不同的專家組合，先用 TeamDelete 清理目前團隊，再用新的 TeamCreate 為下一個 Phase 組隊。前一個團隊的產出物會保留在 `_workspace/`，因此新團隊可以透過 Read 存取。
 
-## 데이터 흐름
+## 資料流
 
 ```
-[리더] → TeamCreate → [teammate-1] ←SendMessage→ [teammate-2]
+[Leader] → TeamCreate → [teammate-1] ←SendMessage→ [teammate-2]
                           │                           │
                           ↓                           ↓
                     artifact-1.md              artifact-2.md
                           │                           │
                           └───────── Read ────────────┘
                                      ↓
-                              [리더: 통합]
+                              [Leader: 整合]
                                      ↓
-                              최종 산출물
+                              最終產出物
 ```
 
-## 에러 핸들링
+## 錯誤處理
 
-| 상황 | 전략 |
+| 情況 | 策略 |
 |------|------|
-| 팀원 1명 실패/중지 | 리더가 감지 → SendMessage로 상태 확인 → 재시작 또는 대체 팀원 생성 |
-| 팀원 과반 실패 | 사용자에게 알리고 진행 여부 확인 |
-| 타임아웃 | 현재까지 수집된 부분 결과 사용, 미완료 팀원 종료 |
-| 팀원 간 데이터 충돌 | 출처 명시 후 병기, 삭제하지 않음 |
-| 작업 상태 지연 | 리더가 TaskGet으로 확인 후 수동으로 TaskUpdate |
+| 1 位團隊成員失敗 / 中止 | Leader 偵測到後 → 用 SendMessage 確認狀態 → 重新啟動或建立替代成員 |
+| 超過半數團隊成員失敗 | 告知使用者並確認是否繼續 |
+| Timeout | 使用目前為止已收集的部分結果，並結束未完成的成員 |
+| 團隊成員之間資料衝突 | 標明來源後並列保留，不刪除 |
+| 任務狀態延遲 | Leader 用 TaskGet 確認後，手動執行 TaskUpdate |
 
-## 테스트 시나리오
+## 測試情境
 
-### 정상 흐름
-1. 사용자가 {입력}을 제공
-2. Phase 1에서 {분석 결과} 도출
-3. Phase 2에서 팀 구성 ({N}명 팀원 + {M}개 작업)
-4. Phase 3에서 팀원들이 자체 조율하며 작업 수행
-5. Phase 4에서 산출물 통합하여 최종 결과 생성
-6. Phase 5에서 팀 정리
-7. 예상 결과: `{output-path}/{filename}` 생성
+### 正常流程
+1. 使用者提供 {輸入}
+2. 在 Phase 1 得出 {分析結果}
+3. 在 Phase 2 建立團隊（{N} 位成員 + {M} 個任務）
+4. 在 Phase 3 由團隊成員自行協調並執行工作
+5. 在 Phase 4 整合產出物並生成最終結果
+6. 在 Phase 5 清理團隊
+7. 預期結果：產生 `{output-path}/{filename}`
 
-### 에러 흐름
-1. Phase 3에서 {teammate-2}가 에러로 중지
-2. 리더가 유휴 알림 수신
-3. SendMessage로 상태 확인 → 재시작 시도
-4. 재시작 실패 시 {teammate-2} 작업을 {teammate-1}에게 재할당
-5. 나머지 결과로 Phase 4 진행
-6. 최종 보고서에 "{teammate-2} 영역 일부 미수집" 명시
+### 錯誤流程
+1. 在 Phase 3 中，{teammate-2} 因錯誤而中止
+2. Leader 收到閒置通知
+3. 用 SendMessage 確認狀態 → 嘗試重新啟動
+4. 若重啟失敗，將 {teammate-2} 的工作改派給 {teammate-1}
+5. 以其餘結果進入 Phase 4
+6. 在最終報告中註明「{teammate-2} 區塊部分資料未收集」
 ```
 
 ---
 
-## 템플릿 B: 서브 에이전트 모드 (대안)
+## 範本 B：Subagent 模式（替代方案）
 
-팀 통신 오버헤드가 불필요한 경우. `Agent` 도구로 직접 호출하고 반환값으로 결과를 수집한다.
+適用於不需要團隊通訊成本的情況。直接使用 `Agent` 工具呼叫，並從回傳值蒐集結果。
 
 ```markdown
 ---
 name: {domain}-orchestrator
-description: "{도메인} 에이전트를 조율하는 오케스트레이터. {초기 실행 키워드}. 후속 작업 키워드 포함."
+description: "{領域} agent 的協調 orchestrator。{初次執行關鍵字}。包含後續工作關鍵字。"
 ---
 
-## 실행 모드: 서브 에이전트
+## 執行模式：Subagent
 
-## 에이전트 구성
+## Agent 組成
 
-| 에이전트 | subagent_type | 역할 | 스킬 | 출력 |
+| Agent | subagent_type | 角色 | Skill | 輸出 |
 |---------|--------------|------|------|------|
-| {agent-1} | {빌트인 또는 커스텀} | {역할} | {skill} | {output-file} |
+| {agent-1} | {內建或自訂} | {角色} | {skill} | {output-file} |
 | {agent-2} | ... | ... | ... | ... |
 
-## 워크플로우
+## 工作流程
 
-### Phase 0: 컨텍스트 확인
-(Template A와 동일 — `_workspace/` 존재 여부 분기)
+### Phase 0: 確認 context
+（與 Template A 相同，依 `_workspace/` 是否存在分流）
 
-### Phase 1: 준비
-1. 입력 분석
-2. `_workspace/` 생성 (초기 실행 시, 또는 새 실행에서 기존 `_workspace/`를 보관 디렉토리로 이동한 직후)
+### Phase 1: 準備
+1. 分析輸入
+2. 建立 `_workspace/`（初次執行時建立，或在全新執行時先將既有 `_workspace/` 移到封存目錄後再建立）
 
-### Phase 2: 병렬 실행
-단일 메시지에서 N개 Agent 도구를 동시 호출:
+### Phase 2: 平行執行
+在單一訊息中同時呼叫 N 個 Agent 工具：
 
-| 에이전트 | 입력 | 출력 | model | run_in_background |
+| Agent | 輸入 | 輸出 | model | run_in_background |
 |---------|------|------|-------|-------------------|
-| {agent-1} | {소스} | `_workspace/{phase}_{agent}_{artifact}.md` | opus | true |
-| {agent-2} | {소스} | `_workspace/{phase}_{agent}_{artifact}.md` | opus | true |
+| {agent-1} | {來源} | `_workspace/{phase}_{agent}_{artifact}.md` | opus | true |
+| {agent-2} | {來源} | `_workspace/{phase}_{agent}_{artifact}.md` | opus | true |
 
-### Phase 3: 통합
-1. 각 에이전트의 반환값 수집
-2. 파일 기반 산출물은 Read로 수집
-3. 통합 로직 적용 → 최종 산출물
+### Phase 3: 整合
+1. 收集各 agent 的返回值
+2. 對於檔案型產出物，用 Read 收集
+3. 套用整合邏輯 → 產生最終產出物
 
-### Phase 4: 정리
-1. `_workspace/` 보존
-2. 결과 요약 보고
+### Phase 4: 收尾
+1. 保留 `_workspace/`
+2. 回報結果摘要
 
-## 에러 핸들링
-- 에이전트 1개 실패: 1회 재시도. 재실패 시 누락 명시하고 진행
-- 과반 실패: 사용자에게 알리고 진행 여부 확인
-- 타임아웃: 현재까지 수집된 부분 결과 사용
+## 錯誤處理
+- 1 個 agent 失敗：重試 1 次。若再次失敗，標明缺漏後繼續
+- 超過半數失敗：告知使用者並確認是否繼續
+- Timeout：使用目前為止已收集的部分結果
 ```
 
 ---
 
-## 템플릿 C: 하이브리드 모드
+## 範本 C：Hybrid 模式
 
-Phase마다 다른 실행 모드를 사용한다. 각 Phase 상단에 `**실행 모드:** {팀 | 서브}`를 명시한다.
+在不同 Phase 使用不同執行模式。需在各 Phase 標題上方標註 `**執行模式:** {團隊 | 子代理}`。
 
 ```markdown
 ---
 name: {domain}-orchestrator
-description: "{도메인} 오케스트레이터 (하이브리드). {키워드}. 후속 작업 키워드 포함."
+description: "{領域} orchestrator（Hybrid）。{關鍵字}。包含後續工作關鍵字。"
 ---
 
-## 실행 모드: 하이브리드
+## 執行模式：Hybrid
 
-| Phase | 모드 | 이유 |
+| Phase | 模式 | 原因 |
 |-------|------|------|
-| Phase 2 (병렬 수집) | 서브 에이전트 | 독립 자료 수집, 팀 통신 불필요 |
-| Phase 3 (합의 통합) | 에이전트 팀 | 상충 데이터 토론·합의 필요 |
-| Phase 4 (독립 검증) | 서브 에이전트 | QA 에이전트 1명이 객관 검증 |
+| Phase 2（平行收集） | Subagent | 獨立收集資料，不需要團隊通訊 |
+| Phase 3（共識整合） | Agent Team | 需要討論與協調相互衝突的資料 |
+| Phase 4（獨立驗證） | Subagent | 由 1 位 QA agent 進行客觀驗證 |
 
-## 워크플로우
+## 工作流程
 
-### Phase 2: 병렬 자료 수집
-**실행 모드:** 서브 에이전트
+### Phase 2: 平行收集資料
+**執行模式：** Subagent
 
-단일 메시지에서 Agent 도구로 N개 에이전트 병렬 호출 (`run_in_background: true`).
-각 결과는 `_workspace/02_{agent}_raw.md`에 저장.
+在單一訊息中用 Agent 工具平行呼叫 N 個 agent（`run_in_background: true`）。
+各結果存到 `_workspace/02_{agent}_raw.md`。
 
-### Phase 3: 합의 기반 통합
-**실행 모드:** 에이전트 팀
+### Phase 3: 以共識為基礎的整合
+**執行模式：** Agent Team
 
-1. `TeamCreate`로 통합 팀 구성 (editor + fact-checker + synthesizer)
-2. `TaskCreate`로 작업 분배 — 모두 Phase 2의 `_workspace/02_*` 파일을 Read
-3. 팀원들이 `SendMessage`로 상충 데이터를 논의, 파일 기반으로 합의안 도출
-4. 최종 통합본 `_workspace/03_integrated.md` 생성
-5. `TeamDelete`로 팀 정리
+1. 用 `TeamCreate` 建立整合團隊（editor + fact-checker + synthesizer）
+2. 用 `TaskCreate` 分派任務，所有人都 Read Phase 2 的 `_workspace/02_*` 檔案
+3. 團隊成員透過 `SendMessage` 討論互相衝突的資料，並以檔案為基礎整理出共識版本
+4. 生成最終整合版 `_workspace/03_integrated.md`
+5. 用 `TeamDelete` 清理團隊
 
-### Phase 4: 독립 검증
-**실행 모드:** 서브 에이전트
+### Phase 4: 獨立驗證
+**執行模式：** Subagent
 
-단일 QA 서브 에이전트가 `_workspace/03_integrated.md`를 입력으로 받아 검증 보고서 생성.
+由單一 QA subagent 讀取 `_workspace/03_integrated.md` 作為輸入，產生驗證報告。
 ```
 
-**하이브리드 전환 규칙:**
-- 팀 → 서브: 팀을 반드시 `TeamDelete`로 정리한 후 Agent 도구 호출
-- 서브 → 팀: 서브 에이전트의 파일 산출물을 팀원들에게 Read 경로로 전달
-- 팀 → 팀: 이전 팀을 정리한 후 새 `TeamCreate` (세션당 1팀만 활성 가능)
+**Hybrid 切換規則：**
+- 團隊 → 子代理：一定要先用 `TeamDelete` 清理團隊，再呼叫 Agent 工具
+- 子代理 → 團隊：將 subagent 的檔案產出透過 Read 路徑提供給團隊成員
+- 團隊 → 團隊：整理舊團隊後，再 `TeamCreate` 新團隊（每個 session 同時只能啟用 1 個團隊）
 
 ---
 
-## 작성 원칙
+## 撰寫原則
 
-1. **실행 모드를 먼저 명시** — 오케스트레이터 상단에 "에이전트 팀" / "서브 에이전트" / "하이브리드" 중 하나 명시. 하이브리드면 Phase별 모드 표 필수
-2. **팀 모드는 TeamCreate/SendMessage/TaskCreate 사용법을 구체적으로** — 팀 구성, 작업 등록, 통신 규칙
-3. **서브 모드는 Agent 도구 파라미터를 완전히 명시** — name, subagent_type, prompt, run_in_background, model
-4. **파일 경로는 절대적으로** — 상대 경로 금지, `_workspace/` 기준 명확한 경로
-5. **Phase 간 의존성 명시** — 어떤 Phase가 어떤 Phase의 결과에 의존하는지. 하이브리드는 모드 전환 지점을 특히 강조
-6. **에러 핸들링은 현실적으로** — "모든 것이 성공한다"고 가정하지 않음
-7. **테스트 시나리오 필수** — 정상 1 + 에러 1 이상
+1. **先明確標示執行模式** - 在 orchestrator 開頭標明「Agent Team」/「Subagent」/「Hybrid」其中之一。若是 Hybrid，必須提供各 Phase 模式表
+2. **團隊模式需具體說明 TeamCreate/SendMessage/TaskCreate 用法** - 包含團隊組成、任務註冊、通訊規則
+3. **Subagent 模式需完整標示 Agent 工具參數** - name、subagent_type、prompt、run_in_background、model
+4. **檔案路徑必須明確** - 禁止相對路徑，需清楚以 `_workspace/` 為基準
+5. **標示 Phase 間依賴關係** - 說明哪個 Phase 依賴哪個 Phase 的結果。Hybrid 尤其要強調模式切換點
+6. **Error handling 要務實** - 不要假設「所有事情都會成功」
+7. **必須提供測試情境** - 至少 1 個正常流程 + 1 個錯誤流程
 
-## description 작성 시 후속 작업 키워드
+## 撰寫 description 時的後續工作關鍵字
 
-오케스트레이터 description은 초기 실행 키워드만으로는 부족하다. 다음 후속 작업 표현을 반드시 포함하라:
+Orchestrator 的 description 不能只寫初次執行關鍵字。必須包含以下後續工作表達：
 
-- 재실행/다시 실행/업데이트/수정/보완
-- "{도메인}의 {부분}만 다시"
-- "이전 결과 기반으로", "결과 개선"
-- 도메인 관련 일상적 요청 (예: 런치 전략 하네스라면 "런치", "홍보", "트렌딩" 등)
+- 重新執行／再次執行／更新／修改／補強
+- 「只重做 {domain} 的 {部分}」
+- 「基於先前結果」、「改善結果」
+- 與 domain 相關的日常請求（例如 launch strategy harness 可包含「launch」、「promotion」、「trending」等）
 
-후속 키워드가 없으면 첫 실행 후 하네스가 사실상 죽은 코드가 된다.
+如果沒有後續關鍵字，第一次執行後這個 harness 實際上就會變成 dead code。
 
-## 실제 오케스트레이터 참고
+## 實際 Orchestrator 參考
 
-팬아웃/팬인 패턴의 오케스트레이터 기본 구조:
-준비 → Phase 0(컨텍스트 확인) → TeamCreate + TaskCreate → N개 팀원 병렬 실행 → Read + 통합 → 정리.
-`references/team-examples.md`의 리서치 팀 예시를 참조.
+Fan-out/Fan-in pattern 的 orchestrator 基本結構：
+準備 → Phase 0（確認 context）→ TeamCreate + TaskCreate → N 位團隊成員平行執行 → Read + 整合 → 收尾。
+請參考 `references/team-examples.md` 中的 research team 範例。
