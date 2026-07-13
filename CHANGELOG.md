@@ -2,6 +2,22 @@
 
 本專案遵循 [Semantic Versioning](https://semver.org/)。
 
+## [未發布]
+
+### 新增
+
+- 新增建立 agent/skill 前的重複檢查階段（Phase 3-0、Phase 4-0）
+- `references/agent-design-patterns.md` 新增「代理人重複使用設計」章節
+- `references/skill-writing-guide.md` 新增第 9 節「技能重複使用設計」
+
+### 變更
+
+- 在 Phase 選擇矩陣中明確列出 3-0/4-0
+- 在 Phase 2-3 新增重複使用檢查階段的指引
+- 在產物檢查清單新增 2 個重複使用檢查項目
+
+---
+
 ## [1.2.1] - 2026-04-18
 
 ### 修正

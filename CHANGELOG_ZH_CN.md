@@ -2,6 +2,22 @@
 
 本专案遵循 [Semantic Versioning](https://semver.org/)。
 
+## [未发布]
+
+### 新增
+
+- 新增建立 agent/skill 前的重复检查阶段（Phase 3-0、Phase 4-0）
+- `references/agent-design-patterns.md` 新增「代理人重复使用设计」章节
+- `references/skill-writing-guide.md` 新增第 9 节「技能重复使用设计」
+
+### 变更
+
+- 在 Phase 选择矩阵中明确列出 3-0/4-0
+- 在 Phase 2-3 新增重复使用检查阶段的指引
+- 在产物检查清单新增 2 个重复使用检查项目
+
+---
+
 ## [1.2.1] - 2026-04-18
 
 ### 修正

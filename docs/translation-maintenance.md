@@ -8,7 +8,7 @@
 - `upstream`：`revfactory/harness`。
 - `codex/translate-YYYY-MM-DD`：單次自動翻譯工作的暫存分支。
 
-繁體中文與簡體中文都沿用上游多語系結構。`README.md` 維持繁體中文預設入口；簡體中文使用 `README_ZH_CN.md`，其他文件依同樣的語言後綴規則建立。
+繁體中文與簡體中文都沿用上游多語系結構。`zh-tw` 分支的同路徑 Markdown 文件就是繁體中文版本；`README.md` 是繁中預設入口，並以 `README_EN.md` 保留英文入口。簡體中文使用 `_ZH_CN` 後綴，HTML 則維持上游英文檔案並使用 `_zh_TW`、`_zh_CN` 語言檔。
 
 ## 執行模式
 
@@ -35,9 +35,10 @@
 
 ## 檔案規則
 
-- 保留上游原文檔案與既有語言檔案。
-- 繁中預設入口使用 `README.md`；其他繁中翻譯使用 `_ZH_TW` 後綴。
+- `main` 保留上游原文；`zh-tw` 保留 `README_EN.md` 與既有韓文、日文語言檔案。
+- `zh-tw` 分支的 Markdown 文件沿用上游同一路徑作為繁中版本；`README.md` 為預設入口，`README_EN.md` 保留英文版本。
 - 簡中使用 `_ZH_CN` 後綴。
+- HTML 上游檔案保留原文，繁中與簡中分別使用 `_zh_TW.html`、`_zh_CN.html`。
 - 程式碼、圖片、LICENSE、設定檔不翻譯，狀態標記為 `不適用`。
 - 連結、命令、檔案路徑、環境變數名稱與程式碼區塊必須保持可執行。
 

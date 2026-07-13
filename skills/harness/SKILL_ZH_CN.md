@@ -28,9 +28,9 @@ description: "建构 Harness。这是一个定义专业 agent 并建立该 agent
    **既有扩充时的 Phase 选择矩阵：**
    | 变更类型 | Phase 1 | Phase 2 | Phase 3 | Phase 4 | Phase 5 | Phase 6 |
    |----------|---------|---------|---------|---------|---------|---------|
-   | 新增 agent | 跳过（使用 Phase 0 结果） | 只决定配置 | 必要 | 仅在需要专属 skill 时 | 修改 orchestrator | 必要 |
-   | 新增/修改 skill | 跳过 | 跳过 | 跳过 | 必要 | 仅在连结有变更时 | 必要 |
-   | 架构变更 | 跳过 | 必要 | 只处理受影响 agent | 只处理受影响 skill | 必要 | 必要 |
+   | 新增 agent | 跳过（使用 Phase 0 结果） | 只决定配置 | 必要（含 3-0） | 仅在需要专属 skill 时（含 4-0） | 修改 orchestrator | 必要 |
+   | 新增/修改 skill | 跳过 | 跳过 | 跳过 | 必要（含 4-0） | 仅在连结有变更时 | 必要 |
+   | 架构变更 | 跳过 | 必要 | 只处理受影响 agent（含 3-0） | 只处理受影响 skill（含 4-0） | 必要 | 必要 |
 3. 比对既有 agent/skill 清单与 CLAUDE.md 纪录，侦测不一致（drift）
 4. 向使用者摘要报告稽核结果，并确认执行计划
 
@@ -73,9 +73,15 @@ description: "建构 Harness。这是一个定义专业 agent 并建立该 agent
 
 #### 2-3. Agent 拆分标准
 
-依专业性、平行性、context、可重用性四个面向判断。详细标准表请参考 `references/agent-design-patterns.md` 的「agent 拆分标准」。
+依专业性、平行性、context、可重用性四个面向判断。详细标准表请参考 `references/agent-design-patterns.md` 的「agent 拆分标准」。既有 agent 的重复与重复使用检查在 Phase 3-0 执行。
 
 ### Phase 3: 建立 agent 定义
+
+#### 3-0. 检查既有 agent 的重复与重复使用
+
+建立新 agent 前，先检查 `专案/.claude/agents/` 中是否已有职责重叠的 agent。反复建立 Harness 时，相同角色很容易以不同名称累积。
+
+> 重复分类标准与重复使用设计请参阅 `references/agent-design-patterns.md` 的「代理人重复使用设计」章节。
 
 **所有 agent 都必须定义为 `专案/.claude/agents/{name}.md` 档案。** 禁止在没有 agent 定义档的情况下，直接把角色写进 Agent 工具的 prompt。原因如下：
 - agent 定义必须以档案形式存在，才能在下次 session 重复使用
@@ -101,6 +107,12 @@ description: "建构 Harness。这是一个定义专业 agent 并建立该 agent
 ### Phase 4: 建立 skill
 
 将各 agent 会使用的 skill 建立在 `专案/.claude/skills/{name}/SKILL.md`。详细撰写指南请参考 `references/skill-writing-guide.md`。
+
+#### 4-0. 检查既有 skill 的重复与重复使用
+
+建立新 skill 前，先检查 `专案/.claude/skills/` 中是否已有功能重叠的 skill。反复建立 Harness 时，相同功能很容易以不同名称累积。
+
+> 重复分类标准与一般化模式请参阅 `references/skill-writing-guide.md` 的「技能重复使用设计」章节。
 
 #### 4-1. Skill 结构
 

@@ -35,7 +35,7 @@ def git_source(path: str) -> str:
 
 
 def target_path(source: Path, language: str) -> Path:
-    if source.as_posix() == "README.md" and language == "zh-tw":
+    if language == "zh-tw" and source.suffix.lower() in {".md", ".mdx", ".txt"}:
         return source
     if source.suffix.lower() == ".html":
         suffix = "_zh_TW" if language == "zh-tw" else "_zh_CN"
@@ -108,6 +108,12 @@ def main() -> int:
     ]
     paths = [path for path in paths if is_translatable(path)]
     languages = ["zh-tw", "zh-cn"] if args.language == "both" else [args.language]
+
+    if Path("README.md") in paths:
+        english_snapshot = Path("README_EN.md")
+        print(f"en: README.md -> {english_snapshot}")
+        if not args.dry_run:
+            english_snapshot.write_text(git_source("README.md"), encoding="utf-8", newline="\n")
 
     for source in paths:
         for language in languages:

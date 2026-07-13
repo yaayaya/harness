@@ -12,8 +12,8 @@
 | `docs/quickstart.md` | `docs/quickstart.md` | `docs/quickstart_ZH_CN.md` | 文件 | 已完成 | 已完成 |
 | `docs/experimental-dependency.md` | `docs/experimental-dependency.md` | `docs/experimental-dependency_ZH_CN.md` | 文件 | 已完成 | 已完成 |
 | `skills/harness/SKILL.md` | `skills/harness/SKILL.md` | `skills/harness/SKILL_ZH_CN.md` | Skill | 已完成 | 已完成 |
-| `skills/harness/references/*.md` | 同路徑 `_ZH_TW` | 同路徑 `_ZH_CN` | Skill 參考 | 已完成 | 已完成 |
-| `_workspace/**/*.md` | 同路徑 `_ZH_TW` | 同路徑 `_ZH_CN` | 工作文件 | 已完成 | 已完成 |
+| `skills/harness/references/*.md` | 同路徑（zh-tw 分支） | 同路徑 `_ZH_CN` | Skill 參考 | 已完成 | 已完成 |
+| `_workspace/**/*.md` | 同路徑（zh-tw 分支） | 同路徑 `_ZH_CN` | 工作文件 | 已完成 | 已完成 |
 | `index.html` | `index_zh_TW.html` | `index_zh_CN.html` | 網頁 | 已完成 | 已完成 |
 | `privacy.html` | `privacy_zh_TW.html` | `privacy_zh_CN.html` | 隱私頁 | 已完成 | 已完成 |
 | `README_EN.md`、`README_JA.md`、`README_KO.md` | 保留並在 README 提供選項 | 保留並在 README 提供選項 | 既有語言 | 已完成 | 不適用 |

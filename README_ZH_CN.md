@@ -14,7 +14,7 @@
 <p align="center">
   <a href="#category--where-harness-sits"><img src="https://img.shields.io/badge/Layer-L3%20Meta--Factory-orange" alt="Layer"></a>
   <a href="#category--where-harness-sits"><img src="https://img.shields.io/badge/Sub--layer-Team--Architecture%20Factory-teal" alt="Sub-layer"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Runtime-Claude%20Code-lightgrey" alt="Runtime support"></a>
+  <a href="#"><img src="https://img.shields.io/badge/README-ZH--TW%20%7C%20EN%20%7C%20KO%20%7C%20JA-lightgrey" alt="i18n"></a>
 </p>
 
 # Harness — Claude Code 的团队架构工厂
@@ -57,21 +57,6 @@ Harness 位于 agent coding runtime 生态系中的 **L3 Meta-Factory** 层，�
 - **Orchestration**：支援代理人之间的资料传递、错误处理与协调流程
 - **Validation**：提供触发验证、dry-run 测试，以及有技能与无技能的比较测试
 
-## Harness 演化机制
-
-Harness 的演化机制会把真实使用后的差异回馈到工厂中，例如哪些设计有效、哪些设计需要修正，让下一次产生相似领域的 harness 时更接近实战版本。当一个生成的 harness 在真实专案中被使用后，`/harness:evolve` 技能会撷取初始架构与最终交付版本之间的差异，再把这些差异送回工厂。
-
-```
-Initial harness ──▶ Real project use ──▶ Shipped harness
-                                              │
-                                              ▼ (delta capture via /harness:evolve)
-                                        ┌───────────────┐
-                                        │  Factory      │◀── better next-gen draft
-                                        └───────────────┘
-```
-
-这套机制被称为 **Harness Evolution Mechanism**。
-
 ## 工作流程
 
 ``` 
@@ -99,7 +84,7 @@ Phase 6: 验证与测试
 
 #### 安装外挂
 ```shell
-/plugin install harness@harness
+/plugin install harness@harness-marketplace
 ```
 
 ### 直接安装为全域 Skill
@@ -237,15 +222,15 @@ prompt、分镜版面规划与对白编修的代理人，并且让他们彼此�
 
 ## 生态共存 — Harness 与相邻专案
 
-Harness 并不是 Claude Code / agent framework 生态系中唯一的选项。以下专案位于相邻层级，各自拥有不同定位，可依需求单独选用或搭配使用。
+Harness 并不是 Claude Code / agent framework 生态系中唯一的选项。以下专案位于相邻层级，各自采用不同定位；你可以依需求选择其中一个，或将多个专案组合使用。
 
 | Repo | 他们的定位 | 与 Harness 的关系 |
 |------|------------|-------------------|
-| [coleam00/Archon](https://github.com/coleam00/Archon) | 「harness builder」, 著重可重现的 runtime 设定 | **同属 L3、不同子层。** Archon 是 Runtime-Configuration Factory，Harness 是 Team-Architecture Factory。 |
-| [SaehwanPark/meta-harness](https://github.com/SaehwanPark/meta-harness) | 相同概念的 Codex 移植版 | **同属 L3、不同发行路线。** 本 fork 内建 Codex plugin；meta-harness 可作为另一个 Codex 参考实作。 |
-| [affaan-m/ECC](https://github.com/affaan-m/everything-claude-code) | 建立在既有 harness 上方的工作流标准化层 | **不同层级。** ECC 负责标准化，Harness 负责生成 harness。 |
-| [wshobson/agents](https://github.com/wshobson/agents) | Subagent / skill catalog | **像零件供应与工厂的关系。** Harness 负责设计团队，wshobson/agents 可作为可吸收的零件库。 |
-| [LangGraph](https://langchain-ai.github.io/langgraph/) | 状态图导向、LLM 无关的编排框架 | **不同路线。** LangGraph 侧重长时间执行与状态恢复，Harness 侧重 Claude Code 原生的快速团队设计。 |
+| [coleam00/Archon](https://github.com/coleam00/Archon) | 「harness builder」：可决定、可重复的 runtime 设定 | **同属 L3、相邻子层。** Archon 是 Runtime-Configuration Factory，Harness 是 Team-Architecture Factory。需要 runtime 决定性时选 Archon，需要团队架构时选 Harness，也可以两者搭配。 |
+| [SaehwanPark/meta-harness](https://github.com/SaehwanPark/meta-harness) | 相同概念的 Codex 移植版 | **同属 L3、不同 runtime。** 在 Claude Code 上使用 Harness，在 Codex 上使用 meta-harness。 |
+| [affaan-m/ECC](https://github.com/affaan-m/everything-claude-code) | 建立在既有 harness 上方的 agent harness 效能与工作流程层 | **不同层级。** ECC 是跨 harness 的标准化层，Harness 则是产生 harness 的工厂；两者可以串接使用。 |
+| [wshobson/agents](https://github.com/wshobson/agents) | Subagent / skill catalog（182 个 agent、149 个 skill） | **工厂与零件供应的关系。** wshobson/agents 是可挑选的目录，Harness 负责设计团队；可将其中的项目吸收为 Harness 团队的零件。 |
+| [LangGraph](https://langchain-ai.github.io/langgraph/) | 状态图导向、LLM 无关的编排框架 | **不同路线。** LangGraph 适合长时间执行与可恢复状态的编排，Harness 侧重 Claude Code 原生的快速团队设计。 |
 
 ## 使用 Harness 建立的成果
 
