@@ -19,17 +19,17 @@
 
 ## 1. Description 撰寫模式
 
-`Description` 是 skill 唯一的 trigger 機制。Claude 會只根據 `available_skills` 清單中的 name + description，決定是否使用該 skill。
+`Description` 是 Codex 隱式選擇 skill 的主要依據。Codex 會先取得技能的 name、description 與路徑，再決定是否載入完整 `SKILL.md`；使用者也能以 `$skill-name` 明確叫用。
 
 ### 理解 trigger 機制
 
-Claude 傾向不會為了可以用自身基本工具輕鬆處理的簡單工作呼叫 skill。像「幫我讀這份 PDF」這種簡單請求，即使 description 寫得再完整，也可能不會被 trigger。工作越複雜、步驟越多、越具專業性，skill 被 trigger 的機率就越高。
+Codex 不一定會為可直接完成的簡單工作載入額外 skill。像「幫我讀這份 PDF」這種寬泛請求，即使 description 寫得完整，也未必會觸發專門流程。工作越具體、越需要固定步驟或專業判斷，skill 越容易被正確選用。
 
 ### 撰寫原則
 
 1. 同時描述 **skill 會做什麼** + **具體的 trigger 情境**
 2. 明確寫出邊界條件，區分相似但不應 trigger 的情況
-3. 稍微寫得更「pushy」一些，以補償 Claude 傾向保守判斷 trigger 的特性
+3. 清楚列出應使用的情境與常見觸發語句，但不要擴張到相鄰的一般工作
 
 ### 好的範例
 
@@ -92,8 +92,8 @@ ALWAYS use pdfplumber for table extraction. NEVER use PyPDF2 for tables.
 ### 節省 context
 
 context window 是公共資源。要不斷自問每一句話是否足以合理化它的 token 成本：
-- 「這是 Claude 已經知道的內容嗎？」→ 刪除
-- 「沒有這段說明，Claude 會犯錯嗎？」→ 保留
+- 「這是 Codex 已具備的一般能力嗎？」→ 刪除
+- 「沒有這段說明，Codex 會偏離流程或輸出嗎？」→ 保留
 - 「一個具體範例是否比一大段說明更有效？」→ 改用範例
 
 ---
@@ -263,7 +263,7 @@ bigquery-skill/
 - `README.md`、`CHANGELOG.md`、`INSTALLATION_GUIDE.md` 等附加文件
 - skill 產生過程的 metadata（測試結果、迭代歷程）
 - 面向使用者的說明文件（skill 是給 AI agent 的指示書）
-- Claude 已經知道的一般性知識
+- Codex 已具備的一般性知識
 
 ---
 

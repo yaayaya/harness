@@ -1,62 +1,74 @@
-name: Feature request
-description: Propose a new capability or enhancement for Harness
+name: 功能提案
+description: 為 Harness Codex 版提出新能力或改進
 title: "[feat] "
 labels: ["enhancement", "needs-discussion"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the idea. Features take a bit of back-and-forth — please help us with the "why" before the "what".
-
-        For anything RFC-sized (new pattern family, runtime support, breaking API), consider starting in [GitHub Discussions](https://github.com/revfactory/harness/discussions) first.
+        請先說明要解決的問題，再描述方案。若涉及新的架構模式、執行環境或破壞性介面，請附上遷移與驗證方式。
 
   - type: textarea
     id: problem
     attributes:
-      label: What problem does this solve?
-      description: Describe the user or engineering pain point. Concrete scenario preferred.
+      label: 要解決的問題
+      description: 請提供具體使用情境、目前痛點與受影響使用者。
       placeholder: |
-        When I scaffold a team for ___, I end up manually ___ because ___.
+        當我為 ___ 建立 Harness 時，必須手動 ___，因為目前 ___。
     validations:
       required: true
 
   - type: textarea
     id: proposal
     attributes:
-      label: Proposed solution
-      description: Your idea for fixing it. Sketch API / CLI / workflow if relevant.
+      label: 建議方案
+      description: 說明要修改 Skill、代理人、Plugin、Marketplace、MCP、Hook 或其他層級，以及預期工作流程。
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: 完成與驗證方式
+      description: 列出可證明功能完成的產物、測試、Dry-run 與失敗情境。
+    validations:
+      required: true
+
+  - type: textarea
+    id: credentials
+    attributes:
+      label: 外部服務與憑證需求
+      description: 若需要外部服務，列出端點、驗證方式、環境變數名稱、最小權限與測試資料；不得貼密鑰。若無請填「無」。
+    validations:
+      required: true
+
+  - type: dropdown
+    id: related-pattern
+    attributes:
+      label: 相關團隊架構模式
+      options:
+        - 與特定模式無關
+        - Pipeline
+        - Fan-out / Fan-in
+        - Expert Pool
+        - Producer-Reviewer
+        - Supervisor
+        - Hierarchical Delegation
+        - 新模式（請在方案中說明）
     validations:
       required: true
 
   - type: textarea
     id: alternatives
     attributes:
-      label: Alternatives considered
-      description: What other approaches did you think about, and why did you not pick them?
+      label: 考慮過的替代方案
     validations:
       required: false
-
-  - type: dropdown
-    id: related-pattern
-    attributes:
-      label: Related team-architecture pattern (if any)
-      description: Which of the 6 built-in patterns is this most relevant to?
-      options:
-        - "Not pattern-specific"
-        - "Pipeline"
-        - "Fan-out / Fan-in"
-        - "Expert Pool"
-        - "Producer–Reviewer"
-        - "Supervisor"
-        - "Hierarchical Delegation"
-        - "A new pattern (please describe below)"
-    validations:
-      required: true
 
   - type: textarea
     id: additional
     attributes:
-      label: Additional context (optional)
-      description: Links, prior art, screenshots, anything else.
+      label: 補充資訊
+      description: 可附參考資料、截圖或相關 issue。
     validations:
       required: false

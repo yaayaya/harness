@@ -1,58 +1,48 @@
 <!--
-感謝你送出 PR！請填寫下列區塊，讓 reviewer 可以更快完成審查。
-
-分支命名、commit 慣例與 SLA 請參閱 CONTRIBUTING.md。
+感謝你送出 PR。分支、Commit 與驗證規則請參閱 CONTRIBUTING.md。
 -->
 
-## Summary
+## 變更摘要
 
-<!-- 2–4 句話：這個 PR 變更了什麼？為什麼現在要做？ -->
+<!-- 用 2 至 4 句說明變更內容與原因。 -->
 
-## Motivation
+## 相關問題
 
-<!-- 請連結促成這次變更的 issue、RFC 或研究筆記。若沒有，一句簡短理由也可以。 -->
+- 修正 #
+- 相關 #
 
-- Closes #
-- Related to #
+## 變更範圍
 
-## Scope of change
-
-<!-- 勾選適用項目，其餘保持未勾選。 -->
-
-- [ ] Skill / meta-skill logic
-- [ ] Agent template(s)
-- [ ] Plugin manifest (`.claude-plugin/plugin.json`, `marketplace.json`)
-- [ ] Documentation (`README.md`, `README_KO.md`, `README_JA.md`, `docs/`)
+- [ ] Harness Skill 或 meta-skill 邏輯
+- [ ] Codex 自訂代理人範本（`.codex/agents/*.toml`）
+- [ ] Plugin manifest（`.codex-plugin/plugin.json`）
+- [ ] Marketplace（`.agents/plugins/marketplace.json`）
+- [ ] 繁體中文文件（`README.md`、`docs/`）
+- [ ] 驗證器或測試
 - [ ] `CHANGELOG.md`
-- [ ] CI / GitHub Actions
-- [ ] Tests
-- [ ] Other (describe):
+- [ ] 其他：
 
-## Tests
+## 驗證
 
-<!-- 你在本地執行了什麼？請貼上輸出或簡述。 -->
+<!-- 附上實際執行的命令與結果。 -->
 
-- [ ] `npx markdownlint '**/*.md'` passes
-- [ ] Manual repro of the change works as expected
-- [ ] New unit / integration tests added (if applicable)
-- [ ] N/A — explain below
+- [ ] `python scripts/validate_codex_harness.py` 通過
+- [ ] 修改 Skill 時已執行應觸發、非觸發與 Dry-run
+- [ ] 修改 manifest 時已執行 Codex Plugin validator
+- [ ] 已手動重現並確認預期行為
+- [ ] 不適用，原因：
 
-## CHANGELOG update
+## 破壞性變更與版本影響
 
-<!-- 所有使用者可見的變更都必須寫進 CHANGELOG.md 的 Unreleased 區塊。 -->
+- [ ] Patch：修正錯誤，不改變介面
+- [ ] Minor：向下相容的新功能
+- [ ] Major：破壞性變更，已附遷移說明
+- [ ] 無：純文件、測試或內部整理
 
-- [ ] Yes — added to `CHANGELOG.md`
-- [ ] No — this change is not user-visible (docs-only / internal refactor)
+## 外部憑證需求
 
-## SemVer impact
+<!-- 列出服務、環境變數名稱、最小權限與測試方式；若無請寫「無」。不得貼出密鑰。 -->
 
-<!-- 請參閱 CONTRIBUTING.md § Commit Message Convention。請選一項。 -->
+## 補充說明
 
-- [ ] **Patch** — bug fix, no API change (`fix:`)
-- [ ] **Minor** — additive, backward-compatible (`feat:`)
-- [ ] **Major** — breaking change (`feat!:` or `BREAKING CHANGE:` in commit footer)
-- [ ] **None** — docs / chore / refactor / test
-
-## Additional notes
-
-<!-- 截圖、遷移說明、後續工作，或希望 reviewer 特別留意的部分。 -->
+<!-- 截圖、遷移方式、已知限制或希望審查者特別注意的內容。 -->

@@ -1,297 +1,210 @@
 <p align="center">
-  <img src="harness_banner.png" alt="Harness Banner" width="600">
+  <img src="harness_banner.png" alt="Harness" width="760">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.2.0-brightgreen.svg" alt="Version">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"></a>
-  <img src="https://img.shields.io/badge/Claude_Code-Plugin-purple.svg" alt="Claude Code Plugin">
-  <img src="https://img.shields.io/badge/Patterns-6_Architectures-orange.svg" alt="6 Architecture Patterns">
-  <img src="https://img.shields.io/badge/Mode-Agent_Teams-green.svg" alt="Agent Teams">
-  <a href="https://github.com/revfactory/harness/stargazers"><img src="https://img.shields.io/github/stars/revfactory/harness?style=social" alt="GitHub Stars"></a>
+  <img src="https://img.shields.io/badge/Codex-Plugin-10A37F.svg" alt="Codex Plugin">
+  <img src="https://img.shields.io/badge/Language-繁體中文-blue.svg" alt="繁體中文">
+  <img src="https://img.shields.io/badge/License-Apache--2.0-orange.svg" alt="Apache-2.0">
+  <img src="https://img.shields.io/badge/Version-2.0.0-purple.svg" alt="2.0.0">
 </p>
 
-<p align="center">
-  <a href="#category--where-harness-sits"><img src="https://img.shields.io/badge/Layer-L3%20Meta--Factory-orange" alt="Layer"></a>
-  <a href="#category--where-harness-sits"><img src="https://img.shields.io/badge/Sub--layer-Team--Architecture%20Factory-teal" alt="Sub-layer"></a>
-  <a href="#"><img src="https://img.shields.io/badge/README-ZH--TW%20%7C%20EN%20%7C%20KO%20%7C%20JA-lightgrey" alt="i18n"></a>
-</p>
+# Harness — Codex 團隊架構工廠
 
-# Harness — Claude Code 的團隊架構工廠
+Harness 是一個 Codex meta-skill，會把專案或領域需求轉換成可重複使用的自訂代理人、技能與多代理工作流程。
 
-**繁體中文** | [English](README_EN.md) | [한국어](README_KO.md) | [日本語](README_JA.md)
+輸入「幫我為這個專案配置 Harness」或明確叫用 `$harness`，Codex 會分析工作階段、選擇團隊架構、產生原生設定，並建立可驗證與可持續維護的 Harness。
 
-> **Harness 是 Claude Code 的團隊架構工廠。** 只要輸入 **"build a harness for this project"**、`「幫我為這個專案配置 Harness」`、`「하네스 구성해줘」` 或 `「ハーネスを構成して」`，外掛就會將你的領域描述轉換成代理人團隊與其使用的技能，並從六種預先定義的團隊架構模式中挑選最合適的配置。
+## 這個分支的定位
 
-## 概要
+`codex` 分支是以 Codex 為唯一執行環境的版本。它不是在舊格式上做名稱替換，而是採用 Codex 原生結構：
 
-Harness 運用 Claude Code 的 agent team 系統，將複雜任務拆解成由多個專職代理人協作完成的工作流程。輸入「build a harness for this project」後，它會根據你的領域自動產生代理人定義（`.claude/agents/`）與技能（`.claude/skills/`）。
+| 功能 | Codex 產物 |
+|---|---|
+| 專案持久指示 | `AGENTS.md` |
+| 自訂代理人 | `.codex/agents/*.toml` |
+| 專案技能 | `.agents/skills/{name}/SKILL.md` |
+| 多代理設定 | `.codex/config.toml` |
+| 可安裝外掛 | `.codex-plugin/plugin.json` |
+| 儲存庫 Marketplace | `.agents/plugins/marketplace.json` |
 
-## 類別定位 — Harness 位在哪一層
+舊版 Claude 專用的 `.claude/agents/*.md`、`.claude/skills/`、`CLAUDE.md`、Team API 與固定 Opus 模型設定，不會出現在 Harness 產物中。
 
-Harness 位於 agent coding runtime 生態系中的 **L3 Meta-Factory** 層，也就是「用來生成其他 harness，而不是自己作為 harness」的那一層。在 L3 裡，它定位在一個更具體的子層：**Team-Architecture Factory**。
+## 核心能力
 
-| 層級 | 功能 | 相鄰專案 |
-|------|------|----------|
-| **L3 — Meta-Factory / Team-Architecture Factory**（本專案） | 將領域描述轉成代理人團隊與技能，並套用 6 種預定義團隊模式 | — |
-| L3 — Meta-Factory / Runtime-Configuration Factory | 產生可重現、可預測的執行環境設定 | [coleam00/Archon](https://github.com/coleam00/Archon) |
-| L3 — Meta-Factory / Codex Runtime Port | 相同概念的 Codex runtime 移植版 | [SaehwanPark/meta-harness](https://github.com/SaehwanPark/meta-harness) |
-| L2 — Cross-Harness Workflow | 在多個 harness 之間標準化 skills、rules、hooks | [affaan-m/ECC](https://github.com/affaan-m/everything-claude-code) |
-
-> Archon 負責產生可重現的 runtime 設定；Harness 則負責產生團隊架構，例如 Pipeline、Fan-out/Fan-in、Expert Pool、Producer-Reviewer、Supervisor、Hierarchical Delegation，以及各代理人會用到的技能。兩者同屬 L3，但處於不同子層。若你需要執行環境的一致性，選 Archon；若你需要代理人團隊設計，選 Harness；也可以兩者搭配使用。
-
-## 星標歷史
-
-<a href="https://www.star-history.com/?repos=revfactory%2Fharness&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=revfactory/harness&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=revfactory/harness&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=revfactory/harness&type=date&legend=top-left" />
- </picture>
-</a>
-
-## 主要特色
-
-- **Agent Team Design**：提供 6 種架構模式，包含 Pipeline、Fan-out/Fan-in、Expert Pool、Producer-Reviewer、Supervisor、Hierarchical Delegation
-- **Skill Generation**：自動產生符合領域需求的技能，並採用 Progressive Disclosure 管理上下文
-- **Orchestration**：支援代理人之間的資料傳遞、錯誤處理與協調流程
-- **Validation**：提供觸發驗證、dry-run 測試，以及有技能與無技能的比較測試
+- **領域分析**：從業務結果、資料流、風險與驗收條件找出真正需要的角色。
+- **自訂代理人**：產生 Codex TOML 代理人，包含責任、權限、工具、輸入、輸出與失敗處理。
+- **技能設計**：產生符合 Agent Skills 格式的 `SKILL.md`、references、scripts 與 assets。
+- **多代理編排**：支援 Pipeline、Fan-out/Fan-in、Expert Pool、Producer-Reviewer、Supervisor 與 Hierarchical Delegation。
+- **權限設計**：研究與審查角色預設唯讀，只有指定實作者擁有寫入權。
+- **驗證與維護**：檢查結構、觸發、資料流、失敗情境、漂移與實際 Dry-run。
 
 ## 工作流程
 
-``` 
-Phase 1: 領域分析
+```text
+Phase 0：稽核 AGENTS.md、.codex/agents、.agents/skills 與既有設定
     ↓
-Phase 2: 團隊架構設計（Agent Teams 與 Subagents）
+Phase 1：分析領域、輸入、輸出、風險與驗收條件
     ↓
-Phase 3: 產生代理人定義（`.claude/agents/`）
+Phase 2：選擇單一、平行、階段式或混合多代理模式
     ↓
-Phase 4: 產生技能（`.claude/skills/`）
+Phase 3：建立 .codex/agents/*.toml
     ↓
-Phase 5: 整合與協調
+Phase 4：建立 .agents/skills/*/SKILL.md
     ↓
-Phase 6: 驗證與測試
+Phase 5：建立 Orchestrator 技能並在 AGENTS.md 註冊入口
+    ↓
+Phase 6：結構、觸發、失敗與 Dry-run 驗證
+    ↓
+Phase 7：記錄變更並持續修正漂移
 ```
 
-## 安裝方式
+## 安裝
 
-### Claude Code Marketplace 安裝
+### 方法一：透過 Codex Marketplace 安裝
 
-#### 加入 Marketplace
-```shell
-/plugin marketplace add revfactory/harness
+在儲存庫外執行：
+
+```powershell
+powershell -NoProfile -Command "codex plugin marketplace add yaayaya/harness-zh --ref codex"
 ```
 
-#### 安裝外掛
-```shell
-/plugin install harness@harness-marketplace
+重新啟動 ChatGPT 桌面版或 Codex，開啟 Plugins，選擇 `Harness Codex` marketplace，再安裝 `Harness`。
+
+也可以在 Codex CLI 輸入 `/plugins` 瀏覽已加入的 marketplace 與外掛。
+
+### 方法二：本機開發連結
+
+在本專案根目錄執行：
+
+```powershell
+powershell -NoProfile -Command "codex plugin marketplace add ."
 ```
 
-### 直接安裝為全域 Skill
+重新啟動 ChatGPT 桌面版，從 `Harness Codex` marketplace 安裝。修改外掛後，重新整理 marketplace 並重啟應用程式，使安裝快取載入新版本。
 
-```shell
-# 將 skills 目錄複製到 ~/.claude/skills/harness/
-cp -r skills/harness ~/.claude/skills/harness
+### 方法三：只安裝 Harness Skill
+
+如果不需要外掛安裝介面，可直接複製技能到個人技能目錄：
+
+```powershell
+powershell -NoProfile -Command "New-Item -ItemType Directory -Force \"$HOME\.agents\skills\" | Out-Null; Copy-Item -Recurse -Force .\skills\harness \"$HOME\.agents\skills\harness\""
 ```
 
-## 外掛結構
+重新開啟 Codex 後，可用 `$harness` 明確叫用，也可以直接描述需求讓 Codex依 description 判斷是否使用。
 
+## 快速開始
+
+在目標專案中開啟 Codex，輸入：
+
+```text
+$harness 幫我為這個專案建立 Codex Harness。
+先分析現有架構，再建立自訂代理人、專案技能、Orchestrator 與驗證流程。
+所有研究與審查角色保持唯讀，只有一位實作者可以修改同一份產物。
 ```
+
+也可以使用自然語言：
+
+- 「幫我為金融科技風險評估流程配置 Harness。」
+- 「建立一套 Producer-Reviewer 的 Codex 工作流程。」
+- 「檢查目前 `.codex/agents`、`.agents/skills` 與 `AGENTS.md` 是否同步。」
+- 「把這個專案現有的其他代理平台設定遷移成 Codex 原生格式。」
+
+完成後通常會產生：
+
+```text
+目標專案/
+├── AGENTS.md
+├── .codex/
+│   ├── config.toml
+│   └── agents/
+│       ├── domain-explorer.toml
+│       ├── domain-worker.toml
+│       └── domain-reviewer.toml
+├── .agents/
+│   └── skills/
+│       ├── domain-orchestrator/
+│       │   ├── SKILL.md
+│       │   └── references/
+│       └── domain-validator/
+│           └── SKILL.md
+└── _workspace/
+    └── 階段性產物
+```
+
+詳細操作請參閱 [快速開始](docs/quickstart.md)。
+
+## 團隊架構模式
+
+| Pattern | 適用情境 | Codex 執行方式 |
+|---|---|---|
+| Pipeline | 工作有固定前後依賴 | 階段式委派，每階段驗證後交接 |
+| Fan-out/Fan-in | 多個獨立來源或面向 | 平行子代理人，主代理人等待後整合 |
+| Expert Pool | 同一問題需要不同專業判準 | 平行專家審查，主代理人解決衝突 |
+| Producer-Reviewer | 產出需要獨立品質關卡 | 單一寫入者產出，唯讀審查者驗收 |
+| Supervisor | 工作類型會隨結果改變 | 主代理人依狀態動態委派 |
+| Hierarchical Delegation | 多個大型子領域各自需要分工 | 提高代理深度並限制遞迴與成本 |
+
+Codex 子代理人會消耗額外 token。Harness 預設只為可獨立、能降低上下文污染或需要不同權限的工作使用多代理。
+
+## 專案結構
+
+```text
 harness/
-├── .claude-plugin/
-│   └── plugin.json                 # Claude Code plugin manifest
+├── .codex-plugin/
+│   └── plugin.json
+├── .agents/
+│   └── plugins/
+│       └── marketplace.json
 ├── skills/
 │   └── harness/
-│       ├── SKILL.md                # Claude Code 版 Harness skill
+│       ├── SKILL.md
 │       └── references/
-│           ├── agent-design-patterns.md   # 6 種架構模式
-│           ├── orchestrator-template.md   # Team/Subagent 協調器範本
-│           ├── team-examples.md           # 5 組真實世界團隊配置
-│           ├── skill-writing-guide.md     # Skill 撰寫指南
-│           ├── skill-testing-guide.md     # 測試與評估方法
-│           └── qa-agent-guide.md          # QA agent 整合指南
-└── README.md
+│           ├── agent-design-patterns.md
+│           ├── orchestrator-template.md
+│           ├── team-examples.md
+│           ├── skill-writing-guide.md
+│           ├── skill-testing-guide.md
+│           └── qa-agent-guide.md
+├── docs/
+│   ├── quickstart.md
+│   └── codex-compatibility.md
+└── scripts/
+    └── validate_codex_harness.py
 ```
 
-## 使用方式
+## 外部服務與 API Key
 
-在 Claude Code 中，可以用下面這類 prompt 觸發：
+Harness 本身不需要 OpenAI API Key；使用 ChatGPT 帳號登入 Codex 即可使用外掛與技能。
 
-```
-為這個專案建立一個 harness
-為這個領域設計一個代理人團隊
-設定一個 harness
-```
+只有產生出的代理人需要連接外部 MCP、私有 API 或其他服務時，才需要額外憑證。開始整合前應先向使用者確認：
 
-### 執行模式
+- 服務與環境名稱
+- Base URL 或 MCP 端點
+- 驗證方式
+- 環境變數名稱
+- 最小權限範圍
+- 可使用的測試帳號或測試資料
 
-| 模式 | 說明 | 適用情境 |
-|------|------|----------|
-| **Agent Teams**（預設） | TeamCreate + SendMessage + TaskCreate | 2 個以上代理人需要協作時 |
-| **Subagents** | 直接呼叫 Agent 工具 | 單次任務、不需要代理人彼此溝通時 |
+不得把 API Key、token 或密碼提交到專案。
 
-<p align="center">
-  <img src="harness_team.png" alt="Harness Agent Team" width="500">
-</p>
+## 驗證
 
-### 架構模式
-
-| 模式 | 說明 |
-|------|------|
-| Pipeline | 依序執行、彼此相依的任務 |
-| Fan-out/Fan-in | 可平行處理、再匯總結果的任務 |
-| Expert Pool | 依上下文選擇性呼叫專家代理人 |
-| Producer-Reviewer | 先生成，再經過品質審查 |
-| Supervisor | 由中央代理人動態分派任務 |
-| Hierarchical Delegation | 自上而下的層級式委派 |
-
-## 輸出內容
-
-Harness 會生成的檔案如下：
-
-```
-your-project/
-├── .claude/
-│   ├── agents/          # 代理人定義檔
-│   │   ├── analyst.md
-│   │   ├── builder.md
-│   │   └── qa.md
-│   └── skills/          # Skill 檔案
-│       ├── analyze/
-│       │   └── SKILL.md
-│       └── build/
-│           ├── SKILL.md
-│           └── references/
+```powershell
+powershell -NoProfile -Command "python .\scripts\validate_codex_harness.py"
 ```
 
-## 使用情境 — 試試這些 Prompt
+驗證器會檢查外掛 manifest、Marketplace、Skill frontmatter、Codex 路徑與 Claude 專用設定殘留。
 
-安裝完成後，你可以把以下 prompt 直接貼進 Claude Code：
+## 參考文件
 
-**深度研究**
-```
-為深度研究建立一個 harness。我需要一個代理人團隊，能從多個角度
-研究任何主題，例如網路搜尋、學術來源與社群觀點，然後交叉驗證結論，
-最後產出完整報告。
-```
+- [Codex Skills 與 Plugins](https://learn.chatgpt.com/docs/skills-and-plugins)
+- [建立 Codex Plugins](https://learn.chatgpt.com/docs/build-plugins)
+- [Codex Subagents 與自訂代理人](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+- [Codex 客製化概覽](https://learn.chatgpt.com/docs/customization/overview)
 
-**網站開發**
-```
-為全端網站開發建立一個 harness。團隊需要能在同一條協作流程中處理
-設計、前端（React/Next.js）、後端（API）與 QA 測試，從線框稿一路
-推進到部署。
-```
+## 授權與致謝
 
-**Webtoon / 漫畫製作**
-```
-為 Webtoon 單集製作建立一個 harness。我需要負責劇情撰寫、角色設計
-prompt、分鏡版面規劃與對白編修的代理人，並且讓他們彼此審查作品，
-以維持風格一致性。
-```
+本專案以 [Apache License 2.0](LICENSE) 授權。
 
-**YouTube 內容規劃**
-```
-為 YouTube 內容創作建立一個 harness。團隊需要研究熱門主題、撰寫腳本、
-優化標題與標籤以利 SEO，並規劃縮圖概念，全部由一位 supervisor agent
-統籌協調。
-```
-
-**程式碼審查與重構**
-```
-為全面程式碼審查建立一個 harness。我希望有多個平行代理人分別檢查
-架構、安全漏洞、效能瓶頸與程式風格，最後再把所有發現整合成一份報告。
-```
-
-**技術文件撰寫**
-```
-建立一個能從這份程式碼庫產生 API 文件的 harness。代理人需要分析端點、
-撰寫說明、生成使用範例，並檢查內容是否完整。
-```
-
-**資料管線設計**
-```
-為資料管線設計建立一個 harness。我需要能處理 schema 設計、ETL 邏輯、
-資料驗證規則與監控設定的代理人，並且支援階層式委派子任務。
-```
-
-**行銷活動規劃**
-```
-為行銷活動建立一個 harness。團隊需要研究目標市場、撰寫廣告文案、
-設計視覺概念，並安排 A/B 測試計畫與反覆品質審查。
-```
-
-## 生態共存 — Harness 與相鄰專案
-
-Harness 並不是 Claude Code / agent framework 生態系中唯一的選項。以下專案位於相鄰層級，各自採用不同定位；你可以依需求選擇其中一個，或將多個專案組合使用。
-
-| Repo | 他們的定位 | 與 Harness 的關係 |
-|------|------------|-------------------|
-| [coleam00/Archon](https://github.com/coleam00/Archon) | 「harness builder」：可決定、可重複的 runtime 設定 | **同屬 L3、相鄰子層。** Archon 是 Runtime-Configuration Factory，Harness 是 Team-Architecture Factory。需要 runtime 決定性時選 Archon，需要團隊架構時選 Harness，也可以兩者搭配。 |
-| [SaehwanPark/meta-harness](https://github.com/SaehwanPark/meta-harness) | 相同概念的 Codex 移植版 | **同屬 L3、不同 runtime。** 在 Claude Code 上使用 Harness，在 Codex 上使用 meta-harness。 |
-| [affaan-m/ECC](https://github.com/affaan-m/everything-claude-code) | 建立在既有 harness 上方的 agent harness 效能與工作流程層 | **不同層級。** ECC 是跨 harness 的標準化層，Harness 則是產生 harness 的工廠；兩者可以串接使用。 |
-| [wshobson/agents](https://github.com/wshobson/agents) | Subagent / skill catalog（182 個 agent、149 個 skill） | **工廠與零件供應的關係。** wshobson/agents 是可挑選的目錄，Harness 負責設計團隊；可將其中的項目吸收為 Harness 團隊的零件。 |
-| [LangGraph](https://langchain-ai.github.io/langgraph/) | 狀態圖導向、LLM 無關的編排框架 | **不同路線。** LangGraph 適合長時間執行與可恢復狀態的編排，Harness 側重 Claude Code 原生的快速團隊設計。 |
-
-## 使用 Harness 建立的成果
-
-### Harness 100
-
-**[revfactory/harness-100](https://github.com/revfactory/harness-100)** — 橫跨 10 個領域的 100 套可投入生產的 agent team harness，提供英文與韓文版本（共 200 套）。每一套 harness 都包含 4 到 5 個專職代理人、一個 orchestrator skill，以及領域專用技能，全部由本外掛生成。整體涵蓋 1,808 份 Markdown 檔，主題橫跨內容創作、軟體開發、資料/AI、商業策略、教育、法律、健康等。
-
-### 研究：Harness 效果 A/B 測試
-
-**[revfactory/claude-code-harness](https://github.com/revfactory/claude-code-harness)** — 一項針對 15 個軟體工程任務的對照實驗，用來測量有無結構化預先配置時，LLM 程式代理人的輸出品質差異。
-
-| 指標 | 未使用 Harness | 使用 Harness | 改善幅度 |
-|------|:-:|:-:|:-:|
-| 平均品質分數 | 49.5 | 79.3 | **+60%** |
-| 勝率 | — | — | **100%**（15/15） |
-| 輸出變異 | — | — | **-32%** |
-
-關鍵結論：任務越複雜，效果提升越明顯。Basic 任務提升 +23.8、Advanced 任務提升 +29.6、Expert 任務提升 +36.2。
-
-**建議統一引用說法：** +60% 平均品質（49.5 → 79.3）、15/15 勝率、−32% 變異（n=15，作者自測 A/B，第三方重現仍待驗證）。
-
-> 完整論文：*Hwang, M. (2026). Harness: Structured Pre-Configuration for Enhancing LLM Code Agent Output Quality.*
-
-## 使用需求
-
-- [啟用 Agent Teams](https://code.claude.com/docs/en/agent-teams): `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
-
-## FAQ
-
-<details>
-<summary><b>Q1. 「+60%」是不是有點誇大？</b></summary>
-
-**A.** `+60%` 來自 **作者自測的 A/B 實驗（n=15，15 個任務，於姊妹專案 `claude-code-harness` 上量測）**。本 repo 的引用都會在同一句中附上「n=15、作者自測、第三方重現待驗證」這個揭露。若你要用於導入評估，建議還是做一個 2 到 4 週的內部 pilot，以你的場景重新量測。
-
-**證據：**
-- 作者 A/B 測試：[revfactory/claude-code-harness](https://github.com/revfactory/claude-code-harness)
-- Paper: *Hwang, M. (2026). Harness: Structured Pre-Configuration for Enhancing LLM Code Agent Output Quality*
-</details>
-
-<details>
-<summary><b>Q2. 為什麼叫「harness factory」而不是「harness builder」？這樣不會跟 Archon 競爭嗎？</b></summary>
-
-**A.** Archon 產生的是可重現的 runtime 設定，也就是 **Runtime-Configuration Factory**；Harness 產生的是代理人團隊架構，例如團隊結構、訊息協定、審查關卡，也就是 **Team-Architecture Factory**。兩者是 **同一個 L3 Meta-Factory 底下的相鄰子層**，解決的不是同一個問題。需要 runtime 一致性就選 Archon，需要團隊架構設計就選 Harness，也可以兩者串接使用。
-
-**證據：**
-- Archon 自我定義：[clawfit docs/reference-levels.md](https://github.com/hongsw/clawfit/blob/main/docs/reference-levels.md)
-- 子層宣告：請見上方 **類別定位 — Harness 位在哪一層**
-- Archon repo：[github.com/coleam00/Archon](https://github.com/coleam00/Archon)
-</details>
-
-<details>
-<summary><b>Q3. 只有 Claude Code 會不會太受限？Gemini 或 Codex 呢？</b></summary>
-
-**A.** 目前官方 runtime 只有 Claude Code。相同概念的 Codex 移植版 [SaehwanPark/meta-harness](https://github.com/SaehwanPark/meta-harness) 已經公開，Codex 團隊可以從該專案開始。Harness 選擇「深入且原生支援 Claude Code」，而不是「支援多種 runtime 但各自較淺」；未來規劃與 meta-harness、harness-init、OpenRig 等姊妹專案進行跨 runtime 協作。
-
-**證據：**
-- Codex 移植版：[github.com/SaehwanPark/meta-harness](https://github.com/SaehwanPark/meta-harness)
-- 跨 runtime 腳手架：[github.com/Gizele1/harness-init](https://github.com/Gizele1/harness-init)
-</details>
-
-## 授權
-
-Apache 2.0
-
+Harness 原始方法與內容由 [revfactory/harness](https://github.com/revfactory/harness) 建立；本分支由 `yaayaya` 進行繁體中文與 Codex 原生化改造。保留原作者的架構思想、研究脈絡與授權聲明。

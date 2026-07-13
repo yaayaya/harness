@@ -1,117 +1,168 @@
-# Quickstart — 5 分鐘完成你的第一個 Harness
+# Harness Codex 快速開始
 
-> **時間預算：5 分鐘（嚴格）。** 如果 5 分鐘內你還沒做到 Step 5，請停下來並提交 issue，這是本文檔的 bug，不是你的 bug。
+本指南會在約五分鐘內完成 Harness 安裝、叫用與產物驗證。
 
-<!-- TODO: Loom embed — 60s screen recording showing Steps 1→5 end-to-end. Replace this comment with the `<iframe>` once recorded. -->
+## 完成後你會擁有什麼
 
-**完成後你會擁有：** 一個可運作的 `.claude/agents/` 目錄，內含 3–5 個針對領域特化的 agents，透過一句話 prompt 產生，並可直接拿來執行範例任務。
+- 一個可由 Codex 安裝的 Harness 外掛或個人 Skill。
+- 一組針對目標專案的 `.codex/agents/*.toml` 自訂代理人。
+- 一組 `.agents/skills/*/SKILL.md` 專案技能。
+- 一個寫入 `AGENTS.md` 的最小 Harness 入口。
+- 一套包含正常、失敗與 Dry-run 的驗證流程。
 
-**開始前請先確認先決條件：**
-- Claude Code **v2.x 或更新版本**（`claude --version` 應回傳 `2.x` 或更高）
-- 能在指令之間保留 `export` 的 shell（bash、zsh 或 fish）
-- 可連線到 `github.com` 與 `api.anthropic.com`
+## 前置條件
 
----
+- 已安裝並可登入 Codex CLI 或 ChatGPT 桌面版中的 Codex。
+- 已安裝 Git。
+- 安裝遠端 marketplace 時可連線到 `github.com`。
+- 目標專案已交由 Codex 信任；專案層 `.codex/config.toml` 只有在受信任專案中載入。
 
-## Step 1 — 加入 marketplace（60 秒）
+Harness 本身不需要 OpenAI API Key。只有你要求產生的代理人要連接外部 MCP 或私有 API 時，才需要另外提供憑證資訊。
 
-```bash
-claude plugin marketplace add revfactory/harness
+## Step 1：加入 Marketplace
+
+```powershell
+powershell -NoProfile -Command "codex plugin marketplace add yaayaya/harness-zh --ref codex"
 ```
 
-**這會做什麼：** 註冊 `harness` marketplace，讓 Claude Code 能發現由 `revfactory` 發布的 plugins。
+這會把 `codex` 分支中的 `.agents/plugins/marketplace.json` 加入 Codex marketplace 清單。
 
-**預期輸出：** `Added marketplace: revfactory/harness`
+確認來源：
 
----
-
-## Step 2 — 安裝 plugin 並啟用 Experimental 旗標（40 秒）
-
-```bash
-claude plugin install harness@harness
-export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+```powershell
+powershell -NoProfile -Command "codex plugin marketplace list"
 ```
 
-*(若想讓這個旗標在多次 shell session 間持續存在，請把 `export` 那一行加入 `~/.zshrc` 或 `~/.bashrc`。)*
+預期會看到 `harness-codex` 與對應的本機快照路徑。
 
-**這會做什麼：** 從 `harness` marketplace 安裝 `harness` plugin，然後啟用 Agent Teams，也就是 harness 用來編排多代理工作流程的 Claude Code API。關於為何需要這個旗標，請參閱 [`docs/experimental-dependency.md`](./experimental-dependency.md)。
+## Step 2：安裝 Harness
 
-**Failure FAQ #1 — `AGENT_TEAMS not found` / teams 無法建立**
-**原因：** Claude Code 版本低於 v2.x（Agent Teams 是在 v2.0 才加入）。  
-**修正方式：** 執行 `claude --version`。若低於 2.0，請用 `npm i -g @anthropic-ai/claude-code`（或你的發行版安裝方式）升級，然後重新執行 Step 2。
+1. 重新啟動 ChatGPT 桌面版或 Codex。
+2. 開啟 Plugins。
+3. 選擇 `Harness Codex` marketplace。
+4. 安裝 `Harness`。
 
----
+在 Codex CLI 中，可輸入 `/plugins` 檢查外掛是否可見。
 
-## Step 3 — 用一句話產生一個 harness（2 分鐘）
+### 只安裝 Skill
 
-```bash
-claude "build a harness for a fintech risk-assessment team"
+若不需要外掛安裝介面，在本專案根目錄執行：
+
+```powershell
+powershell -NoProfile -Command "New-Item -ItemType Directory -Force \"$HOME\.agents\skills\" | Out-Null; Copy-Item -Recurse -Force .\skills\harness \"$HOME\.agents\skills\harness\""
 ```
 
-**這會做什麼：** 呼叫 `/harness:harness` meta-skill，分析你的領域描述句，並在目前目錄的 `.claude/agents/` 與 `.claude/skills/` 中建立一組專業 agents 與其對應 skills。
+重新開啟 Codex，使技能清單重新載入。
 
-**也可以試試這些替代 prompt** — 都可以運作：
-- `claude "請幫我為金融科技風險評估團隊建立 harness"`
-- `claude "build a harness for an e-commerce fraud-detection workflow"`
-- `claude "design an agent team for technical due diligence on open-source repos"`
+## Step 3：在目標專案叫用 Harness
 
-**預期輸出：** 畫面會先串流顯示規劃，再確認已寫入 3–5 個 agent `.md` 檔案及其 skills。
+從目標專案根目錄啟動 Codex，輸入：
 
-**Failure FAQ #2 — 韓文 prompt 沒有回應 / 英文可用但韓文不行**
-**原因：** locale 或 tokenizer 路由錯誤；部分語言版本的觸發短語在特定環境下可能比英文更容易失配。  
-**修正方式：** 如果非英文 prompt 失敗，請改用上面的英文 prompt 重新執行，底層 skill 是相同的。若仍失敗，直接跳到 Failure FAQ #3。
-
----
-
-## Step 4 — 驗證產生出的檔案（30 秒）
-
-```bash
-ls -la .claude/agents/
-ls -la .claude/skills/
+```text
+$harness 幫我為這個專案配置 Codex Harness。
+請先稽核現況，再建立需要的自訂代理人、專案技能、Orchestrator 與驗證流程。
+所有研究與審查角色保持唯讀，同一份最終產物只能有一位寫入者。
 ```
 
-**這會做什麼：** 確認 meta-skill 已將檔案寫入預期位置。
+如果只需要特定領域：
 
-**預期輸出：** 每個目錄有 3–5 個檔案，名稱會反映你的領域（例如在 fintech 範例中可能是 `risk-analyst.md`、`compliance-reviewer.md`、`portfolio-monitor.md`）。
-
-**Failure FAQ #3 —「沒有產生任何內容」/ 目錄是空的**
-**原因：** plugin 實際上未安裝，或在目前專案中未啟用。  
-**修正方式：** 執行 `claude plugin list`。若看不到 `harness@harness`，請重做 Step 2。若存在但未啟用，請執行 `claude plugin enable harness@harness`，再重做 Step 3。
-
----
-
-## Step 5 — 讓新團隊執行一個範例任務（90 秒）
-
-複製一段接近 Jira ticket 風格的真實 prompt，交給你剛建立好的團隊：
-
-```bash
-claude "Ticket FIN-427: A new corporate customer (mid-cap manufacturer, \$80M revenue, South Korea) has applied for a \$5M working-capital line. Produce a risk assessment covering (1) credit-history red flags, (2) sector concentration vs. our existing book, (3) regulatory exposure (KFTC, FSC). Output: a 1-page memo with a go/no-go recommendation."
+```text
+$harness 為金融科技授信風險評估建立 Harness。
+輸出要涵蓋資料蒐集、法規審查、信用風險判斷、獨立 reviewer 與最終 memo 驗收。
 ```
 
-**這會做什麼：** Claude Code 會偵測 `.claude/agents/` 中的新 agents，把任務路由到 harness 產生的 team pattern（做風險工作時通常是 Producer-Reviewer 或 Expert Pool），並回傳結構化 memo。
+Codex 應先說明它選擇的角色與模式，再建立檔案並執行驗證。
 
-**Failure FAQ #4 —「團隊沒有執行 / 只有一個 agent 回應」**
-**原因：** `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` 只在執行 Step 3 的 shell 中設定，但執行 Step 5 的 shell 沒有設定（常見於新開 terminal）。  
-**修正方式：** 在目前 shell 重新執行 `export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`，然後重跑 Step 5。若要永久生效，請把這一行加入你的 shell rc 檔。
+## Step 4：檢查產物
 
-**Failure FAQ #5 —「API 呼叫太多 / 很擔心成本」**
-**原因：** 多代理團隊可能會對單一任務平行展開 5 次以上 Claude 呼叫。一張複雜 ticket 可能消耗 50K–200K tokens。  
-**修正方式：** 每次執行只跑單一任務（不要用 `&&` 連鎖多次 harness 呼叫）；若你的 Claude Code 版本支援，可使用 `--max-turns` 旗標。正式環境中，建議在 harness 呼叫外再包一層具成本意識的 wrapper，請參見 `docs/cost-controls.md` *(forthcoming)*。
+```powershell
+powershell -NoProfile -Command "Get-ChildItem -Recurse .codex\agents, .agents\skills; Get-Content -Raw AGENTS.md"
+```
 
----
+至少確認：
 
-## 你完成了
+- `.codex/agents/*.toml` 存在。
+- 每個代理人有 `name`、`description`、`developer_instructions`。
+- 審查代理人設定 `sandbox_mode = "read-only"`。
+- `.agents/skills/` 中有 Orchestrator Skill。
+- `AGENTS.md` 只放觸發規則與變更歷程，沒有複製完整技能內容。
+- 沒有 `.claude/`、`CLAUDE.md` 或其他平台的工具名稱。
 
-此時你應該已經擁有：
+## Step 5：執行一個真實任務
 
-- [x] 一個包含領域特化 agents 的 `.claude/agents/` 目錄
-- [x] 一個包含其支援 skills 的 `.claude/skills/` 目錄
-- [x] 至少一次成功的範例任務執行
-- [x] 一個可運作的 `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` 環境
+```text
+請使用剛建立的 Harness 處理這個任務：
+分析目前專案最重要的三個整合風險，提出修正優先順序，並以獨立 reviewer 驗證結論。
+等待所有必要代理人結果後再給最終答案。
+```
 
-**接下來可閱讀：**
-- [`docs/experimental-dependency.md`](./experimental-dependency.md) — 為何需要此旗標，以及它變動時我們會怎麼做
-- [`revfactory/harness-100`](https://github.com/revfactory/harness-100) — 100+ 個預先建立好的領域 harness 目錄，如果你想直接 clone 而不是自行產生
-- [`revfactory/claude-code-harness`](https://github.com/revfactory/claude-code-harness) — 我們用來在 15 個任務上測得 +60% 品質的 A/B test harness
+預期行為：
 
-**如果你遇到本指南未涵蓋的情況：** 請用 `quickstart-gap` label 開 issue，並附上：(a) 失敗的是哪一步，(b) `claude --version`，(c) 完整錯誤訊息。`quickstart-gap` issue 的 SLA 是 **48 小時內**首次回覆（見 `CONTRIBUTING.md`）。
+1. 主代理人讀取 `AGENTS.md` 與 Orchestrator Skill。
+2. 依技能指示選擇自訂代理人。
+3. 可獨立的讀取或審查工作平行執行。
+4. 主代理人等待必要結果、解決衝突並彙整。
+5. 只有指定角色能修改最終產物。
+6. 最終答案包含驗證證據與未覆蓋範圍。
+
+## 常見問題
+
+### Marketplace 看不到 Harness
+
+執行：
+
+```powershell
+powershell -NoProfile -Command "codex plugin marketplace list"
+```
+
+若來源不存在，重新執行 Step 1；若來源存在但仍看不到，重新啟動 ChatGPT 桌面版，使 marketplace 與外掛快取重新載入。
+
+### `$harness` 沒有出現在技能清單
+
+確認其中一個位置存在：
+
+- 外掛安裝快取中的 `skills/harness/SKILL.md`
+- 個人技能 `$HOME/.agents/skills/harness/SKILL.md`
+
+重新啟動 Codex，或在 CLI 以 `/skills` 檢查技能。
+
+### `.codex/config.toml` 沒有生效
+
+Codex 只在受信任專案中載入專案層設定。確認專案信任狀態，並開啟新的工作階段。
+
+### 只看到主代理人，沒有子代理人
+
+確認你的 prompt 或適用的 `AGENTS.md`／Skill 明確要求委派。Codex 會在直接要求或專案、技能指示適用時啟動子代理人。
+
+若工作很小或無法獨立切分，Harness 可以正確選擇單一代理人；這不是錯誤。
+
+### Token 使用量過高
+
+- 降低 `.codex/config.toml` 的 `agents.max_threads`。
+- 保持 `agents.max_depth = 1`。
+- 只把獨立且有價值的工作交給子代理人。
+- 要求子代理人回傳摘要與證據，不回傳完整原始日誌。
+
+### 需要外部 API Key
+
+先整理並提供：
+
+- 服務名稱與環境
+- Base URL 或 MCP 端點
+- 驗證方式與環境變數名稱
+- 所需最小權限
+- 測試帳號或測試資料
+
+密鑰只放在安全的環境變數或 Codex 支援的憑證流程，不要寫進 TOML、Markdown、Git 或 `_workspace/`。
+
+## 專案本身的驗證
+
+在 Harness 儲存庫根目錄執行：
+
+```powershell
+powershell -NoProfile -Command "python .\scripts\validate_codex_harness.py"
+```
+
+成功時應顯示外掛 manifest、marketplace、技能與平台殘留檢查都通過。
+
+更多相容性資訊請參閱 [Codex 相容性](codex-compatibility.md)。

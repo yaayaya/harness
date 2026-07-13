@@ -271,7 +271,7 @@ skill：無
 4. 以 Test set 表現選出最佳 description（不是以 Train set 為準，避免過擬合）
 5. 最多重複 5 次
 
-> 這個流程會用到 `claude -p` 的自動化 script。由於 token 成本較高，建議等 skill 足夠穩定後，再在最後階段執行。
+> 這個流程可用 `codex exec` 自動化執行。多次評估會消耗額外 token，建議先完成結構與少量手動測試，再進行批次評估。
 
 ---
 

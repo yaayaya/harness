@@ -1,86 +1,101 @@
-name: Bug report
-description: Report a defect in Harness (unexpected behavior, crash, broken install, etc.)
+name: 錯誤回報
+description: 回報 Harness Codex 外掛、技能、代理人產物或安裝流程的錯誤
 title: "[bug] "
 labels: ["bug", "needs-triage"]
-assignees:
-  - revfactory
+assignees: []
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to file a bug report.
-
-        Before submitting, please skim open issues to avoid duplicates.
-
-        **Triage SLA:** we aim to label new issues within 48h and respond substantively within 72h on business days (see [CONTRIBUTING.md](../../CONTRIBUTING.md)).
+        感謝你協助改善 Harness。送出前請先搜尋既有 issue，並移除 API Key、token、帳號與其他敏感資訊。
 
   - type: input
-    id: claude-code-version
+    id: codex-version
     attributes:
-      label: Claude Code version
-      description: Output of `claude --version` (e.g. `2.3.1`)
-      placeholder: "2.x.y"
+      label: Codex 版本
+      description: 請貼上 `codex --version` 的輸出。
+      placeholder: "codex x.y.z"
     validations:
       required: true
 
   - type: dropdown
-    id: experimental-flag
+    id: surface
     attributes:
-      label: Experimental Agent Teams flag state
-      description: Is `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` set in the shell where you hit this bug?
+      label: 使用介面
       options:
-        - "Yes, flag is set to 1"
-        - "No, flag is unset"
-        - "I don't know / N/A"
+        - ChatGPT 桌面版中的 Codex
+        - Codex CLI
+        - Codex IDE Extension
+        - Codex Cloud
+        - 其他
+    validations:
+      required: true
+
+  - type: dropdown
+    id: install-method
+    attributes:
+      label: Harness 安裝方式
+      options:
+        - 遠端 Marketplace
+        - 本機 Marketplace
+        - 直接安裝 Skill
+        - 尚未安裝／不適用
     validations:
       required: true
 
   - type: textarea
     id: reproduction
     attributes:
-      label: Reproduction steps
-      description: Minimal steps to reproduce. Commands, config, and inputs please.
+      label: 重現步驟
+      description: 請提供最小重現步驟、prompt、設定與必要檔案位置。
       placeholder: |
-        1. `claude plugin marketplace add harness@harness`
-        2. `export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
-        3. `claude "build a harness for ..."`
-        4. observe ...
+        1. 執行 `codex plugin marketplace add ...`
+        2. 從 Plugins 安裝 Harness
+        3. 輸入 `$harness ...`
+        4. 觀察到 ...
     validations:
       required: true
 
   - type: textarea
     id: expected
     attributes:
-      label: Expected behavior
-      description: What did you expect to happen?
+      label: 預期行為
     validations:
       required: true
 
   - type: textarea
     id: actual
     attributes:
-      label: Actual behavior
-      description: What actually happened? Include error messages / stack traces verbatim.
+      label: 實際行為
+      description: 請附上已遮蔽敏感資訊的完整錯誤訊息。
     validations:
       required: true
+
+  - type: textarea
+    id: agent-config
+    attributes:
+      label: 代理人設定（如適用）
+      description: 請貼上 `[agents]` 的 max_threads、max_depth 與相關自訂代理人名稱，不要貼密鑰。
+    validations:
+      required: false
 
   - type: dropdown
     id: os
     attributes:
-      label: Operating system
+      label: 作業系統
       options:
-        - "macOS"
-        - "Linux"
-        - "Windows (WSL)"
-        - "Windows (native)"
-        - "Other (describe below)"
+        - macOS
+        - Linux
+        - Windows（WSL）
+        - Windows（原生）
+        - 其他
     validations:
       required: true
 
   - type: textarea
     id: context
     attributes:
-      label: Additional context (optional)
-      description: Logs, screenshots, or anything else that might help. Redact anything sensitive.
+      label: 補充資訊
+      description: 可附日誌、截圖或最小重現儲存庫；請先遮蔽敏感資訊。
     validations:
       required: false

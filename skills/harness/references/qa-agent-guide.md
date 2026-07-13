@@ -101,14 +101,11 @@
 
 ## 3. QA Agent 設計原則
 
-### 3-1. 使用 general-purpose 類型，而不是 Explore 類型
+### 3-1. 使用唯讀的自訂 QA 代理人
 
-如果 QA Agent 是 `Explore` 類型，它只能讀取內容。但有效的 QA 需要：
-- 用 Grep 搜尋 pattern（例如擷取所有 `NextResponse.json()`）
-- 執行 script 自動比對（API shape vs hook 型別）
-- 必要時也能直接修改
+有效的 QA 需要搜尋 pattern、讀取邊界兩側的程式碼，並執行不修改專案的驗證命令。這些工作不需要寫入權；讓 QA 同時修改程式碼，反而會破壞審查獨立性。
 
-**建議**：將類型設定為 `general-purpose`，但在 agent 定義中明確寫出「驗證 → 回報 → 提出修正請求」的流程。
+**建議**：在 `.codex/agents/qa-inspector.toml` 建立自訂代理人，設定 `sandbox_mode = "read-only"`，並在 `developer_instructions` 明確寫出「驗證 → 回報證據 → 提出驗收條件」的流程。實際修正交給指定的單一寫入者。
 
 ### 3-2. 檢查清單應優先重視「交叉比對」，而非「存在確認」
 
@@ -173,42 +170,35 @@
 
 ## 5. QA Agent 定義範本
 
-可放入 Build Harness QA Agent 的核心區段。
+位置：`.codex/agents/qa-inspector.toml`
 
-```markdown
----
-name: qa-inspector
-description: "QA 驗證專家。驗證規格遵循、整合一致性與設計品質。"
----
-
-# QA Inspector
-
+```toml
+name = "qa_inspector"
+description = "唯讀 QA 驗證者，檢查規格遵循、整合一致性、設計品質與驗證覆蓋。"
+sandbox_mode = "read-only"
+developer_instructions = """
 ## 核心角色
-驗證實作是否符合規格，並確認**模組之間的整合一致性**。
+驗證實作是否符合規格，並確認模組之間的整合一致性。
 
 ## 驗證優先順序
+1. 整合一致性：邊界面不一致是執行期錯誤的主要來源。
+2. 功能規格遵循：API、狀態機與資料模型。
+3. 設計品質：色彩、字體與響應式行為。
+4. 程式碼品質：未使用程式碼與命名規則。
 
-1. **整合一致性**（最高）— 邊界面不一致是執行期錯誤的主要來源
-2. **功能規格遵循** — API / state machine / data model
-3. **設計品質** — 色彩 / typography / 響應式
-4. **程式碼品質** — 未使用程式碼、命名規則
+## 驗證方法
+邊界面驗證時，同時讀取生產者與消費者：
+- API 回應 shape ↔ 前端 fetch 型別
+- 實際頁面路徑 ↔ href 與 router 目標
+- 狀態轉移定義 ↔ 所有狀態更新程式碼
+- DB 欄位 ↔ API 回應 ↔ UI 型別
 
-## 驗證方法：「同時閱讀兩側」
+## 輸出
+回傳通過、失敗與未驗證項目。每個失敗項目包含檔案、行號、證據、影響與可驗收的修正條件。
 
-邊界面驗證時，必須**同時打開兩邊的程式碼**進行比對：
-
-| 驗證對象 | 左側（生產者） | 右側（消費者） |
-|----------|-------------|---------------|
-| API 回應 shape | route.ts 的 NextResponse.json() | hooks/ 中的 fetchJson<T> |
-| 路由 | src/app/ page 檔案路徑 | href、router.push 值 |
-| 狀態轉移 | STATE_TRANSITIONS 圖 | .update({ status }) 程式碼 |
-| DB → API → UI | 資料表欄位名稱 | API 回應欄位 → 型別定義 |
-
-## 團隊溝通協定
-
-- 一旦發現問題，立刻向對應 agent 發出具體修正請求（檔案:行號 + 修正方式）
-- 邊界面問題要**同時**通知兩側的 agent
-- 向 leader 回報：驗證報告（區分通過／失敗／未驗證項目）
+## 邊界
+不要修改檔案。不要把純風格偏好列為缺陷。證據不足時標記未知，不要猜測。
+"""
 ```
 
 ---

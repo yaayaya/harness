@@ -1,292 +1,254 @@
-# Orchestrator 技能範本
+# Codex Orchestrator 技能範本
 
-Orchestrator 是協調整個團隊的上層 skill。依照執行模式，提供 3 種範本：
+Orchestrator 是由主代理人執行的技能。它描述如何選擇自訂代理人、切分工作、等待結果、處理衝突與驗證完成；不要硬綁某一版 Codex 的內部工具名稱。
 
-- **範本 A：Agent Team 模式（預設）** - 2 人以上協作時的最優先選擇
-- **範本 B：Subagent 模式（替代方案）** - 不需要團隊通訊時使用
-- **範本 C：Hybrid 模式** - 可在各 Phase 間混合不同模式
+## 共同規則
 
+每個 Orchestrator 技能都必須：
+
+1. 明確說明應觸發與不應觸發的情境。
+2. 指定代理人名稱、責任與寫入權。
+3. 標示哪些任務可平行、哪些具有相依。
+4. 要求子代理人回傳摘要、證據與完成狀態。
+5. 要求主代理人等待必要結果後再進入下一階段。
+6. 定義部分失敗、逾時、工具缺少與結果衝突的處理方式。
+7. 定義驗證證據，而不只要求「完成任務」。
+8. 若目前環境不提供子代理功能，改由主代理人依相同階段順序執行，並揭露降級狀態。
+
+## 範本 A：平行子代理人
+
+適用於多個互不相依的探索、研究、測試或審查面向。
+
+```markdown
+---
+name: {domain}-parallel-review
+description: "當任務需要從多個獨立面向審查 {domain} 時使用，包括 {觸發情境}。不適用於只需單一小型修改的工作。"
 ---
 
-## 範本 A：Agent Team 模式（預設，最優先選擇）
+# {Domain} 平行審查
 
-當 2 位以上 agent 協作時，**最先評估的預設模式**。使用 `TeamCreate` 建立團隊，並透過共享工作清單與 `SendMessage` 進行協調。
+## 代理人
+
+| 代理人 | 責任 | 權限 | 必要輸出 |
+|---|---|---|---|
+| `{agent-a}` | {責任 A} | 唯讀 | 發現、證據、嚴重度 |
+| `{agent-b}` | {責任 B} | 唯讀 | 發現、證據、嚴重度 |
+| `{agent-c}` | {責任 C} | 唯讀 | 發現、證據、嚴重度 |
+
+## 工作流程
+
+### Phase 0：確認範圍
+
+1. 讀取需求、`AGENTS.md`、變更範圍與相關測試。
+2. 若工作樹已有修改，先辨識使用者既有變更，不得覆寫。
+3. 建立共同輸出格式與嚴重度標準。
+
+### Phase 1：平行委派
+
+同時把 A、B、C 三個有界任務交給對應代理人。每個任務都包含：
+
+- 明確範圍與排除項目
+- 可使用的檔案或資料
+- 必要輸出格式
+- 完成條件
+- 不得修改檔案的限制
+
+等待所有代理人完成。若部分失敗，記錄失敗原因與覆蓋缺口。
+
+### Phase 2：整合
+
+主代理人：
+
+1. 合併重複發現。
+2. 對互斥結論回查證據。
+3. 依嚴重度與可信度排序。
+4. 明確列出未覆蓋範圍。
+
+### Phase 3：驗證
+
+確認每項結論都有可定位的證據；需要執行測試時，由主代理人或指定單一實作者執行。
+
+## 完成條件
+
+- 所有必要面向都有結果或明確的失敗紀錄。
+- 衝突已解決，沒有只並列互斥說法。
+- 最終報告包含證據、風險與可執行後續動作。
+```
+
+## 範本 B：階段式 Producer-Reviewer
+
+適用於需要產出、獨立審查與修正的工作。
+
+```markdown
+---
+name: {domain}-producer-reviewer
+description: "當 {domain} 產物需要獨立產出、審查與驗收時使用。適用於 {觸發情境}。"
+---
+
+# {Domain} Producer-Reviewer
+
+## 寫入擁有權
+
+只有 `{producer}` 可以修改最終產物。`{reviewer}` 為唯讀，只提供具體缺陷與驗收建議。
+
+## 工作流程
+
+### Phase 0：準備
+
+1. 定義輸入、輸出格式、驗收條件與最大迭代次數。
+2. 確認既有檔案與使用者變更。
+
+### Phase 1：產出
+
+委派 `{producer}` 完成第一版。要求回傳：修改檔案、設計決定、驗證結果與已知限制。
+
+### Phase 2：審查
+
+委派 `{reviewer}` 以唯讀方式檢查第一版。每項發現包含：
+
+- 嚴重度
+- 證據位置
+- 實際風險或錯誤
+- 可重現方式
+- 通過驗收所需條件
+
+### Phase 3：修正
+
+主代理人先移除無證據或純風格意見，再把有效發現交回 `{producer}` 修正。
+
+### Phase 4：驗收
+
+執行與變更範圍相稱的測試。必要時讓 `{reviewer}` 複審一次；達到最大迭代次數仍未通過時，停止並回報差距。
+
+## 完成條件
+
+- 驗收條件逐項有證據。
+- 所有高嚴重度發現已修正或由使用者明確接受。
+- 最終產物只有指定寫入者修改。
+```
+
+## 範本 C：混合模式
+
+適用於前段可平行蒐集、後段需要單一整合與獨立驗證的複雜任務。
 
 ```markdown
 ---
 name: {domain}-orchestrator
-description: "{領域} Agent Team 的協調 orchestrator。{初次執行關鍵字}。後續工作：當請求修改 {領域} 結果、局部重跑、更新、補強、重新執行，或改善先前結果時，也一定要使用這個 skill。"
+description: "當任務涉及 {domain} 的多來源分析、整合產出與獨立驗證時使用。也在使用者要求延續、維護或檢查既有 {domain} Harness 時使用。"
 ---
 
 # {Domain} Orchestrator
 
-協調 {領域} 的 Agent Team，產出 {最終產出物} 的整合 skill。
+## 代理人配置
 
-## 執行模式：Agent Team
-
-## Agent 組成
-
-| 團隊成員 | Agent 類型 | 角色 | Skill | 輸出 |
-|------|-------------|------|------|------|
-| {teammate-1} | {自訂或內建} | {角色} | {skill} | {output-file} |
-| {teammate-2} | {自訂或內建} | {角色} | {skill} | {output-file} |
-| ... | | | | |
+| 代理人 | 階段 | 責任 | 寫入權 |
+|---|---|---|---|
+| `{researcher-a}` | 蒐集 | {來源或面向 A} | 否 |
+| `{researcher-b}` | 蒐集 | {來源或面向 B} | 否 |
+| `{integrator}` | 整合 | 產生唯一整合版本 | 是 |
+| `{validator}` | 驗證 | 依驗收條件獨立檢查 | 否 |
 
 ## 工作流程
 
-### Phase 0: 確認 context（支援後續工作）
+### Phase 0：Context 確認
 
-確認是否已有既有產出物，並據此決定執行模式：
+1. 讀取 `AGENTS.md` 與相關技能。
+2. 檢查 `_workspace/` 是否有可沿用產物。
+3. 使用者要求全新執行時，把舊產物移至 `_workspace_prev/`；未取得授權時不要刪除。
 
-1. 確認 `_workspace/` 目錄是否存在
-2. 決定執行模式：
-   - **`_workspace/` 不存在** → 初次執行。進入 Phase 1
-   - **`_workspace/` 存在 + 使用者要求局部修改** → 局部重跑。只重新呼叫對應的 agent，並且只覆寫既有產出中需要修改的部分
-   - **`_workspace/` 存在 + 提供了新的輸入** → 全新執行。先將既有 `_workspace/` 移到 `_workspace_{YYYYMMDD_HHMMSS}/`，再進入 Phase 1
-3. 局部重跑時：在 agent prompt 中附上先前產出物的路徑，指示 agent 讀取既有結果並反映回饋
+### Phase 1：拆分
 
-### Phase 1: 準備
-1. 分析使用者輸入 — {要釐清的內容}
-2. 在工作目錄中建立 `_workspace/`
-   - **初次執行**：建立新的 `_workspace/`
-   - **全新執行**：將既有 `_workspace/` 移到 `_workspace_{YYYYMMDD_HHMMSS}/` 後，重新建立新的 `_workspace/`
-3. 將輸入資料存入 `_workspace/00_input/`
+把研究工作切成互不重疊的任務。若兩個任務會修改同一檔案，重新切分或改成順序執行。
 
-### Phase 2: 建立團隊
+### Phase 2：平行蒐集
 
-1. 建立團隊：
-   ```
-   TeamCreate(
-     team_name: "{domain}-team",
-     members: [
-       { name: "{teammate-1}", agent_type: "{type}", model: "opus", prompt: "{角色說明與工作指示}" },
-       { name: "{teammate-2}", agent_type: "{type}", model: "opus", prompt: "{角色說明與工作指示}" },
-       ...
-     ]
-   )
-   ```
+同時委派 `{researcher-a}` 與 `{researcher-b}`。要求使用共同 schema，並將大型產物寫入：
 
-2. 註冊任務：
-   ```
-   TaskCreate(tasks: [
-     { title: "{任務1}", description: "{細節}", assignee: "{teammate-1}" },
-     { title: "{任務2}", description: "{細節}", assignee: "{teammate-2}" },
-     { title: "{任務3}", description: "{細節}", depends_on: ["{任務1}"] },
-     ...
-   ])
-   ```
+- `_workspace/02_researcher-a_findings.md`
+- `_workspace/02_researcher-b_findings.md`
 
-   > 每位團隊成員分配 5 到 6 個任務最合適。有依賴關係的任務請用 `depends_on` 明確標示。
+等待所有必要結果。
 
-### Phase 3: {主要工作，例如：研究 / 生成 / 分析}
+### Phase 3：單一整合
 
-**執行方式：** 團隊成員自行協調
+委派 `{integrator}` 讀取所有 Phase 2 產物並建立唯一整合版本。整合者必須解決衝突、標記未知資訊、保留可追溯證據。
 
-團隊成員從共享任務清單中認領工作（claim），並各自獨立執行。
-Leader 監控進度，必要時再介入。
+### Phase 4：獨立驗證
 
-**團隊成員間的通訊規則：**
-- {teammate-1} 透過 SendMessage 將 {某些資訊} 傳給 {teammate-2}
-- {teammate-2} 完成任務後，將結果存成檔案並通知 Leader
-- 若團隊成員需要其他成員的結果，就用 SendMessage 發出請求
+委派 `{validator}` 以唯讀方式逐項驗收。若發現問題，由主代理人判斷是否交回 `{integrator}` 修正；驗證者不直接修改最終產物。
 
-**產出物儲存：**
+### Phase 5：收尾
 
-| 團隊成員 | 輸出路徑 |
-|------|----------|
-| {teammate-1} | `_workspace/{phase}_{teammate-1}_{artifact}.md` |
-| {teammate-2} | `_workspace/{phase}_{teammate-2}_{artifact}.md` |
+1. 執行必要測試。
+2. 確認輸出位置與格式。
+3. 回報完成項目、驗證證據、剩餘風險與未完成項目。
 
-**Leader 監控：**
-- 團隊成員進入閒置狀態時，自動接收通知
-- 特定成員卡住時，用 SendMessage 下達指示或重新分派任務
-- 用 TaskGet 確認整體進度
+## 降級策略
 
-### Phase 4: {後續工作，例如：驗證 / 整合}
-1. 等待所有團隊成員完成任務（用 TaskGet 確認狀態）
-2. 用 Read 收集各成員的產出物
-3. {整合 / 驗證邏輯}
-4. 生成最終產出物：`{output-path}/{filename}`
+- 某一研究代理人失敗：重試一次；仍失敗則標記覆蓋缺口並判斷是否可繼續。
+- 整合者失敗：由主代理人接手，使用既有產物完成整合。
+- 驗證者失敗：主代理人執行明確的驗收清單，並揭露未完成獨立複審。
+- 無子代理功能：主代理人依序扮演各角色，但仍保留分階段產物與驗證。
 
-### Phase 5: 收尾
-1. 向團隊成員發送結束請求（SendMessage）
-2. 清理團隊（TeamDelete）
-3. 保留 `_workspace/` 目錄（不要刪除中間產出物，供後續驗證與稽核追蹤）
-4. 向使用者回報結果摘要
+## 完成條件
 
-> **若需要重組團隊：** 如果不同 Phase 需要不同的專家組合，先用 TeamDelete 清理目前團隊，再用新的 TeamCreate 為下一個 Phase 組隊。前一個團隊的產出物會保留在 `_workspace/`，因此新團隊可以透過 Read 存取。
-
-## 資料流
-
-```
-[Leader] → TeamCreate → [teammate-1] ←SendMessage→ [teammate-2]
-                          │                           │
-                          ↓                           ↓
-                    artifact-1.md              artifact-2.md
-                          │                           │
-                          └───────── Read ────────────┘
-                                     ↓
-                              [Leader: 整合]
-                                     ↓
-                              最終產出物
+- 所有必要階段都有成功證據或明確的失敗處置。
+- 最終產物有唯一擁有者。
+- 驗收結果可重現。
 ```
 
-## 錯誤處理
+## 資料傳遞原則
 
-| 情況 | 策略 |
-|------|------|
-| 1 位團隊成員失敗 / 中止 | Leader 偵測到後 → 用 SendMessage 確認狀態 → 重新啟動或建立替代成員 |
-| 超過半數團隊成員失敗 | 告知使用者並確認是否繼續 |
-| Timeout | 使用目前為止已收集的部分結果，並結束未完成的成員 |
-| 團隊成員之間資料衝突 | 標明來源後並列保留，不刪除 |
-| 任務狀態延遲 | Leader 用 TaskGet 確認後，手動執行 TaskUpdate |
+| 類型 | 使用方式 | 適用情境 |
+|---|---|---|
+| 回傳摘要 | 子代理人回傳結論、證據與狀態 | 預設方式，避免主上下文被原始日誌污染 |
+| `_workspace/` 產物 | 使用穩定檔名保存完整內容 | 跨階段需要完整資料或任務可能中斷 |
+| 主代理人追問 | 對既有代理人補充有界問題 | 結論缺證據或需要澄清，不必重跑全部工作 |
+| 單一寫入者 | 只有指定角色修改最終產物 | 所有會產生或修改檔案的流程 |
+
+## 錯誤處理矩陣
+
+| 情境 | 處理方式 |
+|---|---|
+| 子代理人逾時或中止 | 取得現有摘要；有必要才重試或縮小任務 |
+| 回傳格式不符 | 追問缺少欄位，不要重跑已完成的分析 |
+| 結論互斥 | 回查原始證據，必要時交給獨立驗證者 |
+| 寫入衝突 | 停止多方寫入，指定單一擁有者整合 |
+| 外部服務不可用 | 使用本機證據繼續可完成部分，標示缺口 |
+| 需要憑證 | 列出服務、環境變數、權限與測試方式後向使用者索取；不得猜測或寫入密鑰 |
+| 產物不完整 | 不宣稱完成；列出缺少項目與下一個可執行動作 |
 
 ## 測試情境
 
+每個 Orchestrator 至少提供：
+
 ### 正常流程
-1. 使用者提供 {輸入}
-2. 在 Phase 1 得出 {分析結果}
-3. 在 Phase 2 建立團隊（{N} 位成員 + {M} 個任務）
-4. 在 Phase 3 由團隊成員自行協調並執行工作
-5. 在 Phase 4 整合產出物並生成最終結果
-6. 在 Phase 5 清理團隊
-7. 預期結果：產生 `{output-path}/{filename}`
 
-### 錯誤流程
-1. 在 Phase 3 中，{teammate-2} 因錯誤而中止
-2. Leader 收到閒置通知
-3. 用 SendMessage 確認狀態 → 嘗試重新啟動
-4. 若重啟失敗，將 {teammate-2} 的工作改派給 {teammate-1}
-5. 以其餘結果進入 Phase 4
-6. 在最終報告中註明「{teammate-2} 區塊部分資料未收集」
-```
+- 所有代理人成功回傳。
+- 主代理人等待完整結果。
+- 寫入者產生唯一最終版本。
+- 驗證者通過所有驗收條件。
 
----
+### 部分失敗
 
-## 範本 B：Subagent 模式（替代方案）
+- 一個平行代理人失敗，但其餘結果可用。
+- 主代理人正確標示覆蓋缺口並決定重試或降級。
 
-適用於不需要團隊通訊成本的情況。直接使用 `Agent` 工具呼叫，並從回傳值蒐集結果。
+### 衝突流程
 
-```markdown
----
-name: {domain}-orchestrator
-description: "{領域} agent 的協調 orchestrator。{初次執行關鍵字}。包含後續工作關鍵字。"
----
+- 兩個代理人提供互斥結論。
+- 主代理人以證據或獨立驗證解決，不能任意選一個。
 
-## 執行模式：Subagent
+### 權限流程
 
-## Agent 組成
+- 唯讀代理人嘗試修改檔案時應被阻止或改由指定寫入者執行。
 
-| Agent | subagent_type | 角色 | Skill | 輸出 |
-|---------|--------------|------|------|------|
-| {agent-1} | {內建或自訂} | {角色} | {skill} | {output-file} |
-| {agent-2} | ... | ... | ... | ... |
+## Description 的維護觸發詞
 
-## 工作流程
+若技能需要支援後續工作，description 要涵蓋：
 
-### Phase 0: 確認 context
-（與 Template A 相同，依 `_workspace/` 是否存在分流）
+- 「繼續執行」「接續上次結果」「重跑」
+- 「檢查現況」「稽核」「同步」「修正漂移」
+- 「新增代理人」「修改技能」「調整工作流程」
 
-### Phase 1: 準備
-1. 分析輸入
-2. 建立 `_workspace/`（初次執行時建立，或在全新執行時先將既有 `_workspace/` 移到封存目錄後再建立）
-
-### Phase 2: 平行執行
-在單一訊息中同時呼叫 N 個 Agent 工具：
-
-| Agent | 輸入 | 輸出 | model | run_in_background |
-|---------|------|------|-------|-------------------|
-| {agent-1} | {來源} | `_workspace/{phase}_{agent}_{artifact}.md` | opus | true |
-| {agent-2} | {來源} | `_workspace/{phase}_{agent}_{artifact}.md` | opus | true |
-
-### Phase 3: 整合
-1. 收集各 agent 的返回值
-2. 對於檔案型產出物，用 Read 收集
-3. 套用整合邏輯 → 產生最終產出物
-
-### Phase 4: 收尾
-1. 保留 `_workspace/`
-2. 回報結果摘要
-
-## 錯誤處理
-- 1 個 agent 失敗：重試 1 次。若再次失敗，標明缺漏後繼續
-- 超過半數失敗：告知使用者並確認是否繼續
-- Timeout：使用目前為止已收集的部分結果
-```
-
----
-
-## 範本 C：Hybrid 模式
-
-在不同 Phase 使用不同執行模式。需在各 Phase 標題上方標註 `**執行模式:** {團隊 | 子代理}`。
-
-```markdown
----
-name: {domain}-orchestrator
-description: "{領域} orchestrator（Hybrid）。{關鍵字}。包含後續工作關鍵字。"
----
-
-## 執行模式：Hybrid
-
-| Phase | 模式 | 原因 |
-|-------|------|------|
-| Phase 2（平行收集） | Subagent | 獨立收集資料，不需要團隊通訊 |
-| Phase 3（共識整合） | Agent Team | 需要討論與協調相互衝突的資料 |
-| Phase 4（獨立驗證） | Subagent | 由 1 位 QA agent 進行客觀驗證 |
-
-## 工作流程
-
-### Phase 2: 平行收集資料
-**執行模式：** Subagent
-
-在單一訊息中用 Agent 工具平行呼叫 N 個 agent（`run_in_background: true`）。
-各結果存到 `_workspace/02_{agent}_raw.md`。
-
-### Phase 3: 以共識為基礎的整合
-**執行模式：** Agent Team
-
-1. 用 `TeamCreate` 建立整合團隊（editor + fact-checker + synthesizer）
-2. 用 `TaskCreate` 分派任務，所有人都 Read Phase 2 的 `_workspace/02_*` 檔案
-3. 團隊成員透過 `SendMessage` 討論互相衝突的資料，並以檔案為基礎整理出共識版本
-4. 生成最終整合版 `_workspace/03_integrated.md`
-5. 用 `TeamDelete` 清理團隊
-
-### Phase 4: 獨立驗證
-**執行模式：** Subagent
-
-由單一 QA subagent 讀取 `_workspace/03_integrated.md` 作為輸入，產生驗證報告。
-```
-
-**Hybrid 切換規則：**
-- 團隊 → 子代理：一定要先用 `TeamDelete` 清理團隊，再呼叫 Agent 工具
-- 子代理 → 團隊：將 subagent 的檔案產出透過 Read 路徑提供給團隊成員
-- 團隊 → 團隊：整理舊團隊後，再 `TeamCreate` 新團隊（每個 session 同時只能啟用 1 個團隊）
-
----
-
-## 撰寫原則
-
-1. **先明確標示執行模式** - 在 orchestrator 開頭標明「Agent Team」/「Subagent」/「Hybrid」其中之一。若是 Hybrid，必須提供各 Phase 模式表
-2. **團隊模式需具體說明 TeamCreate/SendMessage/TaskCreate 用法** - 包含團隊組成、任務註冊、通訊規則
-3. **Subagent 模式需完整標示 Agent 工具參數** - name、subagent_type、prompt、run_in_background、model
-4. **檔案路徑必須明確** - 禁止相對路徑，需清楚以 `_workspace/` 為基準
-5. **標示 Phase 間依賴關係** - 說明哪個 Phase 依賴哪個 Phase 的結果。Hybrid 尤其要強調模式切換點
-6. **Error handling 要務實** - 不要假設「所有事情都會成功」
-7. **必須提供測試情境** - 至少 1 個正常流程 + 1 個錯誤流程
-
-## 撰寫 description 時的後續工作關鍵字
-
-Orchestrator 的 description 不能只寫初次執行關鍵字。必須包含以下後續工作表達：
-
-- 重新執行／再次執行／更新／修改／補強
-- 「只重做 {domain} 的 {部分}」
-- 「基於先前結果」、「改善結果」
-- 與 domain 相關的日常請求（例如 launch strategy harness 可包含「launch」、「promotion」、「trending」等）
-
-如果沒有後續關鍵字，第一次執行後這個 harness 實際上就會變成 dead code。
-
-## 實際 Orchestrator 參考
-
-Fan-out/Fan-in pattern 的 orchestrator 基本結構：
-準備 → Phase 0（確認 context）→ TeamCreate + TaskCreate → N 位團隊成員平行執行 → Read + 整合 → 收尾。
-請參考 `references/team-examples.md` 中的 research team 範例。
+避免使用過於寬泛的「處理所有 {domain} 任務」，以免與一般工作誤觸。

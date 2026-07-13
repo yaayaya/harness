@@ -1,35 +1,40 @@
-name: Question
-description: Ask a how-to or clarification question about Harness
+name: 使用問題
+description: 詢問 Harness Codex 版的安裝、配置、使用或設計問題
 title: "[question] "
 labels: ["question", "needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Questions are welcome. If your question is open-ended or invites discussion, [GitHub Discussions](https://github.com/revfactory/harness/discussions) is usually a better venue.
-
-        We try to triage questions within 48h.
+        歡迎提問。請先查閱 README、快速開始與既有 issue，並移除 API Key、token 與其他敏感資訊。
 
   - type: textarea
     id: question
     attributes:
-      label: Your question
-      description: What would you like to know?
+      label: 問題
+      description: 請清楚描述你想了解或完成的事情。
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 使用情境
+      description: 請提供 Codex 介面、版本、Harness 安裝方式與相關專案結構。
     validations:
       required: true
 
   - type: textarea
     id: tried
     attributes:
-      label: What have you tried?
-      description: Commands run, docs read, related issues you've already found.
+      label: 已嘗試的方法
+      description: 請列出執行過的命令、讀過的文件與觀察結果。
     validations:
       required: false
 
   - type: textarea
     id: docs
     attributes:
-      label: Related docs / links (optional)
-      description: Paste links to sections of the README, docs, or issues you've already read.
+      label: 相關文件或連結
     validations:
       required: false

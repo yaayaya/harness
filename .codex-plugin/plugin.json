@@ -1,0 +1,46 @@
+{
+  "name": "harness",
+  "version": "2.0.0",
+  "description": "Codex 團隊架構工廠：把領域或專案需求轉換成自訂代理人、技能與可驗證的多代理協作流程。",
+  "author": {
+    "name": "revfactory / yaayaya",
+    "url": "https://github.com/yaayaya/harness-zh"
+  },
+  "homepage": "https://github.com/yaayaya/harness-zh",
+  "repository": "https://github.com/yaayaya/harness-zh",
+  "license": "Apache-2.0",
+  "keywords": [
+    "harness",
+    "codex",
+    "codex-plugin",
+    "custom-agents",
+    "subagents",
+    "agent-team",
+    "skill-architect",
+    "orchestration",
+    "multi-agent",
+    "pipeline",
+    "fan-out-fan-in",
+    "producer-reviewer",
+    "supervisor"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Harness",
+    "shortDescription": "為 Codex 建立代理人、技能與協作流程",
+    "longDescription": "依專案或領域需求設計 Codex 自訂代理人、專案技能、協作模式、驗證流程與持續維護機制。",
+    "developerName": "revfactory / yaayaya",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": [
+      "幫我為這個專案配置 Codex Harness。",
+      "設計一套可重複使用的 Codex 多代理工作流程。",
+      "檢查目前 Harness 的代理人與技能是否一致。"
+    ],
+    "brandColor": "#10A37F",
+    "composerIcon": "./harness_icon.png",
+    "logo": "./harness_icon.png"
+  }
+}

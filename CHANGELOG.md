@@ -6,15 +6,26 @@
 
 ### 新增
 
-- 新增建立 agent/skill 前的重複檢查階段（Phase 3-0、Phase 4-0）
-- `references/agent-design-patterns.md` 新增「代理人重複使用設計」章節
-- `references/skill-writing-guide.md` 新增第 9 節「技能重複使用設計」
+- 新增 `.codex-plugin/plugin.json` 與 Codex 原生外掛資訊。
+- 新增 `.agents/plugins/marketplace.json`，支援 Codex 儲存庫 Marketplace。
+- 新增 `scripts/validate_codex_harness.py`，驗證 manifest、Marketplace、Skills、TOML 與平台殘留。
+- 新增 Codex 自訂代理人、子代理協作、權限與降級策略的完整指南。
+- 新增 `docs/codex-compatibility.md`。
 
 ### 變更
 
-- 在 Phase 選擇矩陣中明確列出 3-0/4-0
-- 在 Phase 2-3 新增重複使用檢查階段的指引
-- 在產物檢查清單新增 2 個重複使用檢查項目
+- **破壞性變更：** Harness 執行環境由 Claude Code 改為 Codex。
+- 自訂代理人由 Markdown 改為 `.codex/agents/*.toml`。
+- 專案技能改用 `.agents/skills/`，持久指示改用 `AGENTS.md`。
+- Team API 編排改為由主代理人協調的 Codex 子代理工作流程。
+- 移除固定 Opus 模型設定，預設繼承目前 Codex 工作階段。
+- 安裝、快速開始、貢獻規範、Issue 與 PR 範本改為繁體中文 Codex 流程。
+
+### 移除
+
+- 移除 `.claude-plugin/` 與 Claude 專用安裝設定。
+- 移除簡體中文、英文、日文、韓文的過時文件副本；`codex` 分支以繁體中文為唯一維護文件。
+- 移除過時的翻譯維護腳本與實驗性 Agent Teams 相依文件。
 
 ---
 
