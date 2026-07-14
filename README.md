@@ -66,7 +66,7 @@ Phase 7：記錄變更並持續修正漂移
 在儲存庫外執行：
 
 ```powershell
-powershell -NoProfile -Command "codex plugin marketplace add yaayaya/harness-zh --ref codex"
+powershell -NoProfile -Command "codex plugin marketplace add yaayaya/harness-codex --ref codex"
 ```
 
 重新啟動 ChatGPT 桌面版或 Codex，開啟 Plugins，選擇 `Harness Codex` marketplace，再安裝 `Harness`。
