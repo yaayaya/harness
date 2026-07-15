@@ -13,6 +13,8 @@ description: "建構與維護 Codex Harness。當使用者要求配置 Harness�
 - 專案執行設定：`.codex/config.toml`
 - 可安裝外掛：`.codex-plugin/plugin.json` 與外掛根目錄下的 `skills/`
 
+若使用者要封裝、搬移、備份、安裝或更新已存在的 Harness 團隊，改用 `$harness-packager`；不要重新設計團隊。
+
 不得建立 `.claude/agents/`、`.claude/skills/`、`CLAUDE.md`，也不得把 `TeamCreate`、`SendMessage`、`TaskCreate`、`subagent_type`、`run_in_background` 或 `model: "opus"` 寫進 Codex 產物。
 
 ## 核心原則

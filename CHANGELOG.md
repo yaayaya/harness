@@ -6,6 +6,8 @@
 
 ### 新增
 
+- 新增 `$harness-packager` Skill，把 Codex Harness 團隊封裝成免壓縮的 `.harness` 資料夾，支援跨 repo 安裝、更新、備份與完整性驗證。
+- 新增 PowerShell 整合測試，覆蓋打包、首次安裝、更新、舊受管檔案移除、失敗回復與損壞套件拒絕。
 - 新增 `.codex-plugin/plugin.json` 與 Codex 原生外掛資訊。
 - 新增 `.agents/plugins/marketplace.json`，支援 Codex 儲存庫 Marketplace。
 - 新增 `scripts/validate_codex_harness.py`，驗證 manifest、Marketplace、Skills、TOML 與平台殘留。

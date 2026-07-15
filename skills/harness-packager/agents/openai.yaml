@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Packager"
+  short_description: "跨儲存庫封裝、安裝與更新 Codex Harness 團隊"
+  default_prompt: "使用 $harness-packager 封裝目前 repo 的 Harness 團隊。"

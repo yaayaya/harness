@@ -159,6 +159,29 @@ def validate_skills() -> None:
                 fail(f"Skill 引用不存在：{path.relative_to(ROOT)} → {ref}")
 
 
+def validate_harness_packager() -> None:
+    root = ROOT / "skills" / "harness-packager"
+    required = (
+        root / "SKILL.md",
+        root / "agents" / "openai.yaml",
+        root / "references" / "package-format.md",
+        root / "scripts" / "harness_packager.ps1",
+        ROOT / "tests" / "test_harness_packager.ps1",
+    )
+    for path in required:
+        if not path.is_file():
+            fail(f"Harness Packager 缺少必要檔案：{path.relative_to(ROOT)}")
+
+    if not (root / "SKILL.md").is_file():
+        return
+    text = (root / "SKILL.md").read_text(encoding="utf-8")
+    for token in ("Pack", "Install", "Verify", ".harness", "harness_packager.ps1"):
+        if token not in text:
+            fail(f"Harness Packager SKILL.md 缺少必要內容：{token}")
+    if re.search(r"\b(TODO|TBD|PLACEHOLDER)\b", text):
+        fail("Harness Packager SKILL.md 仍有 placeholder")
+
+
 def validate_toml() -> None:
     toml_files = sorted((ROOT / ".codex").rglob("*.toml")) if (ROOT / ".codex").exists() else []
     if toml_files and tomllib is None:
@@ -184,7 +207,10 @@ def validate_platform_cleanup() -> None:
         ROOT / ".claude",
         ROOT / "CLAUDE.md",
     ):
-        if stale_path.exists():
+        has_artifacts = stale_path.is_file() or (
+            stale_path.is_dir() and any(item.is_file() for item in stale_path.rglob("*"))
+        )
+        if has_artifacts:
             fail(f"仍存在 Claude 專用產物：{stale_path.relative_to(ROOT)}")
 
     forbidden = (
@@ -213,6 +239,7 @@ def main() -> int:
     validate_plugin()
     validate_marketplace()
     validate_skills()
+    validate_harness_packager()
     validate_toml()
     validate_platform_cleanup()
 

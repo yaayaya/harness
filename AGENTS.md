@@ -13,6 +13,7 @@
 - 外掛描述：`.codex-plugin/plugin.json`
 - Marketplace：`.agents/plugins/marketplace.json`
 - Harness Skill：`skills/harness/SKILL.md`
+- Harness Packager Skill：`skills/harness-packager/SKILL.md`
 - 專案自訂代理人：`.codex/agents/*.toml`
 - 專案技能：`.agents/skills/<skill-name>/SKILL.md`
 - Codex 專案設定：`.codex/config.toml`
@@ -34,6 +35,7 @@
 
 ```powershell
 powershell -NoProfile -Command '$env:PYTHONUTF8 = "1"; python scripts/validate_codex_harness.py'
+powershell -NoProfile -ExecutionPolicy Bypass -File tests/test_harness_packager.ps1
 ```
 
 若本機有 Codex 官方驗證腳本，也要驗證 `skills/harness` 與外掛根目錄。網站內容有變更時，應以瀏覽器檢查桌面版、可讀性、連結、溢位與主控台錯誤。
